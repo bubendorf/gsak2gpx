@@ -1,0 +1,2 @@
+<#assign where="wp.cType = 'Final Location'" >
+<#include "WaypointToPOI_SQL.ftlx">

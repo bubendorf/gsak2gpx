@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="Windows-1252" standalone="no"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" 
+xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+creator="Nuvi_GPX_by_CT.gsk ver.   1.39 beta" 
+version="1.1" 
+xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd 
+http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensions/v3/GpxExtensionsv3.xsd">
+  <metadata>
+    <desc>GPX output for Garmin POI Loader</desc>
+    <link href="http://redroo.iinet.net.au">
+      <text>GSAK GPX Macro</text>
+    </link>
+    <time>2017-11-03T10:07:14Z</time>
+    <bounds maxlat="53.000000" maxlon="-6.0000" minlat="53.000000" minlon="-6.000000"/>
+  </metadata>
+
+  <wpt lat="47.193033" lon="7.806983">
+    <ele>0.00</ele>
+    <time>2017-11-03T10:07:14Z</time>
+    <name>2BWaldgeisterweg</name>
+    <cmt/>
+    <desc>&lt;font color=#008000&gt;****&lt;/font&gt;&lt;br /&gt;&lt;font color=#008000&gt;Hint:&lt;/font&gt;&lt;br /&gt;&lt;font color=#008000&gt;Wurzelstock&lt;/font&gt;&lt;br /&gt;&lt;font color=#008000&gt;****&lt;/font&gt;&lt;br /&gt;&lt;br /&gt;&lt;font color=#FF0000&gt;**** Temp Unavailable ****&lt;/font&gt;&lt;br /&gt;&lt;br /&gt;&lt;font color=#FF0000&gt;Waldgeisterweg by jopary (GC6J3DX)&lt;/font&gt;&lt;br /&gt;&lt;font color=#008000&gt;Multi-cache/Small/FFFF/Tb:N, (D:2/T:2.5)&lt;/font&gt;&lt;br /&gt;&lt;font color=#0000FF&gt;Placed:20.05.2016, Last Found:06.08.2017&lt;/font&gt;&lt;br /&gt;&lt;font color=#800080&gt;N47° 11.582, E7° 48.419&lt;/font&gt;&lt;br /&gt;&lt;br /&gt;Description: 14.10.2016: Listing angepasst für 1. und 3. Standort da sich einzelne Geister in Luft aufgelöst haben.&lt;br /&gt; 02.11.2017: Listing angepasst für mehrere Standorte da nicht mehr alle Informationen vorhanden sind.</desc>
+    <sym>Information</sym>
+    <extensions>
+      <gpxx:WaypointExtension>
+        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>
+        <gpxx:Address>
+          <gpxx:StreetAddress>N47° 11.582,E7° 48.419</gpxx:StreetAddress>
+          <gpxx:StreetAddress>Waldgeisterweg by jopary</gpxx:StreetAddress>
+          <gpxx:City>Mul/Sma/FFFF/Tb:N, (D:2/T:2.5)</gpxx:City>
+          <gpxx:State/>
+          <gpxx:PostalCode/>
+        </gpxx:Address>
+        <gpxx:PhoneNumber Category="Email">Pl:20.05.2016, LF:06.08.2017</gpxx:PhoneNumber>
+      </gpxx:WaypointExtension>
+    </extensions>
+  </wpt>
+</gpx>

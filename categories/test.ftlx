@@ -1,0 +1,18 @@
+<#assign cacheQuery>
+select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
+ca.Difficulty, ca.Terrain, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate, cu.GefundenVon,
+ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.Country, ca.State, cm.LongDescription, cm.ShortDescription,
+ca.ShortHtm, ca.LongHtm, cm.Hints,
+group_concat(at.aId || '-' || at.aInc) as Attributes
+from Caches ca
+join Custom cu on ca.code = cu.cCode
+join CacheMemo cm on ca.code=cm.Code
+left join Attributes at on ca.Code = at.aCode
+where 1=1
+and ca.UserFlag=1
+group by ca.Code
+limit 20;
+</#assign>
+<#list sql(cacheQuery) as wpt>
+${wpt.SmartName}
+</#list>

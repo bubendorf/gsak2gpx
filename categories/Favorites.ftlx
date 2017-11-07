@@ -1,0 +1,2 @@
+<#assign where="cu.GCV_AverageVote > 3.4 or cu.FavRatio > 50 " >
+<#include "CacheToPOI_SQL.ftlx">

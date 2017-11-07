@@ -1,0 +1,37 @@
+<#assign wpQuery = "
+select wp.cParent, wp.cName, wp.cType, wp.cLat, wp.cLon
+from Waypoints wp
+join WaypointsMemo wm on
+where ${where}
+limit 200000;">
+<?xml version="1.0" encoding="Windows-1252" standalone="no"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1"
+    xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    creator="Markus Bubendorf"
+    version="1.1"
+    xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd
+http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensions/v3/GpxExtensionsv3.xsd">
+    <metadata>
+        <desc>GPX output for Garmin POI Loader</desc>
+        <link href="http://redroo.iinet.net.au">
+            <text>GSAK GPX Macro</text>
+        </link>
+        <time>2017-11-03T10:07:14Z</time>
+        <bounds maxlat="53.000000" maxlon="45.0000" minlat="-53.000000" minlon="-45.000000"/>
+    </metadata>
+
+<#list sql('${wpQuery}', '${category}') as wpt>
+    <wpt lat="${wp.cLat}" lon="${wp.cLon}">
+        <name>${wp.cName}</name>
+        <cmt/>
+        <desc>${wp.cType}-${wp.cName}</desc>
+        <sym>Information</sym>
+        <extensions>
+            <gpxx:WaypointExtension>
+                <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>
+            </gpxx:WaypointExtension>
+        </extensions>
+    </wpt>
+</#list>
+</gpx>

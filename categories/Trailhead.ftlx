@@ -1,0 +1,2 @@
+<#assign where="wp.cType = 'Trailhead'" >
+<#include "WaypointToPOI_SQL.ftlx">
