@@ -26,89 +26,96 @@
 
 <#macro attr value>
 <#switch value>
-  <#case  1 >Dogs<#break>
-  <#case  2 >Access or parking fee<#break>
-  <#case  3 >Climbing gear<#break>
-  <#case  4 >Boat<#break>
-  <#case  5 >Scuba gear<#break>
-  <#case  6 >Recommended for kids<#break>
-  <#case  7 >Takes less than an hour<#break>
-  <#case  8 >Scenic view<#break>
-  <#case  9 >Significant Hike<#break>
-  <#case 10 >Difficult climbing<#break>
-  <#case 11 >May require wading<#break>
-  <#case 12 >May require swimming<#break>
-  <#case 13 >Available at all times<#break>
-  <#case 14 >Recommended at night<#break>
-  <#case 15 >Available during winter<#break>
-  <#case 17 >Poisonous plants<#break>
-  <#case 18 >Dangerous Animals<#break>
-  <#case 19 >Ticks<#break>
-  <#case 20 >Abandoned mines<#break>
-  <#case 21 >Cliff / falling rocks<#break>
-  <#case 22 >Hunting<#break>
-  <#case 23 >Dangerous area<#break>
-  <#case 24 >Wheelchair accessible<#break>
-  <#case 25 >Parking available<#break>
-  <#case 26 >Public transportation<#break>
-  <#case 27 >Drinking water nearby<#break>
-  <#case 28 >Public restrooms nearby<#break>
-  <#case 29 >Telephone nearby<#break>
-  <#case 30 >Picnic tables nearby<#break>
-  <#case 31 >Camping available<#break>
-  <#case 32 >Bicycles<#break>
-  <#case 33 >Motorcycles<#break>
-  <#case 34 >Quads<#break>
-  <#case 35 >Off-road vehicles<#break>
-  <#case 36 >Snowmobiles<#break>
-  <#case 37 >Horses<#break>
-  <#case 38 >Campfires<#break>
-  <#case 39 >Thorns<#break>
-  <#case 40 >Stealth required<#break>
-  <#case 41 >Stroller accessible<#break>
-  <#case 42 >Needs Maintenance<#break>
-  <#case 43 >Watch for livestock<#break>
-  <#case 44 >Flashlight required<#break>
-  <#case 45 >Lost And Found Tour<#break>
-  <#case 46 >Truck Driver/RV<#break>
-  <#case 47 >Field Puzzle<#break>
-  <#case 48 >UV Light Required<#break>
-  <#case 49 >Snowshoes<#break>
-  <#case 50 >Cross Country Skis<#break>
-  <#case 51 >Special Tool Required<#break>
-  <#case 52 >Night Cache<#break>
-  <#case 53 >Park and Grab<#break>
-  <#case 54 >Abandoned Structure<#break>
-  <#case 55 >Short hike (less than 1km)<#break>
-  <#case 56 >Medium hike (1km-10km)<#break>
-  <#case 57 >Long Hike (+10km)<#break>
-  <#case 58 >Fuel Nearby<#break>
-  <#case 59 >Food Nearby<#break>
-  <#case 60 >Wireless Beacon<#break>
-  <#case 61 >Partnership Cache<#break>
-  <#case 62 >Seasonal Access<#break>
-  <#case 63 >Tourist Friendly<#break>
-  <#case 64 >Tree Climbing<#break>
-  <#case 65 >Front Yard (Private Residence)<#break>
-  <#case 66 >Teamwork Required<#break>
+  <#case  "1">Dogs<#break>
+  <#case  "2">Access or parking fee<#break>
+  <#case  "3">Climbing gear<#break>
+  <#case  "4">Boat<#break>
+  <#case  "5">Scuba gear<#break>
+  <#case  "6">Recommended for kids<#break>
+  <#case  "7">Takes less than an hour<#break>
+  <#case  "8">Scenic view<#break>
+  <#case  "9">Significant Hike<#break>
+  <#case "10">Difficult climbing<#break>
+  <#case "11">May require wading<#break>
+  <#case "12">May require swimming<#break>
+  <#case "13">Available at all times<#break>
+  <#case "14">Recommended at night<#break>
+  <#case "15">Available during winter<#break>
+  <#case "17">Poisonous plants<#break>
+  <#case "18">Dangerous Animals<#break>
+  <#case "19">Ticks<#break>
+  <#case "20">Abandoned mines<#break>
+  <#case "21">Cliff / falling rocks<#break>
+  <#case "22">Hunting<#break>
+  <#case "23">Dangerous area<#break>
+  <#case "24">Wheelchair accessible<#break>
+  <#case "25">Parking available<#break>
+  <#case "26">Public transportation<#break>
+  <#case "27">Drinking water nearby<#break>
+  <#case "28">Public restrooms nearby<#break>
+  <#case "29">Telephone nearby<#break>
+  <#case "30">Picnic tables nearby<#break>
+  <#case "31">Camping available<#break>
+  <#case "32">Bicycles<#break>
+  <#case "33">Motorcycles<#break>
+  <#case "34">Quads<#break>
+  <#case "35">Off-road vehicles<#break>
+  <#case "36">Snowmobiles<#break>
+  <#case "37">Horses<#break>
+  <#case "38">Campfires<#break>
+  <#case "39">Thorns<#break>
+  <#case "40">Stealth required<#break>
+  <#case "41">Stroller accessible<#break>
+  <#case "42">Needs Maintenance<#break>
+  <#case "43">Watch for livestock<#break>
+  <#case "44">Flashlight required<#break>
+  <#case "45">Lost And Found Tour<#break>
+  <#case "46">Truck Driver/RV<#break>
+  <#case "47">Field Puzzle<#break>
+  <#case "48">UV Light Required<#break>
+  <#case "49">Snowshoes<#break>
+  <#case "50">Cross Country Skis<#break>
+  <#case "51">Special Tool Required<#break>
+  <#case "52">Night Cache<#break>
+  <#case "53">Park and Grab<#break>
+  <#case "54">Abandoned Structure<#break>
+  <#case "55">Short hike (less than 1km)<#break>
+  <#case "56">Medium hike (1km-10km)<#break>
+  <#case "57">Long Hike (+10km)<#break>
+  <#case "58">Fuel Nearby<#break>
+  <#case "59">Food Nearby<#break>
+  <#case "60">Wireless Beacon<#break>
+  <#case "61">Partnership Cache<#break>
+  <#case "62">Seasonal Access<#break>
+  <#case "63">Tourist Friendly<#break>
+  <#case "64">Tree Climbing<#break>
+  <#case "65">Front Yard (Private Residence)<#break>
+  <#case "66">Teamwork Required<#break>
 </#switch>
+</#macro>
+
+<#macro attrString text>
+  <#list text?split(",") as attrValue>
+    <#if attrValue?starts_with("0-")>No </#if><#t>
+    <@attr value=attrValue[2..] />, <#t>
+  </#list>
 </#macro>
 
 <#assign cacheQuery = "
 select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType,
 ca.Elevation, ca.Difficulty, ca.Terrain, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate,
-ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.Country, ca.State,
-cm.LongDescription, cm.ShortDescription, ca.ShortHtm, ca.LongHtm, cm.Hints,
-cu.GefundenVon, cu.GCV_AverageVote, cu.FavRatio, cu.AvgLogsPerYear,
-group_concat(at.aInc || '-' || at.aId) as Attributes
+ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.County, ca.Country, ca.State, ca.Distance,
+cm.LongDescription, cm.ShortDescription, ca.ShortHtm, ca.LongHtm, cm.Hints, cm.UserNote,
+cu.GefundenVon, cu.GCV_AverageVote, cu.FavRatio, cu.AvgLogsPerYear, cu.MeinKommentar,
+group_concat(at.aInc || '-' || at.aId) as Attributes, ca.Bearing
 from Caches ca
 join Custom cu on ca.code = cu.cCode
 join CacheMemo cm on ca.code=cm.Code
-left join Attributes at on ca.Code = at.aCode
+left join Attributes at on ca.Code = at.aCode and at.aId not in (1,2,6,17,18,19,20,21,22,23,26,27,28,29,30,31,37,38,43,46,58,59,63)
 where ${where}
 group by ca.Code
-order by ca.Distance
-limit 2000;
+order by round(sqrt(ca.Distance)), ca.Degrees
+limit 15000;
 ">
 
 <#assign logQuery = "
@@ -116,6 +123,7 @@ select lo.lType, lo.lBy, lo.lDate, lo.lLogId, lm.lText
 from Logs lo
 join LogMemo lm on lo.lLogId=lm.lLogId and lo.lParent=lm.lParent
 where lo.lParent = '{CODE}'
+and length(lm.lText) > 20
 order by lo.lDate desc
 limit 10
 ">
@@ -129,14 +137,14 @@ limit 10
     <desc>Geocache file generated by gsak2gpx</desc>
     <author>Markus Bubendorf</author>
     <email>markus@bubendorf.ch</email>
-    <time>2017-11-04T09:27:40Z</time>
+    <time>${datetime}</time>
     <keywords>cache, geocache, groundspeak</keywords>
-    <bounds minlat="46" minlon="6" maxlat="48" maxlon="9"/>
+    <bounds minlat="0" minlon="-45" maxlat="80" maxlon="45"/>
 
 <#list sql('${cacheQuery}', '${category}') as ca>
     <wpt lat="${ca.Latitude}" lon="${ca.Longitude}">
         <ele>${ca.Elevation?c}</ele>
-        <time></time>
+        <time>${ca.PlacedDate}</time>
         <name>${ca.Code}</name>
         <desc>${ca.SmartName}</desc>
         <url>http://www.geocaching.com/seek/cache_details.aspx?guid=${ca.Guid!}</url>
@@ -156,23 +164,48 @@ limit 10
             <groundspeak:terrain>${ca.Terrain?c}</groundspeak:terrain>
             <groundspeak:country>${ca.Country}</groundspeak:country>
             <groundspeak:state>${ca.State}</groundspeak:state>
-            <groundspeak:short_description html="<@truefalse bool=ca.ShortHtm/>" >${ca.ShortDescription}</groundspeak:short_description>
-            <groundspeak:long_description html="<@truefalse bool=ca.LongHtm/>">${ca.LongDescription}</groundspeak:long_description>
+            <groundspeak:short_description html="false" >${ca.ShortDescription?replace('\\<.*?>', '', 'r')}</groundspeak:short_description>
+            <groundspeak:long_description html="false">${ca.LongDescription?replace('\\<.*?>', '', 'r')}</groundspeak:long_description>
             <groundspeak:encoded_hints>${ca.Hints}</groundspeak:encoded_hints>
             <groundspeak:logs>
+              <groundspeak:log id="0">
+<#--                <groundspeak:date>${log.lDate}</groundspeak:date> -->
+                <groundspeak:type>Announcement</groundspeak:type>
+<#--                <groundspeak:finder id="${log.lownerid}">${log.lBy}</groundspeak:finder> -->
+                <groundspeak:text encoded="False">
+<#if (ca.GefundenVon?length > 0)>GefundenVon: ${ca.GefundenVon}
+</#if><#t>
+<#if (ca.LastFoundDate?length > 0)>Letzter Fund: ${ca.LastFoundDate?date["yyyy-MM-dd"]?string["d.M.yy"]}
+</#if><#t>
+<#if (ca.Hints?length > 0)>Hinweis: ${ca.Hints}
+</#if><#t>
+<#if (ca.Elevation != 0)>Höhe: ${ca.Elevation}
+</#if><#t>
+<#if (ca.County?length > 0)>Ort: ${ca.County}
+</#if><#t>
+<#if (ca.GCV_AverageVote > 0)>GCVote: ${ca.GCV_AverageVote}
+</#if><#t>
+<#if (ca.FavRatio > 0)>FavRatio: ${ca.FavRatio}
+</#if><#t>
+<#if (ca.AvgLogsPerYear > 0)>AvgLosPerYear: ${ca.AvgLogsPerYear}
+</#if><#t>
+<#if (ca.UserNote?length > 0)>UserNote: ${ca.UserNote}
+</#if><#t>
+<#if (ca.MeinKommentar?length > 0)>Kommentar: ${ca.MeinKommentar}
+</#if><#t>
+<#if (ca.Attributes?length > 0)>Attribute: <@attrString text=ca.Attributes/>
+</#if><#t>
+                </groundspeak:text>
+              </groundspeak:log>
             <#list sql('${logQuery?replace("{CODE}", ca.Code)}') as log>
               <groundspeak:log id="${log.lLogId?c}">
-                <groundspeak:date>${log.lDate}</groundspeak:date>
+                <groundspeak:date>${log.lDate?date["yyyy-MM-dd"]?string["d.M.yy"]}</groundspeak:date>
                 <groundspeak:type>${log.lType}</groundspeak:type>
                 <groundspeak:finder id="${log.lownerid}">${log.lBy}</groundspeak:finder>
-                <groundspeak:text encoded="False">Gefunden Von: tuk(13.6.16)&lt;br /&gt;AvgFoundsPerYear: 32.2&lt;br /&gt;Letzter Fund: 29.08.2017&lt;br /&gt;Höhe: 468m&lt;br /&gt;County: Küttigen (AG)&lt;br /&gt;&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Dogs&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Recommended for kids&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Takes less than an hour&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Available at all times&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Available during winter&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Thorns&lt;br /&gt;karin777 (Premium) F=1885 H=14&lt;br /&gt;
-                </groundspeak:text>
-                <groundspeak:text encoded="False">${log.lText}</groundspeak:text>
+                <groundspeak:text encoded="False">${log.lText?replace('\\<.*?>', '', 'r')}</groundspeak:text>
               </groundspeak:log>
             </#list>
             </groundspeak:logs>
-            <groundspeak:travelbugs>
-            </groundspeak:travelbugs>
         </groundspeak:cache>
     </wpt>
 </#list>

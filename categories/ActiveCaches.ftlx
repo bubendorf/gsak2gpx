@@ -1,2 +1,2 @@
-<#assign where="ca.Archived = 0 and ca.TempDisabled = 0 and ca.Found = 0" >
+<#assign where="(ca.CacheType <> 'U' or ca.HasCorrected) and ca.Archived = 0 and ca.TempDisabled = 0 and ca.Found = 0" >
 <#include "CacheToCache_SQL.ftlx">
