@@ -1,5 +1,5 @@
 <#ftl output_format="XML">
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="${encoding}"?>
 <gpx xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     version="1.0" creator="GSAK"
@@ -39,16 +39,16 @@
             <groundspeak:long_description html="true"><#-- TODO-->${wpt.LongDescription}</groundspeak:long_description>
             <groundspeak:encoded_hints>${wpt.Hints}</groundspeak:encoded_hints>
             <groundspeak:logs>
-            <#list wpt.logs as log>
+<#--            <#list wpt.logs as log>
                     <groundspeak:log id="${log.lLogId}">
                     <groundspeak:date>${log.lDate}</groundspeak:date>
                     <groundspeak:type>${log.lType}</groundspeak:type>
                     <groundspeak:finder id="${log.lownerid}">${log.lBy}</groundspeak:finder>
-<#--                    <groundspeak:text encoded="False">Gefunden Von: tuk(13.6.16)&lt;br /&gt;AvgFoundsPerYear: 32.2&lt;br /&gt;Letzter Fund: 29.08.2017&lt;br /&gt;Höhe: 468m&lt;br /&gt;County: Küttigen (AG)&lt;br /&gt;&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Dogs&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Recommended for kids&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Takes less than an hour&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Available at all times&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Available during winter&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Thorns&lt;br /&gt;karin777 (Premium) F=1885 H=14&lt;br /&gt;
-                    </groundspeak:text> -->
+                    <groundspeak:text encoded="False">Gefunden Von: tuk(13.6.16)&lt;br /&gt;AvgFoundsPerYear: 32.2&lt;br /&gt;Letzter Fund: 29.08.2017&lt;br /&gt;Höhe: 468m&lt;br /&gt;County: Küttigen (AG)&lt;br /&gt;&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Dogs&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Recommended for kids&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Takes less than an hour&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Available at all times&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Available during winter&lt;br /&gt;Yes&amp;nbsp;:&amp;nbsp;Thorns&lt;br /&gt;karin777 (Premium) F=1885 H=14&lt;br /&gt;
+                    </groundspeak:text>
                     <groundspeak:text encoded="False">${log.lText}</groundspeak:text>
                 </groundspeak:log>
-            </#list>
+            </#list> -->
             </groundspeak:logs>
             <groundspeak:travelbugs>
             </groundspeak:travelbugs>

@@ -27,6 +27,9 @@ public class CommandLineArguments {
     @Parameter(names = {"-n", "--tasks"} , description = "Number of parallel tasks", required = false)
     private int tasks = -1;
 
+    @Parameter(names = {"-e", "--encoding"} , description = "Encoding to use", required = false)
+    private String encoding = "utf-8";
+
     public boolean isHelp() {
         return help;
     }
@@ -73,6 +76,14 @@ public class CommandLineArguments {
 
     public void setTasks(int tasks) {
         this.tasks = tasks;
+    }
+
+    public String getEncoding() {
+        return encoding;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
     }
 
     public boolean isValid() {

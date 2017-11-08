@@ -48,7 +48,7 @@ public class ResultSetCollectionModel implements TemplateCollectionModel {
         public TemplateModel next() throws TemplateModelException {
             try {
                 count++;
-                if (count % 1000 == 0) {
+                if (count % 1000 == 0 && category.length() > 0) {
                     LOGGER.debug(category + ": "  + count);
                 }
                 return new ResultSetHashModel(rs);
@@ -61,8 +61,8 @@ public class ResultSetCollectionModel implements TemplateCollectionModel {
         public boolean hasNext() throws TemplateModelException {
             try {
                 final boolean hasNext = rs.next();
-                if (!hasNext) {
-                    LOGGER.info(category + ": "  + count);
+                if (!hasNext && category.length() > 0) {
+                    LOGGER.debug(category + ": "  + count);
                 }
                 return hasNext;
             } catch (SQLException e) {

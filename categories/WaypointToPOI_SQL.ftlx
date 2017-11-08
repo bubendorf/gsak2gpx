@@ -1,10 +1,12 @@
 <#assign wpQuery = "
-select wp.cParent, wp.cName, wp.cType, wp.cLat, wp.cLon
+select wp.cParent, wp.cCode, wp.cName, wp.cType, wp.cLat, wp.cLon,
+       wm.cComment, ca.Name
 from Waypoints wp
-join WaypointsMemo wm on
+join WayMemo wm on wm.cParent = wp.cParent and wm.cCode = wp.cCode
+join Caches ca on wp.cParent = ca.Code
 where ${where}
 limit 200000;">
-<?xml version="1.0" encoding="Windows-1252" standalone="no"?>
+<?xml version="1.0" encoding="${encoding}" standalone="no"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1"
     xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -21,11 +23,11 @@ http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlsche
         <bounds maxlat="53.000000" maxlon="45.0000" minlat="-53.000000" minlon="-45.000000"/>
     </metadata>
 
-<#list sql('${wpQuery}', '${category}') as wpt>
+<#list sql('${wpQuery}', '${category}') as wp>
     <wpt lat="${wp.cLat}" lon="${wp.cLon}">
-        <name>${wp.cName}</name>
+        <name>${wp.cName}-${wp.Name}</name>
         <cmt/>
-        <desc>${wp.cType}-${wp.cName}</desc>
+        <desc>${wp.cComment}</desc>
         <sym>Information</sym>
         <extensions>
             <gpxx:WaypointExtension>

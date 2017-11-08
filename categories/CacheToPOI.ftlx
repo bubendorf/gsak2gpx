@@ -1,5 +1,5 @@
 <#ftl output_format="XML">
-<?xml version="1.0" encoding="Windows-1252" standalone="no"?>
+<?xml version="1.0" encoding="${encoding}" standalone="no"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1"
     xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

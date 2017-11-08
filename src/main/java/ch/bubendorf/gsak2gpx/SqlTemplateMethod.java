@@ -27,8 +27,7 @@ public class SqlTemplateMethod implements TemplateMethodModelEx {
         }
         String category = arguments.size() < 2 ? "" : arguments.get(1).toString();
 
-//System.out.println(arguments.size());
-//System.out.println(arguments.get(0));
+//System.out.println(sql);
 
         try {
             final Statement statement = connection.createStatement();
