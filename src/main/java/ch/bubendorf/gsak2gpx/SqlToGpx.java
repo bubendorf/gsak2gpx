@@ -52,6 +52,7 @@ public class SqlToGpx {
             config.setReadOnly(true);
             config.setSharedCache(true);
             config.enableLoadExtension(true);
+            config.setDateStringFormat("yyyy-MM-dd");
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + database, config.toProperties());
             Function.create(connection, "sqrt", new Function() {
             protected void xFunc() throws SQLException {

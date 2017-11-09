@@ -96,7 +96,7 @@
 
 <#macro attrString text>
   <#list text?split(",") as attrValue>
-    <#if attrValue?starts_with("0-")>No </#if><#t>
+    <#if attrValue?starts_with("0-")>No <#else>Yes </#if><#t>
     <@attr value=attrValue[2..] />, <#t>
   </#list>
 </#macro>
@@ -115,11 +115,11 @@ left join Attributes at on ca.Code = at.aCode and at.aId not in (1,2,6,17,18,19,
 where ${where}
 group by ca.Code
 order by round(sqrt(ca.Distance)), ca.Degrees
-limit 15000;
+limit 180;
 ">
 
 <#assign logQuery = "
-select lo.lType, lo.lBy, lo.lDate, lo.lLogId, lm.lText
+select lo.lType, lo.lBy, lo.lDate, lo.lLogId, lo.lTime, lo.lownerid, lm.lText
 from Logs lo
 join LogMemo lm on lo.lLogId=lm.lLogId and lo.lParent=lm.lParent
 where lo.lParent = '{CODE}'
@@ -147,7 +147,6 @@ limit 10
         <time>${ca.PlacedDate}</time>
         <name>${ca.Code}</name>
         <desc>${ca.SmartName}</desc>
-        <url>http://www.geocaching.com/seek/cache_details.aspx?guid=${ca.Guid!}</url>
         <urlname>${ca.Name} by ${ca.PlacedBy}</urlname>
         <sym>Geocache</sym>
         <type>Geocache|<@CacheType type=ca.CacheType/></type>
@@ -157,9 +156,6 @@ limit 10
             <groundspeak:owner id="${ca.OwnerId}"></groundspeak:owner>
             <groundspeak:type><@CacheType type=ca.CacheType/></groundspeak:type>
             <groundspeak:container>${ca.Container}</groundspeak:container>
-        <#--            <groundspeak:attributes>
-                        <groundspeak:attribute id="7" inc="1">Takes less than an hour</groundspeak:attribute>
-                    </groundspeak:attributes> -->
             <groundspeak:difficulty>${ca.Difficulty?c}</groundspeak:difficulty>
             <groundspeak:terrain>${ca.Terrain?c}</groundspeak:terrain>
             <groundspeak:country>${ca.Country}</groundspeak:country>
@@ -168,41 +164,45 @@ limit 10
             <groundspeak:long_description html="false">${ca.LongDescription?replace('\\<.*?>', '', 'r')}</groundspeak:long_description>
             <groundspeak:encoded_hints>${ca.Hints}</groundspeak:encoded_hints>
             <groundspeak:logs>
-              <groundspeak:log id="0">
-<#--                <groundspeak:date>${log.lDate}</groundspeak:date> -->
-                <groundspeak:type>Announcement</groundspeak:type>
-<#--                <groundspeak:finder id="${log.lownerid}">${log.lBy}</groundspeak:finder> -->
+              <groundspeak:log id="-3">
+                <groundspeak:type>Write note</groundspeak:type>
                 <groundspeak:text encoded="False">
 <#if (ca.GefundenVon?length > 0)>GefundenVon: ${ca.GefundenVon}
-</#if><#t>
-<#if (ca.LastFoundDate?length > 0)>Letzter Fund: ${ca.LastFoundDate?date["yyyy-MM-dd"]?string["d.M.yy"]}
-</#if><#t>
+&lt;br/&gt;</#if><#t>
+<#if (ca.LastFoundDate?length > 0)>Letzter Fund: ${ca.LastFoundDate?string["d.M.yy"]}
+&lt;br/&gt;</#if><#t>
 <#if (ca.Hints?length > 0)>Hinweis: ${ca.Hints}
-</#if><#t>
+&lt;br/&gt;</#if><#t>
 <#if (ca.Elevation != 0)>Höhe: ${ca.Elevation}
-</#if><#t>
+&lt;br/&gt;</#if><#t>
 <#if (ca.County?length > 0)>Ort: ${ca.County}
-</#if><#t>
+&lt;br/&gt;</#if><#t>
 <#if (ca.GCV_AverageVote > 0)>GCVote: ${ca.GCV_AverageVote}
-</#if><#t>
+&lt;br/&gt;</#if><#t>
 <#if (ca.FavRatio > 0)>FavRatio: ${ca.FavRatio}
-</#if><#t>
+&lt;br/&gt;</#if><#t>
 <#if (ca.AvgLogsPerYear > 0)>AvgLosPerYear: ${ca.AvgLogsPerYear}
-</#if><#t>
+&lt;br/&gt;</#if><#t>
 <#if (ca.UserNote?length > 0)>UserNote: ${ca.UserNote}
-</#if><#t>
+&lt;br/&gt;</#if><#t>
 <#if (ca.MeinKommentar?length > 0)>Kommentar: ${ca.MeinKommentar}
-</#if><#t>
+&lt;br/&gt;</#if><#t>
 <#if (ca.Attributes?length > 0)>Attribute: <@attrString text=ca.Attributes/>
-</#if><#t>
+&lt;br/&gt;</#if><#t>
                 </groundspeak:text>
               </groundspeak:log>
             <#list sql('${logQuery?replace("{CODE}", ca.Code)}') as log>
               <groundspeak:log id="${log.lLogId?c}">
-                <groundspeak:date>${log.lDate?date["yyyy-MM-dd"]?string["d.M.yy"]}</groundspeak:date>
+                <groundspeak:date>${log.lDate}T${log.lTime}</groundspeak:date>
                 <groundspeak:type>${log.lType}</groundspeak:type>
-                <groundspeak:finder id="${log.lownerid}">${log.lBy}</groundspeak:finder>
-                <groundspeak:text encoded="False">${log.lText?replace('\\<.*?>', '', 'r')}</groundspeak:text>
+                <groundspeak:finder id="${log.lownerid?c}">${log.lBy}</groundspeak:finder>
+                <groundspeak:text encoded="False">
+				    <#if (log.lText?length > 1000)>
+					   ...${log.lText[log.lText?length-1000..]?replace('\\<.*?>', '', 'r')}
+					<#else>
+					   ${log.lText?replace('\\<.*?>', '', 'r')}
+					</#if>
+				</groundspeak:text>
               </groundspeak:log>
             </#list>
             </groundspeak:logs>

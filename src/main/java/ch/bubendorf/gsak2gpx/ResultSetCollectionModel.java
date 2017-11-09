@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +54,7 @@ public class ResultSetCollectionModel implements TemplateCollectionModel {
                     LOGGER.debug(category + ": "  + count);
                 }
                 return new ResultSetHashModel(rs);
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 throw new TemplateModelException(e);
             }
         }
@@ -73,28 +75,39 @@ public class ResultSetCollectionModel implements TemplateCollectionModel {
 
 static class ResultSetHashModel implements TemplateHashModel {
 
-    Map<String, Object> map = new HashMap<>();
+    private static final SimpleScalar EMPTY_STRING = new SimpleScalar("");
+    private static final DateFormat TIME_PARSER = new SimpleDateFormat("HH:mm:ss");
 
-    public ResultSetHashModel(ResultSet rs) throws SQLException {
+    private final Map<String, TemplateModel> map = new HashMap<>();
+
+    public ResultSetHashModel(ResultSet rs) throws Exception {
         final int columnCount = rs.getMetaData().getColumnCount();
         for (int col = 1; col <= columnCount; col++) {
             final String columnName = rs.getMetaData().getColumnName(col);
             final int columnType = rs.getMetaData().getColumnType(col);
             switch (columnType) {
                 case Types.INTEGER:
-                    map.put(columnName, rs.getInt(col));
+                    map.put(columnName, new SimpleNumber(rs.getInt(col)));
                     break;
 
                 case Types.REAL:
-                    map.put(columnName, rs.getDouble(col));
+                    map.put(columnName, new SimpleNumber(rs.getDouble(col)));
                     break;
 
                 default:
                     final String columnValue = rs.getString(col);
                     if (columnValue != null && columnValue.length() > 0) {
-                        map.put(columnName, columnValue.replaceAll("[\u0000-\u0009\u000e-\u001f\u007f]", ""));
+                        if (columnName.startsWith("has")){
+                            map.put(columnName, columnValue.equals("0") ? TemplateBooleanModel.FALSE : TemplateBooleanModel.TRUE);
+                        } else if (columnName.contains("Date")) {
+                            map.put(columnName, new SimpleDate(rs.getDate(col), TemplateDateModel.DATE));
+                        } else if (columnName.contains("Time")) {
+                            map.put(columnName, new SimpleDate(TIME_PARSER.parse(columnValue), TemplateDateModel.TIME));
+                        } else {
+                                map.put(columnName, new SimpleScalar(columnValue.replaceAll("[\u0000-\u0009\u000e-\u001f\u007f]", "")));
+                        }
                     } else {
-                        map.put(columnName, "");
+                        map.put(columnName, EMPTY_STRING);
                     }
                     break;
             }
@@ -103,12 +116,7 @@ static class ResultSetHashModel implements TemplateHashModel {
 
     @Override
     public TemplateModel get(String key) throws TemplateModelException {
-        final Object value = map.get(key);
-        if (value instanceof  Number) {
-            return new SimpleNumber((Number)value);
-        }
-
-        return SimpleScalar.newInstanceOrNull (value == null ? "" : value.toString());
+        return  map.get(key);
     }
 
     @Override
