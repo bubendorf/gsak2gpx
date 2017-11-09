@@ -4,6 +4,7 @@ import com.beust.jcommander.Parameter;
 
 import java.io.File;
 
+@SuppressWarnings("DefaultAnnotationParam")
 public class CommandLineArguments {
 
     @Parameter(names = {"-h", "--help"}, help = true)

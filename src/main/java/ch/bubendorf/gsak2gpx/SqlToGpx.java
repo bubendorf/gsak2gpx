@@ -45,8 +45,7 @@ public class SqlToGpx {
         try {
             LOGGER.info("Start with " + category);
             Class.forName("org.sqlite.JDBC");
-            LOGGER.info("Open " + database);
-//        Connection connection = DriverManager.getConnection("jdbc:sqlite:" + database + ";Version=3;Pooling=True;Max Pool Size=20;Read Only=True;FailIfMissing=True;");
+            LOGGER.debug("Open " + database);
 
             SQLiteConfig config = new SQLiteConfig();
             config.setReadOnly(true);

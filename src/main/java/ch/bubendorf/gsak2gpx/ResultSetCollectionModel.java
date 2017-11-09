@@ -25,7 +25,7 @@ public class ResultSetCollectionModel implements TemplateCollectionModel {
 
     @Override
     public TemplateModelIterator iterator() throws TemplateModelException {
-        // Exception schmeissen falls die Methode zwei Mal aufgerufen wird!
+        // TODO: Exception schmeissen falls die Methode zwei Mal aufgerufen wird!
         try {
             return new ResultSetModelIterator(rs, category);
         } catch (SQLException exp) {

@@ -1,28 +1,11 @@
 package ch.bubendorf.gsak2gpx;
 
 import com.beust.jcommander.JCommander;
-import freemarker.core.Environment;
-import freemarker.template.*;
-import net.sf.saxon.Transform;
-
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-import java.io.*;
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryPoolMXBean;
-import java.lang.management.MemoryType;
-import java.nio.charset.StandardCharsets;
-import java.sql.*;
-import java.text.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
-import static freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS;
-
 public class Gsak2Gpx {
-private static final int MegaBytes = 10241024;
 
     public static void main(String[] args) throws Exception {
         CommandLineArguments commandLineArguments = new CommandLineArguments();
@@ -55,7 +38,7 @@ private static final int MegaBytes = 10241024;
         }
 
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfTasks);
-        List<Future<SqlToGpx>> futures = executorService.invokeAll(tasks);
+        executorService.invokeAll(tasks);
         executorService.shutdown();
     }
 

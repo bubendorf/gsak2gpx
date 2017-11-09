@@ -4,6 +4,7 @@ import com.beust.jcommander.Parameter;
 
 import java.io.File;
 
+@SuppressWarnings({"unused", "WeakerAccess", "DefaultAnnotationParam"})
 public class CommandLineArguments {
 
     // gsak2gpx --database=<PathToDB> --categories=<Kategorie> --categoryPath=<PathToCategories> --ouputPath=<OutputPath>
