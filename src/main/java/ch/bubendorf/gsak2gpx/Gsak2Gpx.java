@@ -8,31 +8,32 @@ import java.util.stream.Collectors;
 public class Gsak2Gpx {
 
     public static void main(String[] args) throws Exception {
-        CommandLineArguments commandLineArguments = new CommandLineArguments();
-        new JCommander(commandLineArguments).parse(args);
+        CommandLineArguments cmdArgs = new CommandLineArguments();
+        final JCommander jCommander = new JCommander(cmdArgs);
+        jCommander.parse(args);
 
-        if (commandLineArguments.isHelp()) {
-            System.out.println("Usage: java -jar gsak2gpx.jar ...");
+        if (cmdArgs.isHelp()) {
+            jCommander.usage();
             System.exit(1);
         }
 
-        if (!commandLineArguments.isValid()) {
+        if (!cmdArgs.isValid()) {
             System.exit(2);
         }
 
-        List<String> categories = getCategories(commandLineArguments);
+        List<String> categories = getCategories(cmdArgs);
         final List<Callable<SqlToGpx>> tasks = categories.stream()
                 .map(category -> {
                     Callable<SqlToGpx> callableTask = () -> {
-                        SqlToGpx sqlToGpx = new SqlToGpx(commandLineArguments.getDatabase(), commandLineArguments.getCategoryPath(),
-                                category, commandLineArguments.getOutputPath(), commandLineArguments.getEncoding());
+                        SqlToGpx sqlToGpx = new SqlToGpx(cmdArgs.getDatabase(), cmdArgs.getCategoryPaths(),
+                                category, cmdArgs.getOutputPath(), cmdArgs.getEncoding());
                         sqlToGpx.doit();
                         return sqlToGpx;
                     };
             return callableTask;
         }).collect(Collectors.toList());
 
-        int numberOfTasks = commandLineArguments.getTasks();
+        int numberOfTasks = cmdArgs.getTasks();
         if (numberOfTasks <= 0) {
             numberOfTasks = Runtime.getRuntime().availableProcessors();
         }

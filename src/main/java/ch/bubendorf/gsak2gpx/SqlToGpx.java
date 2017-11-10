@@ -1,5 +1,7 @@
 package ch.bubendorf.gsak2gpx;
 
+import freemarker.cache.FileTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
 import freemarker.core.Environment;
 import freemarker.core.XMLOutputFormat;
 import freemarker.template.Configuration;
@@ -18,24 +20,25 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import static freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS;
 
+@SuppressWarnings("WeakerAccess")
 public class SqlToGpx {
 
     private final Logger LOGGER = LoggerFactory.getLogger(SqlToGpx.class.getSimpleName());
 
     private final String database;
-    private final String categoryPath;
+    private final List<String> categoryPaths;
     private final String category;
     private final String outputPath;
     private String encoding;
 
-    public SqlToGpx(String database, String categoryPath, String category, String outputPath, String encoding) {
+    public SqlToGpx(String database, List<String> categoryPaths, String category, String outputPath, String encoding) {
         this.database = database;
-        this.categoryPath = categoryPath;
+        this.categoryPaths = categoryPaths;
         this.category = category;
         this.outputPath = outputPath;
         this.encoding = encoding;
@@ -58,11 +61,32 @@ public class SqlToGpx {
                     result(Math.sqrt(value_double(0)));
                 }
             });
+            Function.create(connection, "toUtf8", new Function() {
+                protected void xFunc() throws SQLException {
+                    try {
+                        final byte[] bytes = value_blob(0);
+                        String text = new String(bytes, 0, bytes.length, "iso8859-1");
+                        result(text);
+                    } catch (UnsupportedEncodingException e) {
+                        throw new SQLException(e);
+                    }
+                    }
+            });
 
             SqlTemplateMethod sqlTemplateMethod = new SqlTemplateMethod(connection);
             Configuration cfg = new Configuration(DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 
-            cfg.setDirectoryForTemplateLoading(new File(categoryPath));
+            final FileTemplateLoader[] fileTemplateLoaders = categoryPaths.stream().map(cat -> {
+                try {
+                    return new FileTemplateLoader(new File(cat));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).toArray(FileTemplateLoader[]::new);
+
+            MultiTemplateLoader mtl = new MultiTemplateLoader(fileTemplateLoaders);
+            cfg.setTemplateLoader(mtl);
+//            cfg.setDirectoryForTemplateLoading(new File(categoryPath));
             cfg.setDefaultEncoding("UTF-8");
             cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
             cfg.setLogTemplateExceptions(false);

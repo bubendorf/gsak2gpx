@@ -1,2 +1,2 @@
 <#assign where="wp.cType = 'Physical Stage'" >
-<#include "WaypointToPOI_SQL.ftlx">
+<#include "WaypointToPOI.ftlx">

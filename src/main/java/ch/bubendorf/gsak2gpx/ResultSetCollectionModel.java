@@ -1,6 +1,5 @@
 package ch.bubendorf.gsak2gpx;
 
-import freemarker.ext.beans.NumberModel;
 import freemarker.template.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +12,13 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("WeakerAccess")
 public class ResultSetCollectionModel implements TemplateCollectionModel {
 
-    private ResultSet rs = null;
-    private String category = null;
+    private final ResultSet rs;
+    private final String category;
+
+    private ResultSetModelIterator resultSetIterator = null;
 
     public ResultSetCollectionModel(ResultSet rs, String category) {
         this.rs = rs;
@@ -25,12 +27,11 @@ public class ResultSetCollectionModel implements TemplateCollectionModel {
 
     @Override
     public TemplateModelIterator iterator() throws TemplateModelException {
-        // TODO: Exception schmeissen falls die Methode zwei Mal aufgerufen wird!
-        try {
-            return new ResultSetModelIterator(rs, category);
-        } catch (SQLException exp) {
-          throw new TemplateModelException(exp);
+        if (resultSetIterator != null) {
+            throw new TemplateModelException("iterator() must not be called multiple times!");
         }
+        resultSetIterator = new ResultSetModelIterator(rs, category);
+        return resultSetIterator;
     }
 
     static class ResultSetModelIterator implements TemplateModelIterator {
@@ -41,7 +42,7 @@ public class ResultSetCollectionModel implements TemplateCollectionModel {
         private String category = null;
         private int count  = 0;
 
-        public ResultSetModelIterator(ResultSet rs, String category) throws SQLException {
+        public ResultSetModelIterator(ResultSet rs, String category) {
             this.rs = rs;
             this.category = category;
         }
@@ -63,7 +64,7 @@ public class ResultSetCollectionModel implements TemplateCollectionModel {
         public boolean hasNext() throws TemplateModelException {
             try {
                 final boolean hasNext = rs.next();
-                if (!hasNext && category.length() > 0) {
+                if (!hasNext && category.length() > 0 && count % 1000 != 0) {
                     LOGGER.debug(category + ": "  + count);
                 }
                 return hasNext;

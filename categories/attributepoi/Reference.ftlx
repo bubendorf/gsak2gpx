@@ -1,2 +1,2 @@
 <#assign where="wp.cType = 'Reference Point'" >
-<#include "WaypointToPOI_SQL.ftlx">
+<#include "WaypointToPOI.ftlx">

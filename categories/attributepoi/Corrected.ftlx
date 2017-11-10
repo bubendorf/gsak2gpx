@@ -1,2 +1,2 @@
 <#assign where="ca.HasCorrected = 1" >
-<#include "CacheToPOI_SQL.ftlx">
+<#include "CacheToPOI.ftlx">

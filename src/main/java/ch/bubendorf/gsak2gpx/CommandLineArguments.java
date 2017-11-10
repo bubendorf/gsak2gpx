@@ -3,6 +3,8 @@ package ch.bubendorf.gsak2gpx;
 import com.beust.jcommander.Parameter;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings({"unused", "WeakerAccess", "DefaultAnnotationParam"})
 public class CommandLineArguments {
@@ -19,8 +21,8 @@ public class CommandLineArguments {
     @Parameter(names = {"-c", "--categories"} , description = "Comma separated list of Categories", required = false)
     private String categories;
 
-    @Parameter(names = {"-p", "--categoryPath"} , description = "Category Path", required = false)
-    private String categoryPath = ".";
+    @Parameter(names = {"-p", "--categoryPath"} , description = "Category Paths", variableArity = true, required = false)
+    private List<String> categoryPaths = Arrays.asList(".", "./include");
 
     @Parameter(names = {"-o", "--outputPath"} , description = "Output Path", required = false)
     private String outputPath = ".";
@@ -55,12 +57,12 @@ public class CommandLineArguments {
         this.categories = categories;
     }
 
-    public String getCategoryPath() {
-        return categoryPath;
+    public List<String> getCategoryPaths() {
+        return categoryPaths;
     }
 
-    public void setCategoryPath(String categoryPath) {
-        this.categoryPath = categoryPath;
+    public void setCategoryPaths(List<String> categoryPath) {
+        this.categoryPaths = categoryPath;
     }
 
     public String getOutputPath() {
@@ -92,14 +94,16 @@ public class CommandLineArguments {
             System.err.println("Database file '" + database + "' does not exist!");
             return false;
         }
-        final File categoryPathFile = new File(categoryPath);
-        if (!categoryPathFile.exists() || !categoryPathFile.isDirectory()) {
-            System.err.println("Category Path '" + categoryPath + "' does not exist or is not a directory!");
-            return false;
+        for (String categoryPath : categoryPaths) {
+            final File categoryPathFile = new File(categoryPath);
+            if (!categoryPathFile.exists() || !categoryPathFile.isDirectory()) {
+                System.err.println("Category Path '" + categoryPath + "' does not exist or is not a directory!");
+                return false;
+            }
         }
         final File outputPathFile = new File(outputPath);
         if (!outputPathFile.exists() || !outputPathFile.isDirectory()) {
-            System.err.println("Output Path '" + categoryPath + "' does not exist or is not a directory!");
+            System.err.println("Output Path '" + outputPath + "' does not exist or is not a directory!");
             return false;
         }
         return true;

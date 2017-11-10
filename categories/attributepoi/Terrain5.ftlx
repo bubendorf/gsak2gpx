@@ -1,2 +1,2 @@
 <#assign where="ca.Terrain > 4" >
-<#include "CacheToPOI_SQL.ftlx">
+<#include "CacheToPOI.ftlx">

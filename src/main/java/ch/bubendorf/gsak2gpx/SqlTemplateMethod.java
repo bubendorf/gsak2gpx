@@ -1,15 +1,17 @@
 package ch.bubendorf.gsak2gpx;
 
-import freemarker.core.*;
-import freemarker.template.*;
+import freemarker.template.TemplateMethodModelEx;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
 import freemarker.template.utility.DeepUnwrap;
 
 import java.sql.*;
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class SqlTemplateMethod implements TemplateMethodModelEx {
 
-    final Connection connection;
+    private final Connection connection;
 
     public SqlTemplateMethod(Connection connection) {
         this.connection = connection;
@@ -27,17 +29,13 @@ public class SqlTemplateMethod implements TemplateMethodModelEx {
         }
         String category = arguments.size() < 2 ? "" : arguments.get(1).toString();
 
-//System.out.println(sql);
-
         try {
             final Statement statement = connection.createStatement();
             final ResultSet rs = statement.executeQuery(sql);
 
             return new ResultSetCollectionModel(rs, category);
         } catch (SQLException e) {
-            // TODO
-            e.printStackTrace();
+            throw new TemplateModelException(e);
         }
-        return null;
     }
 }

@@ -1,0 +1,2 @@
+<#assign where="ca.UserFlag = 1" >
+<#include "CacheToCache.ftlx">

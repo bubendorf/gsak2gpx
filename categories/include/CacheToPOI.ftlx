@@ -1,4 +1,11 @@
-<#ftl output_format="XML">
+<#assign cacheQuery = "
+select ca.Code, ca.Name, toUtf8(ca.SmartName) as SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
+ca.Difficulty, ca.Terrain, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate, ca.TempDisabled,
+ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.Country, ca.State
+from Caches ca
+join Custom cu on ca.code = cu.cCode
+where ${where}
+limit 20000;">
 <?xml version="1.0" encoding="${encoding}" standalone="no"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1"
     xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
@@ -9,26 +16,23 @@
 http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensions/v3/GpxExtensionsv3.xsd">
     <metadata>
         <desc>GPX output for Garmin POI Loader</desc>
-        <link href="http://redroo.iinet.net.au">
-            <text>GSAK GPX Macro</text>
-        </link>
-        <time>2017-11-03T10:07:14Z</time>
-        <bounds maxlat="53.000000" maxlon="45.0000" minlat="-53.000000" minlon="-45.000000"/>
+        <time>${datetime}</time>
+        <bounds minlat="0" minlon="-45" maxlat="80" maxlon="45"/>
     </metadata>
 
-<#list wpts as wpt>
+<#list sql('${cacheQuery}', '${category}') as wpt>
     <wpt lat="${wpt.Latitude}" lon="${wpt.Longitude}">
         <ele>${wpt.Elevation?c}</ele>
         <name>${wpt.SmartName}</name>
         <cmt/>
-        <desc>${wpt.GefundenVon}</desc>
+        <desc>${wpt.SmartName}</desc>
         <sym>Information</sym>
         <extensions>
             <gpxx:WaypointExtension>
                 <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>
                 <gpxx:Address>
                     <gpxx:StreetAddress>${wpt.Latitude} ${wpt.Longitude}</gpxx:StreetAddress>
-                    <gpxx:StreetAddress>${wpt.Name} by ${wpt.PlacedBy}</gpxx:StreetAddress>
+                    <gpxx:StreetAddress>${wpt.Name} von ${wpt.PlacedBy}</gpxx:StreetAddress>
                     <gpxx:City>${wpt.CacheType} D:${wpt.Difficulty?c}/T:${wpt.Terrain?c}</gpxx:City>
                     <gpxx:State/>
                     <gpxx:PostalCode/>
