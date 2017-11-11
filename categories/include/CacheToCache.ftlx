@@ -125,7 +125,7 @@ join LogMemo lm on lo.lLogId=lm.lLogId and lo.lParent=lm.lParent
 where lo.lParent = '{CODE}'
 and length(lm.lText) > 25
 order by lo.lDate desc
-limit 10
+limit 15
 ">
 
 <?xml version="1.0" encoding="${encoding}"?>

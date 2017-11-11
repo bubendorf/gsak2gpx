@@ -22,11 +22,11 @@ public class CommandLineArguments {
     @Parameter(names = {"-c", "--count"} , description = "Split after that many tags", required = false)
     private int count = 1000;
 
-    @Parameter(names = {"-s", "--size"} , description = "Split if the file reached that size", required = false)
+    @Parameter(names = {"-s", "--size"} , description = "Split if the file reaches that size", required = false)
     private int size = 5 * 1024 * 1024;
 
     @Parameter(names = {"-f", "--format"} , description = "Format for the file names", required = false)
-    private String format = "%s-%02d.%s";
+    private String format = "%s-%03d.%s";
 
     @Parameter(names = {"-e", "--encoding"} , description = "Encoding to use", required = false)
     private String encoding = "utf-8";
