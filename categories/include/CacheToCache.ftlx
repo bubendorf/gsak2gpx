@@ -123,7 +123,7 @@ select lo.lType, lo.lBy, lo.lDate, lo.lLogId, lo.lTime, lo.lownerid, lm.lText
 from Logs lo
 join LogMemo lm on lo.lLogId=lm.lLogId and lo.lParent=lm.lParent
 where lo.lParent = '{CODE}'
-and length(lm.lText) > 20
+and length(lm.lText) > 25
 order by lo.lDate desc
 limit 10
 ">
@@ -154,7 +154,7 @@ limit 10
         <groundspeak:cache id="${ca.CacheId}" <#-- available="<@truefalse bool=ca.TempDisabled/>" archived="<@truefalse bool=ca.Archived/>" --> xmlns:groundspeak="http://www.groundspeak.com/cache/1/0/1">
             <groundspeak:name>${ca.SmartName}</groundspeak:name>
             <groundspeak:placed_by>${ca.PlacedBy}</groundspeak:placed_by>
-            <groundspeak:owner id="${ca.OwnerId}"></groundspeak:owner>
+            <groundspeak:owner id="${ca.OwnerId}">${ca.OwnerName}</groundspeak:owner>
             <groundspeak:type><@CacheType type=ca.CacheType/></groundspeak:type>
             <groundspeak:container>${ca.Container}</groundspeak:container>
             <groundspeak:difficulty>${ca.Difficulty?c}</groundspeak:difficulty>
@@ -195,7 +195,7 @@ limit 10
               </groundspeak:log>
             <#list sql('${logQuery?replace("{CODE}", ca.Code)}') as log>
               <groundspeak:log id="${log.lLogId?c}">
-                <groundspeak:date>${log.lDate}T${log.lTime}</groundspeak:date>
+                <groundspeak:date>${log.lDate?string["yyyy-MM-dd"]}T${log.lTime}</groundspeak:date>
                 <groundspeak:type>${log.lType}</groundspeak:type>
                 <groundspeak:finder id="${log.lownerid?c}">${log.lBy}</groundspeak:finder>
                 <groundspeak:text encoded="False">

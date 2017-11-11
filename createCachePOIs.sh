@@ -5,6 +5,7 @@ CAT_PATH="/Users/mbu/src/gsak2gpx/categories/cachepoi /Users/mbu/src/gsak2gpx/ca
 OUT_PATH=/Users/mbu/src/gsak2gpx/output/cachepoi
 TASKS=4
 CATEGORIES=Traditional,Unknown,Multi,VirtualCache,Letterbox,Earthcache,Wherigo,Webcam
+ENCODING=utf-8
 
-java $OPTS -jar target/gsak2gpx-1.0-SNAPSHOT.jar --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $OUT_PATH --tasks $TASKS
+java $OPTS -jar target/gsak2gpx-1.0-SNAPSHOT.jar --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $OUT_PATH --encoding $ENCODING --tasks $TASKS
 

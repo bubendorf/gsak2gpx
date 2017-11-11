@@ -16,10 +16,7 @@ limit 200000;">
 http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensions/v3/GpxExtensionsv3.xsd">
     <metadata>
         <desc>GPX output for Garmin POI Loader</desc>
-        <link href="http://redroo.iinet.net.au">
-            <text>GSAK GPX Macro</text>
-        </link>
-        <time>2017-11-03T10:07:14Z</time>
+        <time>${datetime}</time>
         <bounds maxlat="53.000000" maxlon="45.0000" minlat="-53.000000" minlon="-45.000000"/>
     </metadata>
 

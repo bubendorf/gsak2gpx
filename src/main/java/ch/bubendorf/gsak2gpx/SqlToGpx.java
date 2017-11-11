@@ -72,7 +72,22 @@ public class SqlToGpx {
                     }
                     }
             });
-
+            Function.create(connection, "oneChar", new Function() {
+                protected void xFunc() throws SQLException {
+                    try {
+                        double value = value_double(0);
+                        if (value - Math.floor(value) > 0.2) {
+                            // Keine Ganzzahl ==> Buchstabe A-Z draus machen
+                            result("" + (char)('A' + (int)Math.floor(value)));
+                        } else {
+                            // Eine Ganzzahl ==> So zurück geben, aber als Buchstabe
+                            result("" + (char)('0' + (int)value));
+                        }
+                    } catch (Exception e) {
+                        throw new SQLException(e);
+                    }
+                }
+            });
             SqlTemplateMethod sqlTemplateMethod = new SqlTemplateMethod(connection);
             Configuration cfg = new Configuration(DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 

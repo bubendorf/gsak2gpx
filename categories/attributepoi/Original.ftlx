@@ -1,2 +1,2 @@
-<#assign where="wp.cType = 'Original Coordinates'" >
+<#assign where="(wp.cType = 'Reference Point' and wp.cName like 'Orig%') or wp.cType = 'Original Coordinates'" >
 <#include "WaypointToPOI.ftlx">
