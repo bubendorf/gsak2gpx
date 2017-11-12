@@ -4,6 +4,7 @@ ca.Difficulty, oneChar(ca.Difficulty) as Dif1a, ca.Terrain, oneChar(ca.Terrain) 
 ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.Country, ca.State
 from Caches ca
 join Custom cu on ca.code = cu.cCode
+${join!}
 where ${where}
 limit 200000;">
 <?xml version="1.0" encoding="${encoding}" standalone="no"?>

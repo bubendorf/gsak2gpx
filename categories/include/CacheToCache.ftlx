@@ -164,7 +164,7 @@ limit 15
             <groundspeak:short_description html="false" >${ca.ShortDescription?replace('\\<.*?>', '', 'r')}</groundspeak:short_description>
             <groundspeak:long_description html="false">${ca.LongDescription?replace('\\<.*?>', '', 'r')}</groundspeak:long_description>
             <groundspeak:encoded_hints>${ca.Hints}
-<#if (ca.UserNote?length > 0)>&lt;br/&gt; *** ${ca.UserNote}</#if><#t></groundspeak:encoded_hints>
+<#if (ca.UserNote?length > 0)>&lt;br/&gt;*** ${ca.UserNote}</#if><#t></groundspeak:encoded_hints>
             <groundspeak:logs>
               <groundspeak:log id="-3">
                 <groundspeak:type>Write note</groundspeak:type>
@@ -174,23 +174,23 @@ limit 15
 <#if (ca.LastFoundDate?length > 0)>Letzter Fund: ${ca.LastFoundDate?string["d.M.yy"]}
 &lt;br/&gt;</#if><#t>
 <#if (ca.Hints?length > 0)>Hinweis: ${ca.Hints}
-&lt;br/&gt;</#if><#t>
+    &lt;br/&gt;</#if><#t>
 <#if (ca.Elevation != 0)>Höhe: ${ca.Elevation}
-&lt;br/&gt;</#if><#t>
+    &lt;br/&gt;</#if><#t>
 <#if (ca.County?length > 0)>Ort: ${ca.County}
-&lt;br/&gt;</#if><#t>
+    &lt;br/&gt;</#if><#t>
 <#if (ca.GCV_AverageVote > 0)>GCVote: ${ca.GCV_AverageVote}
-&lt;br/&gt;</#if><#t>
+    &lt;br/&gt;</#if><#t>
 <#if (ca.FavRatio > 0)>FavRatio: ${ca.FavRatio}
-&lt;br/&gt;</#if><#t>
+    &lt;br/&gt;</#if><#t>
 <#if (ca.AvgLogsPerYear > 0)>AvgLosPerYear: ${ca.AvgLogsPerYear}
-&lt;br/&gt;</#if><#t>
+    &lt;br/&gt;</#if><#t>
 <#if (ca.UserNote?length > 0)>UserNote: ${ca.UserNote}
-&lt;br/&gt;</#if><#t>
+    &lt;br/&gt;</#if><#t>
 <#if (ca.MeinKommentar?length > 0)>Kommentar: ${ca.MeinKommentar}
-&lt;br/&gt;</#if><#t>
+    &lt;br/&gt;</#if><#t>
 <#if (ca.Attributes?length > 0)>Attribute: <@attrString text=ca.Attributes/>
-&lt;br/&gt;</#if><#t>
+    &lt;br/&gt;</#if><#t>
                 </groundspeak:text>
               </groundspeak:log>
             <#list sql('${logQuery?replace("{CODE}", ca.Code)}') as log>

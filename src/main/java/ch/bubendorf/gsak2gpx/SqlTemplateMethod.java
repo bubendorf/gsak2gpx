@@ -4,12 +4,16 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.utility.DeepUnwrap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
 public class SqlTemplateMethod implements TemplateMethodModelEx {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(SqlTemplateMethod.class.getSimpleName());
 
     private final Connection connection;
 
@@ -27,6 +31,7 @@ public class SqlTemplateMethod implements TemplateMethodModelEx {
             final Object unwrap = DeepUnwrap.unwrap((TemplateModel) arguments.get(0));
             sql = unwrap.toString();
         }
+        LOGGER.debug(sql);
         String category = arguments.size() < 2 ? "" : arguments.get(1).toString();
 
         try {

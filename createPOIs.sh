@@ -5,7 +5,7 @@ CAT_PATH="/Users/mbu/src/gsak2gpx/categories/attributepoi /Users/mbu/src/gsak2gp
 GPX_PATH=/Users/mbu/src/gsak2gpx/output/gpigen
 OUT_PATH=/Users/mbu/src/gsak2gpx/output
 TASKS=4
-CATEGORIES=Favorites,Parking,Virtual,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5
+CATEGORIES=Favorites,Parking,Virtual,Reference,HasParking,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5
 # gpsbabel kommt NICHT mit utf-8 zurecht!
 ENCODING=windows-1252
 
@@ -32,18 +32,19 @@ function togpi {
   #SetFile -d "$DATE" -m "$DATE" $OUT_PATH/$2.gpi
 }
 
-togpi Favorites 50-Attr-Favorites A-Favoriten 0 &
-togpi Simple 51-Attr-Simple A-Simple 1 &
-togpi Virtual 11-Virtual Virt-Stage 2 &
-togpi Parking 52-Attr-Parking A-Parking 3 &
-togpi Corrected 53-Attr-Corrected A-Corrected 4 &
-togpi Original 34-Original Original 5 &
-togpi Reference 33-Reference Ref-Point 6 &
-togpi Trailhead 32-Trailhead Trailhead 7 &
-togpi Physical 10-Physical Phys-Stage 8 &
-togpi Terrain5 54-Attr-Terrain5 A-Terrain5 9 &
-togpi Disabled 55-Attr-Disabled A-Disabled 10 &
-togpi Final 31-Final Final 11 &
+togpi Favorites 50-Attr-Favorites A-Favoriten 50 &
+togpi Simple 51-Attr-Simple A-Simple 51 &
+togpi Virtual 11-Virtual Virt-Stage 11 &
+togpi Parking 35-Parking Parking 35 &
+togpi HasParking 52-Attr-HasParking A-HasParking 52 &
+togpi Corrected 53-Attr-Corrected A-Corrected 53 &
+togpi Original 34-Original Original 34 &
+togpi Reference 33-Reference Ref-Point 33 &
+togpi Trailhead 32-Trailhead Trailhead 32 &
+togpi Physical 10-Physical Phys-Stage 10 &
+togpi Terrain5 54-Attr-Terrain5 A-Terrain5 54 &
+togpi Disabled 55-Attr-Disabled A-Disabled 55 &
+togpi Final 31-Final Final 31 &
 
 wait
 
