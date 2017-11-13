@@ -1,32 +1,29 @@
-package ch.bubendorf.xmlsplit;
+package ch.bubendorf.ggzgen;
 
 import com.beust.jcommander.Parameter;
 
-@SuppressWarnings("DefaultAnnotationParam")
+@SuppressWarnings({"DefaultAnnotationParam", "WeakerAccess", "unused"})
 public class CommandLineArguments {
 
     @Parameter(names = {"-h", "--help"}, help = true)
     private boolean help;
 
-    @Parameter(names = {"-i", "--input"} , description = "input file", required = true)
+    @Parameter(names = {"-i", "--input"}, description = "input file", required = true)
     private String input;
 
-    @Parameter(names = {"-o", "--output"} , description = "output path", required = true)
+    @Parameter(names = {"-o", "--output"}, description = "output file", required = false)
     private String output;
 
-    @Parameter(names = {"-t", "--tag"} , description = "tag/element to split at", required = false)
-    private String tag = "wpt";
+    @Parameter(names = {"-c", "--count"}, description = "Split after that many tags", required = false)
+    private int count = 500;
 
-    @Parameter(names = {"-c", "--count"} , description = "Split after that many tags", required = false)
-    private int count = 1000;
+    @Parameter(names = {"-s", "--size"}, description = "Split if the file reaches that size", required = false)
+    private int size = 3 * 1000 * 1000;
 
-    @Parameter(names = {"-s", "--size"} , description = "Split if the file reaches that size", required = false)
-    private int size = 5 * 1024 * 1024;
-
-    @Parameter(names = {"-f", "--format"} , description = "Format for the file names", required = false)
+    @Parameter(names = {"-f", "--format"}, description = "Format for the file names", required = false)
     private String format = "%s-%03d.%s";
 
-    @Parameter(names = {"-e", "--encoding"} , description = "Encoding to use", required = false)
+    @Parameter(names = {"-e", "--encoding"}, description = "Encoding to use", required = false)
     private String encoding = "utf-8";
 
     public boolean isHelp() {
@@ -51,14 +48,6 @@ public class CommandLineArguments {
 
     public void setOutput(String output) {
         this.output = output;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
     }
 
     public int getCount() {
@@ -94,8 +83,6 @@ public class CommandLineArguments {
     }
 
     public boolean isValid() {
-        // TODO: Check for valid input file
-
         return true;
     }
 }

@@ -5,7 +5,8 @@ CAT_PATH="/Users/mbu/src/gsak2gpx/categories/ggz /Users/mbu/src/gsak2gpx/categor
 OUT_PATH=/Users/mbu/src/gsak2gpx/output
 TASKS=1
 #CATEGORIES=ActiveCaches
-CATEGORIES=UserFlagCaches
+#CATEGORIES=UserFlagCaches
+CATEGORIES=MainCaches
 GGZ=$CATEGORIES
 ENCODING=utf-8
 CACHES_PER_GPX=300
@@ -17,4 +18,5 @@ rm -f $OUT_PATH/ggzgen/*.gpx
 java $OPTS -cp target/gsak2gpx-1.0-SNAPSHOT.jar ch.bubendorf.xmlsplit.XmlSplit --input $OUT_PATH/$GGZ.gpx --output $OUT_PATH/ggzgen --count $CACHES_PER_GPX --size $MAX_SIZE --encoding $ENCODING
 /Users/mbu/src/ggz-tools/gpx2ggz.py $OUT_PATH/ggzgen/*.gpx $OUT_PATH/ggzgen/$GGZ.ggz
 mv $OUT_PATH/ggzgen/$GGZ.ggz $OUT_PATH/$GGZ.ggz
-rm $OUT_PATH/$GGZ.gpx
+# rm $OUT_PATH/$GGZ.gpx
+

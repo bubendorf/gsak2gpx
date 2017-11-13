@@ -31,7 +31,7 @@ public class SqlTemplateMethod implements TemplateMethodModelEx {
             final Object unwrap = DeepUnwrap.unwrap((TemplateModel) arguments.get(0));
             sql = unwrap.toString();
         }
-        LOGGER.debug(sql);
+//        LOGGER.debug(sql);
         String category = arguments.size() < 2 ? "" : arguments.get(1).toString();
 
         try {

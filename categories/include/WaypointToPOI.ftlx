@@ -1,6 +1,6 @@
 <#assign wpQuery = "
 select wp.cParent, wp.cCode, wp.cName, wp.cType, wp.cLat, wp.cLon,
-       wm.cComment, ca.Name
+       wm.cComment, ca.Name, toUtf8(ca.SmartName) as SmartName
 from Waypoints wp
 join WayMemo wm on wm.cParent = wp.cParent and wm.cCode = wp.cCode
 join Caches ca on wp.cParent = ca.Code
@@ -22,9 +22,10 @@ http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlsche
 
 <#list sql('${wpQuery}', '${category}') as wp>
     <wpt lat="${wp.cLat}" lon="${wp.cLon}">
-        <name>${wp.cName}-${wp.Name}</name>
+        <name>${wp.cName?replace("Parkplatz", "P")?replace("Parking", "P")?replace("Orig - ", "O-")}
+            -${wp.SmartName}</name>
         <cmt/>
-        <desc>${wp.cComment}</desc>
+        <desc>${wp.cName} - ${wp.cComment}</desc>
         <sym>Information</sym>
         <extensions>
             <gpxx:WaypointExtension>

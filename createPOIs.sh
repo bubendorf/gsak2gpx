@@ -5,7 +5,7 @@ CAT_PATH="/Users/mbu/src/gsak2gpx/categories/attributepoi /Users/mbu/src/gsak2gp
 GPX_PATH=/Users/mbu/src/gsak2gpx/output/gpigen
 OUT_PATH=/Users/mbu/src/gsak2gpx/output
 TASKS=4
-CATEGORIES=Favorites,Parking,Virtual,Reference,HasParking,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5
+CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5
 # gpsbabel kommt NICHT mit utf-8 zurecht!
 ENCODING=windows-1252
 
@@ -23,20 +23,21 @@ function togpi {
 # $2 Name der GPI Datei
 # $3 Name der Kategorie
 # $4 Time Offset
-  echo Convert $1.gpx to $1.gpi
+  /bin/echo `gdate "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
+  START_TIME=`gdate +%s%N`
   gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$GPX_PATH/$1.bmp,unique=0,writecodec=$ENCODING,notes,descr -F $OUT_PATH/$2.gpi
   replaceByte $OUT_PATH/$2.gpi 16 $4
   replaceByte $OUT_PATH/$2.gpi 17 $4
-
-  #DATE=`dateadd now +1h +$4m -f "%m/%d/%Y %H:%M:$4"`
-  #SetFile -d "$DATE" -m "$DATE" $OUT_PATH/$2.gpi
+  STOP_TIME=`gdate +%s%N`
+  /bin/echo -n `gdate "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
+  /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
 
+togpi HasParking 52-Attr-HasParking A-HasParking 52 &
+togpi Parking 35-Parking Parking 35 &
 togpi Favorites 50-Attr-Favorites A-Favoriten 50 &
 togpi Simple 51-Attr-Simple A-Simple 51 &
 togpi Virtual 11-Virtual Virt-Stage 11 &
-togpi Parking 35-Parking Parking 35 &
-togpi HasParking 52-Attr-HasParking A-HasParking 52 &
 togpi Corrected 53-Attr-Corrected A-Corrected 53 &
 togpi Original 34-Original Original 34 &
 togpi Reference 33-Reference Ref-Point 33 &

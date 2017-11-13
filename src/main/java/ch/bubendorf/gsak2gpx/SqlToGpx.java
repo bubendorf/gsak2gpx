@@ -47,6 +47,7 @@ public class SqlToGpx {
     public void doit() {
         try {
             LOGGER.info("Start with " + category);
+            final long startTime = System.currentTimeMillis();
             Class.forName("org.sqlite.JDBC");
             LOGGER.debug("Open " + database);
 
@@ -122,7 +123,8 @@ public class SqlToGpx {
             environment.process();
             out.close();
 
-            LOGGER.info("Finished " + category);
+            final long duration = System.currentTimeMillis() - startTime;
+            LOGGER.info("Finished " + category + " after " + duration + "ms");
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
