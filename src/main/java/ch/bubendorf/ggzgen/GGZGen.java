@@ -38,7 +38,7 @@ public class GGZGen {
     private static CacheIndex cacheIndex;
 
     private static Pattern CACHE_CODE_PATTERN = Pattern.compile("<name>(\\w*)</name>");
-    private static Pattern CACHE_NAME_PATTERN = Pattern.compile("<desc>(\\w*)</desc>");
+    private static Pattern CACHE_NAME_PATTERN = Pattern.compile("<desc>(.*)</desc>");
     private static Pattern CACHE_TYPE_PATTERN = Pattern.compile("<type>Geocache.(.+)</type>");
     private static Pattern CACHE_LAT_PATTERN = Pattern.compile("wpt.*lat=\"([0-9.]*)\"");
     private static Pattern CACHE_LON_PATTERN = Pattern.compile("wpt.*lon=\"([0-9.]*)\"");

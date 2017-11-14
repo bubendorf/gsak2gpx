@@ -4,6 +4,7 @@ DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
 CAT_PATH="/Users/mbu/src/gsak2gpx/categories/cachepoi /Users/mbu/src/gsak2gpx/categories/include"
 GPX_PATH=/Users/mbu/src/gsak2gpx/output/cachepoi
 OUT_PATH=/Users/mbu/src/gsak2gpx/output
+IMG_PATH=/Users/mbu/src/gsak2gpx/images/cachepoi
 TASKS=4
 CATEGORIES=Traditional,Unknown,Multi,VirtualCache,Earthcache,Wherigo,Webcam,Letterbox
 # gpsbabel kommt NICHT mit utf-8 zurecht! Also nehmen wir halt das Windows-Zeugs!
@@ -26,7 +27,7 @@ function togpi {
   /bin/echo `gdate "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
   START_TIME=`gdate +%s%N`
 #  echo Convert $1.gpx to $1.gpi
-  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$GPX_PATH/$1.bmp,unique=0,writecodec=$ENCODING,notes,descr -F $OUT_PATH/$2.gpi
+  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$ENCODING,notes,descr -F $OUT_PATH/$2.gpi
   replaceByte $OUT_PATH/$2.gpi 16 $4
   replaceByte $OUT_PATH/$2.gpi 17 $4
   STOP_TIME=`gdate +%s%N`
