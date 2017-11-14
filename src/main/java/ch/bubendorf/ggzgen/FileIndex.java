@@ -29,6 +29,10 @@ public class FileIndex {
         gch.add(cacheIndex);
     }
 
+    public int getCacheIndexSize() {
+        return gch.size();
+    }
+
     public String toXML() {
         StringBuilder sb = new StringBuilder();
         sb.append("<file>\n");

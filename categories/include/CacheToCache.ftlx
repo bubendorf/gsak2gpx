@@ -119,7 +119,7 @@ left join Attributes at on ca.Code = at.aCode and at.aId not in (1,2,6,17,18,19,
 where ${where}
 group by ca.Code
 order by round(sqrt(ca.Distance)), ca.Degrees
-limit 50000;
+limit ${limit!50000};
 ">
 
 <#assign logQuery = "

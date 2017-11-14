@@ -9,7 +9,7 @@ CATEGORIES=Traditional,Unknown,Multi,VirtualCache,Earthcache,Wherigo,Webcam,Lett
 # gpsbabel kommt NICHT mit utf-8 zurecht!
 ENCODING=windows-1252
 
-java $OPTS -jar target/gsak2gpx-1.0-SNAPSHOT.jar --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $ENCODING --tasks $TASKS
+java $OPTS -jar target/gsak2gpx-1.0.jar --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $ENCODING --tasks $TASKS
 
 # param 1: file
 # param 2: offset

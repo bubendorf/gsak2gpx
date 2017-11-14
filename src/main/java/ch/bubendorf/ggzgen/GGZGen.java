@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,15 +21,16 @@ public class GGZGen {
     private static String header = "";
     private static String footer = null;
 
-    private static int fileCount = 0;
     private static int tagCount = 0;
     private static boolean inHeader = true;
     private static Writer writer = null;
     private static CommandLineArguments cmdArgs;
 
-    private static ZipOutputStream zipOutputStream;
-    private static CheckedOutputStream checkedOutputStream;
-    private static CountingOutputStream countingOutputStream;
+    private static ZipOutputStream zipStream;
+    private static CountingOutputStream zipCountingStream;
+    private static int lastEntryZipStreamPosition = 0;
+    private static CheckedOutputStream checkedStream;
+    private static CountingOutputStream entryCountingStream;
     private static ZipEntry zipEntry;
 
     private static FileIndex fileIndex;
@@ -71,7 +74,12 @@ public class GGZGen {
             System.exit(2);
         }
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(cmdArgs.getInput()), cmdArgs.getEncoding()));
+        BufferedReader reader;
+        if ("-".equals(cmdArgs.getInput())) {
+            reader = new BufferedReader(new InputStreamReader(System.in, cmdArgs.getEncoding()));
+        } else {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(cmdArgs.getInput()), cmdArgs.getEncoding()), 65536);
+        }
         for (String line; (line = reader.readLine()) != null; ) {
             line = line.trim();
             if (line.length() == 0) {
@@ -99,7 +107,7 @@ public class GGZGen {
                     // Start Tag
                     tagCount++;
                     nextCacheIndex();
-                    if (tagCount >= cmdArgs.getCount() || countingOutputStream.getCount() >= cmdArgs.getSize()) {
+                    if (tagCount >= cmdArgs.getCount() || entryCountingStream.getCount() >= cmdArgs.getSize()) {
                         // Maximale Grösse erreicht ==> Neue Datei eröffnen
                         openZipEntry();
                     }
@@ -153,28 +161,31 @@ public class GGZGen {
         writer.flush();
         if (cacheIndex != null) {
             cacheIndex.setAwesomeness(3.0);
-            cacheIndex.setFile_len(countingOutputStream.getCount() - cacheIndex.getFile_pos());
+            cacheIndex.setFile_len(entryCountingStream.getCount() - cacheIndex.getFile_pos());
             fileIndex.addCacheIndex(cacheIndex);
         }
         cacheIndex = new CacheIndex();
-        cacheIndex.setFile_pos(countingOutputStream.getCount());
+        cacheIndex.setFile_pos(entryCountingStream.getCount());
     }
 
     private static void openZipFile() throws FileNotFoundException {
-        zipOutputStream = new ZipOutputStream(new FileOutputStream(cmdArgs.getOutput()));
-        zipOutputStream.setLevel(9);
-        zipOutputStream.setComment("ggzgen by Markus Bubendorf");
+        final FileOutputStream fileOutputStream = new FileOutputStream(cmdArgs.getOutput());
+        BufferedOutputStream bufferedStream = new BufferedOutputStream(fileOutputStream, 65536);
+        zipCountingStream = new CountingOutputStream(bufferedStream);
+        zipStream = new ZipOutputStream(zipCountingStream);
+        zipStream.setLevel(9);
+        zipStream.setComment("ggzgen by Markus Bubendorf");
     }
 
     private static void closeZipFile() throws IOException {
         zipEntry = new ZipEntry("index/com/garmin/geocaches/v0/index.xml");
-        zipOutputStream.putNextEntry(zipEntry);
-        writer = new OutputStreamWriter(zipOutputStream, cmdArgs.getEncoding());
+        zipStream.putNextEntry(zipEntry);
+        writer = new OutputStreamWriter(zipStream, cmdArgs.getEncoding());
         final String indexFile = getIndexFile();
         writer.write(indexFile);
         writer.flush();
-        zipOutputStream.closeEntry();
-        zipOutputStream.close();
+        zipStream.closeEntry();
+        zipStream.close();
     }
 
     private static String getIndexFile() {
@@ -190,23 +201,22 @@ public class GGZGen {
     private static void openZipEntry() throws IOException {
         closeZipEntry();
 
-        String fileName = cmdArgs.getInput();
+        String fileName = "-".equals(cmdArgs.getInput()) ? "stdin.gpx" : cmdArgs.getInput();
         String ext = FilenameUtils.getExtension(fileName);
         String basename = FilenameUtils.getBaseName(fileName);
-        String newFileName = String.format(cmdArgs.getFormat(), basename, fileCount, ext);
-        fileCount++;
+        String newFileName = String.format(cmdArgs.getFormat(), basename, fileIndices.size(), ext);
 
         LOGGER.info("New file: " + newFileName);
         zipEntry = new ZipEntry("data/" + newFileName);
-        zipOutputStream.putNextEntry(zipEntry);
+        zipStream.putNextEntry(zipEntry);
 
         fileIndex = new FileIndex();
         fileIndex.setName(newFileName);
         fileIndices.add(fileIndex);
 
-        countingOutputStream = new CountingOutputStream(zipOutputStream);
-        checkedOutputStream = new CheckedOutputStream(countingOutputStream, new CRC32());
-        writer = new OutputStreamWriter(checkedOutputStream, cmdArgs.getEncoding());
+        entryCountingStream = new CountingOutputStream(zipStream);
+        checkedStream = new CheckedOutputStream(entryCountingStream, new CRC32());
+        writer = new OutputStreamWriter(checkedStream, cmdArgs.getEncoding());
         writer.write(header);
         tagCount = 0;
     }
@@ -215,13 +225,19 @@ public class GGZGen {
         if (writer != null) {
             writer.write(footer);
             writer.flush();
-            checkedOutputStream.flush();
-            fileIndex.setCrc(Long.toHexString(checkedOutputStream.getChecksum().getValue()));
+            checkedStream.flush();
+            fileIndex.setCrc(Long.toHexString(checkedStream.getChecksum().getValue()));
             writer = null;
-
-            zipOutputStream.closeEntry();
+            zipStream.closeEntry();
             zipEntry = null;
 
+            NumberFormat oneDigitNumberFormat = new DecimalFormat("0.0");
+            int currentZipStreamPosition = zipCountingStream.getCount();
+            int zipSizeOfEntry = currentZipStreamPosition - lastEntryZipStreamPosition;
+            LOGGER.info("Number of caches=" + fileIndex.getCacheIndexSize() +
+                    ", Filesize=" + entryCountingStream.getCount() +
+                    ", OnDisk=" + zipSizeOfEntry + " (" + oneDigitNumberFormat.format(100.0 / entryCountingStream.getCount() * zipSizeOfEntry) + "%)");
+            lastEntryZipStreamPosition = currentZipStreamPosition;
         }
     }
 }

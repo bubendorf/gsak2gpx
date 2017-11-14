@@ -103,7 +103,7 @@ public class SqlToGpx {
             MultiTemplateLoader mtl = new MultiTemplateLoader(fileTemplateLoaders);
             cfg.setTemplateLoader(mtl);
 //            cfg.setDirectoryForTemplateLoading(new File(categoryPath));
-            cfg.setDefaultEncoding("UTF-8");
+            cfg.setDefaultEncoding(encoding);
             cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
             cfg.setLogTemplateExceptions(false);
             cfg.setOutputFormat(XMLOutputFormat.INSTANCE);
@@ -117,7 +117,13 @@ public class SqlToGpx {
             rootModel.put("datetime", LocalDateTime.now());
 
             Template template = cfg.getTemplate(category + ".ftlx");
-            Writer out = new OutputStreamWriter(new FileOutputStream(outputPath + "/" + category + ".gpx"), encoding);
+            Writer out;
+            if ("-".equals(outputPath)) {
+                out = new OutputStreamWriter(System.out, encoding);
+                //out = new PrintStream(System.out, false, encoding);
+            } else {
+                out = new OutputStreamWriter(new FileOutputStream(outputPath + "/" + category + ".gpx"), encoding);
+            }
             Environment environment = template.createProcessingEnvironment(rootModel, out);
             environment.setOutputEncoding(encoding);
             environment.process();

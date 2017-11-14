@@ -1,14 +1,20 @@
 package ch.bubendorf.ggzgen;
 
 import com.beust.jcommander.Parameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 @SuppressWarnings({"DefaultAnnotationParam", "WeakerAccess", "unused"})
 public class CommandLineArguments {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(CommandLineArguments.class.getSimpleName());
+
     @Parameter(names = {"-h", "--help"}, help = true)
     private boolean help;
 
-    @Parameter(names = {"-i", "--input"}, description = "input file", required = true)
+    @Parameter(names = {"-i", "--input"}, description = "input file. Use '-' to read from stdin.", required = true)
     private String input;
 
     @Parameter(names = {"-o", "--output"}, description = "output file", required = false)
@@ -17,7 +23,7 @@ public class CommandLineArguments {
     @Parameter(names = {"-c", "--count"}, description = "Split after that many tags", required = false)
     private int count = 500;
 
-    @Parameter(names = {"-s", "--size"}, description = "Split if the file reaches that size", required = false)
+    @Parameter(names = {"-s", "--size"}, description = "Split if the file exceeds that size", required = false)
     private int size = 3 * 1000 * 1000;
 
     @Parameter(names = {"-f", "--format"}, description = "Format for the file names", required = false)
@@ -83,6 +89,11 @@ public class CommandLineArguments {
     }
 
     public boolean isValid() {
+        if (!"-".equals(input) && !new File(input).exists()) {
+            LOGGER.error("Input file '" + input + "' does not exist!");
+            return false;
+        }
+
         return true;
     }
 }

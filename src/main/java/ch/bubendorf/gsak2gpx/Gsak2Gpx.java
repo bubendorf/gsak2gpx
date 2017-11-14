@@ -1,8 +1,11 @@
 package ch.bubendorf.gsak2gpx;
 
 import com.beust.jcommander.JCommander;
-import java.util.*;
-import java.util.concurrent.*;
+
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class Gsak2Gpx {
@@ -21,7 +24,7 @@ public class Gsak2Gpx {
             System.exit(2);
         }
 
-        List<String> categories = getCategories(cmdArgs);
+        List<String> categories = cmdArgs.getCategoryList();
         final List<Callable<SqlToGpx>> tasks = categories.stream()
                 .map(category -> {
                     Callable<SqlToGpx> callableTask = () -> {
@@ -43,12 +46,4 @@ public class Gsak2Gpx {
         executorService.shutdown();
     }
 
-    private static List<String> getCategories(CommandLineArguments commandLineArguments) {
-        final String categories = commandLineArguments.getCategories();
-        if (categories != null && categories.length() > 0) {
-            return new ArrayList<>(Arrays.asList(categories.split(",")));
-        }
-        // TODO: Das categoryPath Verzeichnis nach Kategorien durchsuchen
-        return null;
-    }
 }
