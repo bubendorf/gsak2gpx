@@ -64,8 +64,11 @@ public class ResultSetCollectionModel implements TemplateCollectionModel {
         public boolean hasNext() throws TemplateModelException {
             try {
                 final boolean hasNext = rs.next();
-                if (!hasNext && category.length() > 0 && count % 1000 != 0) {
-                    LOGGER.debug(category + ": "  + count);
+                if (!hasNext) {
+                    rs.close();
+                    if (category.length() > 0 && count % 1000 != 0) {
+                        LOGGER.debug(category + ": " + count);
+                    }
                 }
                 return hasNext;
             } catch (SQLException e) {

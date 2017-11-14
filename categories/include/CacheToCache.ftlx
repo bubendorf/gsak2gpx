@@ -115,11 +115,12 @@ group_concat(at.aInc || '-' || at.aId) as Attributes, ca.Bearing
 from Caches ca
 join Custom cu on ca.code = cu.cCode
 join CacheMemo cm on ca.code=cm.Code
+${join!}
 left join Attributes at on ca.Code = at.aCode and at.aId not in (1,2,6,17,18,19,20,21,22,23,26,27,28,29,30,31,37,38,43,46,58,59,63)
 where ${where}
 group by ca.Code
-order by round(sqrt(ca.Distance)), ca.Degrees
-limit ${limit!50000};
+order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
+limit ${limit!\"50000\"};
 ">
 
 <#assign logQuery = "

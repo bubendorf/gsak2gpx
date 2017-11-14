@@ -6,7 +6,8 @@ from Caches ca
 join Custom cu on ca.code = cu.cCode
 ${join!}
 where ${where}
-limit 200000;">
+order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
+limit ${limit!\"200000\"};">
 <?xml version="1.0" encoding="${encoding}" standalone="no"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1"
     xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"

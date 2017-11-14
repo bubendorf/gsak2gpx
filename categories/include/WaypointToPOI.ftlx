@@ -4,8 +4,9 @@ select wp.cParent, wp.cCode, wp.cName, wp.cType, wp.cLat, wp.cLon,
 from Waypoints wp
 join WayMemo wm on wm.cParent = wp.cParent and wm.cCode = wp.cCode
 join Caches ca on wp.cParent = ca.Code
+${join!}
 where ${where}
-limit 200000;">
+limit ${limit!\"200000\"};">
 <?xml version="1.0" encoding="${encoding}" standalone="no"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1"
     xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"

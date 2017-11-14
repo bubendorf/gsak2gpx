@@ -206,7 +206,7 @@ public class GGZGen {
         String basename = FilenameUtils.getBaseName(fileName);
         String newFileName = String.format(cmdArgs.getFormat(), basename, fileIndices.size(), ext);
 
-        LOGGER.info("New file: " + newFileName);
+        LOGGER.debug("New file: " + newFileName);
         zipEntry = new ZipEntry("data/" + newFileName);
         zipStream.putNextEntry(zipEntry);
 
@@ -234,7 +234,8 @@ public class GGZGen {
             NumberFormat oneDigitNumberFormat = new DecimalFormat("0.0");
             int currentZipStreamPosition = zipCountingStream.getCount();
             int zipSizeOfEntry = currentZipStreamPosition - lastEntryZipStreamPosition;
-            LOGGER.info("Number of caches=" + fileIndex.getCacheIndexSize() +
+            LOGGER.info(fileIndex.getName() + ": " +
+                    "Number of caches=" + fileIndex.getCacheIndexSize() +
                     ", Filesize=" + entryCountingStream.getCount() +
                     ", OnDisk=" + zipSizeOfEntry + " (" + oneDigitNumberFormat.format(100.0 / entryCountingStream.getCount() * zipSizeOfEntry) + "%)");
             lastEntryZipStreamPosition = currentZipStreamPosition;

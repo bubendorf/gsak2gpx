@@ -1,12 +1,12 @@
 #!/bin/sh
-OPTS="-Xmx6G"
+#OPTS="-Xmx2G"
 DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
 CAT_PATH="/Users/mbu/src/gsak2gpx/categories/attributepoi /Users/mbu/src/gsak2gpx/categories/include"
 GPX_PATH=/Users/mbu/src/gsak2gpx/output/gpigen
 OUT_PATH=/Users/mbu/src/gsak2gpx/output
 TASKS=4
 CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5
-# gpsbabel kommt NICHT mit utf-8 zurecht!
+# gpsbabel kommt NICHT mit utf-8 zurecht! Also nehmen wir halt das Windows-Zeugs!
 ENCODING=windows-1252
 
 java $OPTS -jar target/gsak2gpx-1.0.jar --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $ENCODING --tasks $TASKS
@@ -22,7 +22,7 @@ function togpi {
 # $1 Name der GPX und der BMP Dateien
 # $2 Name der GPI Datei
 # $3 Name der Kategorie
-# $4 Time Offset
+# $4 Time Offset, used to create unique GPI identifiers
   /bin/echo `gdate "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
   START_TIME=`gdate +%s%N`
   gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$GPX_PATH/$1.bmp,unique=0,writecodec=$ENCODING,notes,descr -F $OUT_PATH/$2.gpi
