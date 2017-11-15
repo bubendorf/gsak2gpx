@@ -22,6 +22,7 @@ public class GGZGen {
     private static String footer = null;
 
     private static int tagCount = 0;
+    private static int totalCacheCount = 0;
     private static boolean inHeader = true;
     private static Writer writer = null;
     private static CommandLineArguments cmdArgs;
@@ -111,6 +112,7 @@ public class GGZGen {
                         // Maximale Grösse erreicht ==> Neue Datei eröffnen
                         openZipEntry();
                     }
+                    totalCacheCount++;
                 }
 
                 final Matcher codeMatcher = CACHE_CODE_PATTERN.matcher(line);
@@ -235,7 +237,8 @@ public class GGZGen {
             int currentZipStreamPosition = zipCountingStream.getCount();
             int zipSizeOfEntry = currentZipStreamPosition - lastEntryZipStreamPosition;
             LOGGER.info(fileIndex.getName() + ": " +
-                    "Number of caches=" + fileIndex.getCacheIndexSize() +
+                    "Count=" + fileIndex.getCacheIndexSize() +
+                    ", Total=" + totalCacheCount +
                     ", Filesize=" + entryCountingStream.getCount() +
                     ", OnDisk=" + zipSizeOfEntry + " (" + oneDigitNumberFormat.format(100.0 / entryCountingStream.getCount() * zipSizeOfEntry) + "%)");
             lastEntryZipStreamPosition = currentZipStreamPosition;

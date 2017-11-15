@@ -35,13 +35,36 @@ function togpi {
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
 
+function multigpi {
+# $1 Name der GPI Datei
+# $2.. Name der GPX und der BMP Dateien
+# $3.. Name der Kategorie
+  /bin/echo `gdate "+%Y-%m-%d %H:%M:%S:%3N"` Converting to $1.gpi
+  START_TIME=`gdate +%s%N`
+  OUT="-F $OUT_PATH/$1.gpi"
+  EXEC="gpsbabel -D 0"
+  for ((i=2;i<=$#;i+=2))
+  do
+    let j=i+1
+    EXEC="$EXEC -i gpx -f $GPX_PATH/${!i}.gpx -o garmin_gpi,category=\"${!j}\",bitmap=$IMG_PATH/${!i}.bmp,unique=0,writecodec=$ENCODING,notes,descr"
+  done
+  EXEC="$EXEC -F $OUT_PATH/$1.gpi"
+#  echo $EXEC
+  $EXEC
+  STOP_TIME=`gdate +%s%N`
+  /bin/echo -n `gdate "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
+  /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
+}
+
 togpi Traditional 20-Traditional Traditional 20 &
 togpi Unknown 22-Unknown Unknown 22 &
 togpi Multi 21-Multi Multi 21 &
-togpi VirtualCache 23-VirtualCache VirtualCache 23 &
-togpi Letterbox 24-Letterbox Letterbox 24 &
-togpi Earthcache 25-Earthcache Earthcache 25 &
-togpi Wherigo 26-Wherigo Wherigo 26 &
-togpi Webcam 27-Webcam Webcam 27 &
+sleep 2
+#togpi VirtualCache 23-VirtualCache VirtualCache 23 &
+#togpi Letterbox 24-Letterbox Letterbox 24 &
+#togpi Earthcache 25-Earthcache Earthcache 25 &
+#togpi Wherigo 26-Wherigo Wherigo 26 &
+#togpi Webcam 27-Webcam Webcam 27 &
+multigpi 29-CachePOI VirtualCache VirtualCache Letterbox Letterbox Earthcache Earthcache Wherigo Wherigo Webcam Webcam &
 
 wait

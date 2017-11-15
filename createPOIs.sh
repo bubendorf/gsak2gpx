@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #OPTS="-Xmx2G"
 DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
 CAT_PATH="/Users/mbu/src/gsak2gpx/categories/attributepoi /Users/mbu/src/gsak2gpx/categories/include"
@@ -33,6 +33,29 @@ function togpi {
   /bin/echo -n `gdate "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
+
+function multigpi {
+# $1 Name der GPI Datei
+# $2.. Name der GPX und der BMP Dateien
+# $3.. Name der Kategorie
+  /bin/echo `gdate "+%Y-%m-%d %H:%M:%S:%3N"` Converting to $1.gpi
+  START_TIME=`gdate +%s%N`
+  OUT="-F $OUT_PATH/$1.gpi"
+  EXEC="gpsbabel -D 0"
+  for ((i=2;i<=$#;i+=2))
+  do
+    let j=i+1
+    EXEC="$EXEC -i gpx -f $GPX_PATH/${!i}.gpx -o garmin_gpi,category=\"${!j}\",bitmap=$IMG_PATH/${!i}.bmp,unique=0,writecodec=$ENCODING,notes,descr"
+  done
+  EXEC="$EXEC -F $OUT_PATH/$1.gpi"
+#  echo $EXEC
+  $EXEC
+  STOP_TIME=`gdate +%s%N`
+  /bin/echo -n `gdate "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
+  /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
+}
+
+# multigpi 99-Attributes.gpi Favorites A-Favoriten Simple A-Simple HasParking A-HasParking Corrected A-Corrected Terrain5 A-Terrain5 Disabled A-Disabled
 
 togpi HasParking 52-Attr-HasParking A-HasParking 52 &
 togpi Parking 35-Parking Parking 35 &

@@ -1,9 +1,11 @@
 #!/bin/sh
 
 ./createCacheGGZ.sh &
-sleep 5
+sleep 2
 
-./createPOIs.sh
+./createPOIs.sh &
+sleep 1
+
 ./createCachePOIs.sh
 
 wait
