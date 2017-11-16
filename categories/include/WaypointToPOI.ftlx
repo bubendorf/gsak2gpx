@@ -23,8 +23,7 @@ http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlsche
 
 <#list sql('${wpQuery}', '${category}') as wp>
     <wpt lat="${wp.cLat}" lon="${wp.cLon}">
-        <name>${wp.cName?replace("Parkplatz", "P")?replace("Parking", "P")?replace("Orig - ", "O-")}
-            -${wp.SmartName}</name>
+        <name>${wp.cName?replace("Parkplatz", "P")?replace("Parking", "P")?replace("Orig - ", "O-")}-${wp.SmartName}</name>
         <cmt/>
         <desc>${wp.cName} - ${wp.cComment}</desc>
         <sym>Information</sym>

@@ -26,7 +26,8 @@ function togpi {
 # $4 Time Offset, used to create unique GPI identifiers
   /bin/echo `gdate "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
   START_TIME=`gdate +%s%N`
-  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$ENCODING,notes,descr -F $OUT_PATH/$2.gpi
+#  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$ENCODING,notes,descr -F $OUT_PATH/$2.gpi
+  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$ENCODING -F $OUT_PATH/$2.gpi
   replaceByte $OUT_PATH/$2.gpi 16 $4
   replaceByte $OUT_PATH/$2.gpi 17 $4
   STOP_TIME=`gdate +%s%N`
@@ -45,7 +46,7 @@ function multigpi {
   for ((i=2;i<=$#;i+=2))
   do
     let j=i+1
-    EXEC="$EXEC -i gpx -f $GPX_PATH/${!i}.gpx -o garmin_gpi,category=\"${!j}\",bitmap=$IMG_PATH/${!i}.bmp,unique=0,writecodec=$ENCODING,notes,descr"
+    EXEC="$EXEC -i gpx -f $GPX_PATH/${!i}.gpx -o garmin_gpi,category=\"${!j}\",bitmap=$IMG_PATH/${!i}.bmp,unique=0,writecodec=$ENCODING"
   done
   EXEC="$EXEC -F $OUT_PATH/$1.gpi"
 #  echo $EXEC
