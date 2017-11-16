@@ -133,6 +133,14 @@ order by lo.lDate desc
 limit ${loglimit!\"15\"};
 ">
 
+<#assign lflLogQuery = "
+select lo.lType, lo.lDate
+from Logs lo
+where lo.lParent = '{CODE}'
+order by lo.lDate desc
+limit 5;
+">
+
 <?xml version="1.0" encoding="${encoding}"?>
 <gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" creator="Markus Bubendorf"
     xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd http://www.groundspeak.com/cache/1/0/1 http://www.groundspeak.com/cache/1/0/1/cache.xsd"
@@ -164,7 +172,12 @@ limit ${loglimit!\"15\"};
             <groundspeak:terrain>${ca.Terrain?c}</groundspeak:terrain>
             <groundspeak:country>${ca.Country}</groundspeak:country>
             <groundspeak:state>${ca.State}</groundspeak:state>
-            <groundspeak:short_description html="false" >${ca.ShortDescription?replace('\\<.*?>', '', 'r')}</groundspeak:short_description>
+            <groundspeak:short_description html="false">
+                <#list sql('${lflLogQuery?replace("{CODE}", ca.Code)}') as log>
+                ${log.lType} : ${log.lDate}&lt;br/&gt;
+                </#list>
+            ${ca.ShortDescription?replace('\\<.*?>', '', 'r')}
+            </groundspeak:short_description>
             <groundspeak:long_description html="false">${ca.LongDescription?replace('\\<.*?>', '', 'r')}</groundspeak:long_description>
             <groundspeak:encoded_hints>${ca.Hints}
                 <#if (ca.UserNote?length > 0)>*** ${ca.UserNote}</#if><#t></groundspeak:encoded_hints>

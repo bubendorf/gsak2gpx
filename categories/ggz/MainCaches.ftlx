@@ -1,6 +1,6 @@
 <#assign where="(ca.CacheType <> 'U' or ca.HasCorrected) and ca.Archived = 0 and ca.TempDisabled = 0 and ca.Found = 0
 and ((round(ca.Latitude, 6) >= 46.4 and round(ca.Latitude, 6) <= 48.0  and round(ca.Longitude, 6) >= 6.8 and round(ca.Longitude, 6) <= 8.7)
 or ca.UserFlag = 1)" >
-<#assign limit="50000">
+<#assign limit="5">
 <#-- <#assign orderBy="(select null)"> -->
 <#include "CacheToCache.ftlx">
