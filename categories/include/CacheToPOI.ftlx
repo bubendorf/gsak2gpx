@@ -1,21 +1,20 @@
 <#assign cacheQuery = "
 select ca.Code, ca.Name, toUtf8(ca.SmartName) as SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
 ca.Difficulty, oneChar(ca.Difficulty) as Dif1a, ca.Terrain, oneChar(ca.Terrain) as Ter1a, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate, ca.TempDisabled,
-ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.Country, ca.State
+ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.Country, ca.State, ca.County,
+cu.GCV_AverageVote, cu.FavRatio, cu.AvgLogsPerYear, cu.MeinKommentar,
+cm.UserNote, cm.Hints
 from Caches ca
 join Custom cu on ca.code = cu.cCode
+join CacheMemo cm on ca.code=cm.Code
 ${join!}
 where ${where}
 order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
 limit ${limit!\"200000\"};">
 <?xml version="1.0" encoding="${encoding}" standalone="no"?>
-<gpx xmlns="http://www.topografix.com/GPX/1/1"
-    xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    creator="Markus Bubendorf"
-    version="1.1"
-    xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd
-http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensions/v3/GpxExtensionsv3.xsd">
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    creator="Markus Bubendorf" version="1.1"
+    xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
     <metadata>
         <desc>GPX output for Garmin POI Loader</desc>
         <time>${datetime}</time>
@@ -24,24 +23,28 @@ http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlsche
 
 <#list sql('${cacheQuery}', '${category}') as wpt>
     <wpt lat="${wpt.Latitude}" lon="${wpt.Longitude}">
-        <ele>${wpt.Elevation?c}</ele>
         <name>${wpt.CacheType}${wpt.Dif1a}${wpt.Ter1a}-${wpt.SmartName}</name>
-        <cmt/>
-        <desc>${wpt.SmartName}</desc>
-        <sym>Information</sym>
-        <extensions>
-            <gpxx:WaypointExtension>
-                <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>
-                <gpxx:Address>
-                    <gpxx:StreetAddress>${wpt.Latitude} ${wpt.Longitude}</gpxx:StreetAddress>
-                    <gpxx:StreetAddress>${wpt.Name} von ${wpt.PlacedBy}</gpxx:StreetAddress>
-                    <gpxx:City>${wpt.CacheType} D:${wpt.Difficulty?c}/T:${wpt.Terrain?c}</gpxx:City>
-                    <gpxx:State/>
-                    <gpxx:PostalCode/>
-                </gpxx:Address>
-                <gpxx:PhoneNumber Category="Email">Placed: ${wpt.PlacedDate} Last Found: ${wpt.LastFoundDate}</gpxx:PhoneNumber>
-            </gpxx:WaypointExtension>
-        </extensions>
+        <desc>${wpt.Name} von ${wpt.PlacedBy}
+        ${wpt.CacheType} D:${wpt.Difficulty?c}/T:${wpt.Terrain?c}
+            Placed: ${wpt.PlacedDate}
+            Last Found: ${wpt.LastFoundDate}
+            <#if (wpt.Hints?length > 0)>Hinweis: ${wpt.Hints}
+            </#if><#t>
+            <#if (wpt.Elevation != 0)>Höhe: ${wpt.Elevation}
+            </#if><#t>
+            <#if (wpt.County?length > 0)>Ort: ${wpt.County}
+            </#if><#t>
+            <#if (wpt.GCV_AverageVote > 0)>GCVote: ${wpt.GCV_AverageVote}
+            </#if><#t>
+            <#if (wpt.FavRatio > 0)>FavRatio: ${wpt.FavRatio}%
+            </#if><#t>
+            <#if (wpt.AvgLogsPerYear > 0)>AvgLosPerYear: ${wpt.AvgLogsPerYear}
+            </#if><#t>
+            <#if (wpt.UserNote?length > 0)>UserNote: ${wpt.UserNote}
+            </#if><#t>
+            <#if (wpt.MeinKommentar?length > 0)>Kommentar: ${wpt.MeinKommentar}
+            </#if><#t>
+        </desc>
     </wpt>
 </#list>
 </gpx>

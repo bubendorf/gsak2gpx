@@ -1,0 +1,3 @@
+<#assign where="ca.UserFlag = 0 and 
+(ca.CacheType = 'B' or ca.CacheType = 'I' or ca.CacheType = 'O' or ca.CacheType = 'R' or ca.CacheType = 'V' or ca.CacheType = 'W')" >
+<#include "CacheToPOI.ftlx">

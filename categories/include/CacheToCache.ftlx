@@ -130,7 +130,7 @@ join LogMemo lm on lo.lLogId=lm.lLogId and lo.lParent=lm.lParent
 where lo.lParent = '{CODE}'
 and length(lm.lText) > 25
 order by lo.lDate desc
-limit 15
+limit ${loglimit!\"15\"};
 ">
 
 <?xml version="1.0" encoding="${encoding}"?>
@@ -184,7 +184,7 @@ limit 15
     &lt;br/&gt;</#if><#t>
 <#if (ca.GCV_AverageVote > 0)>GCVote: ${ca.GCV_AverageVote}
     &lt;br/&gt;</#if><#t>
-<#if (ca.FavRatio > 0)>FavRatio: ${ca.FavRatio}
+                    <#if (ca.FavRatio > 0)>FavRatio: ${ca.FavRatio}%
     &lt;br/&gt;</#if><#t>
 <#if (ca.AvgLogsPerYear > 0)>AvgLosPerYear: ${ca.AvgLogsPerYear}
     &lt;br/&gt;</#if><#t>

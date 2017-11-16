@@ -6,15 +6,12 @@ join WayMemo wm on wm.cParent = wp.cParent and wm.cCode = wp.cCode
 join Caches ca on wp.cParent = ca.Code
 ${join!}
 where ${where}
+order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
 limit ${limit!\"200000\"};">
 <?xml version="1.0" encoding="${encoding}" standalone="no"?>
-<gpx xmlns="http://www.topografix.com/GPX/1/1"
-    xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    creator="Markus Bubendorf"
-    version="1.1"
-    xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd
-http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensions/v3/GpxExtensionsv3.xsd">
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    creator="Markus Bubendorf" version="1.1"
+    xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
     <metadata>
         <desc>GPX output for Garmin POI Loader</desc>
         <time>${datetime}</time>
@@ -24,14 +21,7 @@ http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlsche
 <#list sql('${wpQuery}', '${category}') as wp>
     <wpt lat="${wp.cLat}" lon="${wp.cLon}">
         <name>${wp.cName?replace("Parkplatz", "P")?replace("Parking", "P")?replace("Orig - ", "O-")}-${wp.SmartName}</name>
-        <cmt/>
-        <desc>${wp.cName} - ${wp.cComment}</desc>
-        <sym>Information</sym>
-        <extensions>
-            <gpxx:WaypointExtension>
-                <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>
-            </gpxx:WaypointExtension>
-        </extensions>
+        <desc>${wp.cName}<#if (wp.cComment?length > 0)> - ${wp.cComment}</#if></desc>
     </wpt>
 </#list>
 </gpx>
