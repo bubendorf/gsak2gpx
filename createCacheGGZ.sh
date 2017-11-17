@@ -1,24 +1,18 @@
 #!/bin/sh
-OPTS="-XX:+UseParallelGC -Xmx2G -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
-DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
-CAT_PATH="/Users/mbu/src/gsak2gpx/categories/ggz /Users/mbu/src/gsak2gpx/categories/include"
-OUT_PATH=/Users/mbu/src/gsak2gpx/output
-TASKS=1
-#CATEGORIES=ActiveCaches
-CATEGORIES=UserFlagCaches
-#CATEGORIES=MainCaches
-GGZ=$CATEGORIES
-ENCODING=utf-8
-CACHES_PER_GPX=300
-MAX_SIZE=2985000
+export OPTS="-XX:+UseParallelGC -Xmx1500M -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
+export DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
+export CAT_PATH="/Users/mbu/src/gsak2gpx/categories/ggz /Users/mbu/src/gsak2gpx/categories/include"
+export OUT_PATH=/Users/mbu/src/gsak2gpx/output
+export TASKS=4
+export ENCODING=utf-8
+export CACHES_PER_GPX=300
+export MAX_SIZE=2985000
 
-#java $OPTS -cp target/gsak2gpx-1.0.jar ch.bubendorf.gsak2gpx.Gsak2Gpx --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $OUT_PATH/ggzgen --tasks $TASKS --encoding $ENCODING
-#java $OPTS -cp target/gsak2gpx-1.0.jar ch.bubendorf.ggzgen.GGZGen --input $OUT_PATH/ggzgen/$GGZ.gpx  --output $OUT_PATH/$GGZ.ggz --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
-java $OPTS -cp target/gsak2gpx-1.0.jar ch.bubendorf.gsak2gpx.Gsak2Gpx --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath - --tasks $TASKS --encoding $ENCODING | java $OPTS -cp target/gsak2gpx-1.0.jar ch.bubendorf.ggzgen.GGZGen --input - --output $OUT_PATH/$GGZ.ggz --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
+function doit() {
+# $1 Name der Kategorie und der GGZ Datei
+  java $OPTS -cp target/gsak2gpx-1.0.jar ch.bubendorf.gsak2gpx.Gsak2Gpx --database $DB --categoryPath $CAT_PATH --categories $1 --outputPath - --encoding $ENCODING | java $OPTS -cp target/gsak2gpx-1.0.jar ch.bubendorf.ggzgen.GGZGen --input - --output $OUT_PATH/$1.ggz --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
+}
+export -f doit
 
-#rm -f $OUT_PATH/ggzgen/*.gpx
-#java $OPTS -cp target/gsak2gpx-1.0.jar ch.bubendorf.xmlsplit.XmlSplit --input $OUT_PATH/$GGZ.gpx --output $OUT_PATH/ggzgen --count $CACHES_PER_GPX --size $MAX_SIZE --encoding $ENCODING
-#/Users/mbu/src/ggz-tools/gpx2ggz.py $OUT_PATH/ggzgen/*.gpx $OUT_PATH/ggzgen/$GGZ.ggz
-#mv $OUT_PATH/ggzgen/$GGZ.ggz $OUT_PATH/$GGZ.ggz
-# rm $OUT_PATH/$GGZ.gpx
+parallel --delay 1 -j $TASKS -u doit ::: E8_Nord E7_Nord E5_6 E9_10 E7_8_Sued
 

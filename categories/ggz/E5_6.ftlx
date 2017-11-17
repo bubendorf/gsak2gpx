@@ -1,0 +1,4 @@
+<#assign where="(ca.CacheType <> 'U' or ca.HasCorrected) and ca.Archived = 0 and ca.TempDisabled = 0 and ca.Found = 0
+and round(ca.Longitude, 6) < 7.0" >
+<#assign limit="50000">
+<#include "CacheToCache.ftlx">

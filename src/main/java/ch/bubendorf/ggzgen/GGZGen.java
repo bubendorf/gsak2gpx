@@ -59,6 +59,7 @@ public class GGZGen {
         CONATINER_SIZE_MAP.put("other", -1);
         CONATINER_SIZE_MAP.put("not chosen", -2);
         CONATINER_SIZE_MAP.put("virtual", 0);
+        CONATINER_SIZE_MAP.put("unknown", 0);
     }
 
     public static void main(String[] args) throws Exception {
@@ -236,11 +237,13 @@ public class GGZGen {
             NumberFormat oneDigitNumberFormat = new DecimalFormat("0.0");
             int currentZipStreamPosition = zipCountingStream.getCount();
             int zipSizeOfEntry = currentZipStreamPosition - lastEntryZipStreamPosition;
-            LOGGER.info(fileIndex.getName() + ": " +
+            LOGGER.info(
+                    FilenameUtils.getName(cmdArgs.getOutput()) + "(" +
+                            fileIndex.getName() + "):" +
                     "Count=" + fileIndex.getCacheIndexSize() +
-                    ", Total=" + totalCacheCount +
-                    ", Filesize=" + entryCountingStream.getCount() +
-                    ", OnDisk=" + zipSizeOfEntry + " (" + oneDigitNumberFormat.format(100.0 / entryCountingStream.getCount() * zipSizeOfEntry) + "%)");
+                            ",Total=" + totalCacheCount +
+                            ",Filesize=" + entryCountingStream.getCount() +
+                            ",OnDisk=" + zipSizeOfEntry + " (" + oneDigitNumberFormat.format(100.0 / entryCountingStream.getCount() * zipSizeOfEntry) + "%)");
             lastEntryZipStreamPosition = currentZipStreamPosition;
         }
     }

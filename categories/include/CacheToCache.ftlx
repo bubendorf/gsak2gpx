@@ -21,11 +21,34 @@
 </#switch>
 </#macro>
 
-<#macro truefalse bool>
-<#if bool = 0>false<#else>true</#if></#macro>
+<#macro LogType type>
+    <#switch type>
+        <#case "Announcement">Announce<#break>
+        <#case "Archive">Archive<#break>
+        <#case "Attended">Attended<#break>
+        <#case "Didn't find it">Not Found<#break>
+        <#case "Enable Listing">Enable<#break>
+        <#case "Found it">Found<#break>
+        <#case "Needs Archived">Needs Archived<#break>
+        <#case "Needs Maintenance">Needs Maintenance<#break>
+        <#case "Owner Maintenance">Maintenance<#break>
+        <#case "Post Reviewer Note">Note<#break>
+        <#case "Publish Listing">Publish<#break>
+        <#case "Retract Listing">Retract<#break>
+        <#case "Submit for Review">Submit<#break>
+        <#case "Temporarily Disable Listing">Disable<#break>
+        <#case "Unarchive">Unarchive<#break>
+        <#case "Update Coordinates">Update<#break>
+        <#case "Webcam Photo Taken">Photo<#break>
+        <#case "Will Attend">Will Attend<#break>
+        <#case "Write note">Note<#break>
+        <#default>Not supported
+    </#switch>
+</#macro>
 
-<#macro falsetrue bool>
-    <#if bool = 0>true<#else>false</#if></#macro>
+<#macro truefalse bool><#if bool = 0>false<#else>true</#if></#macro>
+
+<#macro falsetrue bool><#if bool = 0>true<#else>false</#if></#macro>
 
 <#macro attr value>
 <#switch value>
@@ -174,11 +197,12 @@ limit 5;
             <groundspeak:state>${ca.State}</groundspeak:state>
             <groundspeak:short_description html="false">
                 <#list sql('${lflLogQuery?replace("{CODE}", ca.Code)}') as log>
-                ${log.lType} : ${log.lDate}&lt;br/&gt;
+                    <@LogType type=log.lType/>:${log.lDate?string["d.M.yy"]} <#t>
                 </#list>
-            ${ca.ShortDescription?replace('\\<.*?>', '', 'r')}
+            ${ca.ShortDescription?replace('<[^>]*>', '', 'r')?replace('(\r\n)+', '\r\n', 'rm')}
             </groundspeak:short_description>
-            <groundspeak:long_description html="false">${ca.LongDescription?replace('\\<.*?>', '', 'r')}</groundspeak:long_description>
+            <groundspeak:long_description
+                html="false">${ca.LongDescription?replace('<(?!br)[^>]*>', '', 'rm')?replace('(\r\n)+', '\r\n', 'rm')?replace('<br[ /]*>\\s*<br[ /]*>', '<br/>', 'rm')}</groundspeak:long_description>
             <groundspeak:encoded_hints>${ca.Hints}
                 <#if (ca.UserNote?length > 0)>*** ${ca.UserNote}</#if><#t></groundspeak:encoded_hints>
             <groundspeak:logs>
