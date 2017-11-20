@@ -1,0 +1,4 @@
+<#assign where="ca.UserFlag = 1 and round(ca.longitude, 6) >= 8.0" >
+<#assign limit="50000">
+<#assign loglimit="20">
+<#include "CacheToCache.ftlx">
