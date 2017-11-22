@@ -6,7 +6,7 @@ GPX_PATH=/Users/mbu/src/gsak2gpx/output/cachepoi
 OUT_PATH=/Users/mbu/src/gsak2gpx/output
 IMG_PATH=/Users/mbu/src/gsak2gpx/images/cachepoi
 TASKS=4
-CATEGORIES=Traditional,Unknown,Multi,OtherCaches
+CATEGORIES=Traditional,Mystery,Multi,OtherCaches
 #CATEGORIES=OtherCaches
 # gpsbabel kommt NICHT mit utf-8 zurecht! Also nehmen wir halt das Windows-Zeugs!
 # Valid values are windows-1250 to windows-1257.
@@ -61,9 +61,10 @@ function multigpi {
 }
 
 togpi Traditional 20-Traditional "Traditional Cache" 20 &
-togpi Unknown 22-Unknown "Unknown Cache" 22 &
+togpi Mystery 22-Mystery "Mystery Cache" 22 &
 togpi Multi 21-Multi "Multi Cache" 21 &
 togpi OtherCaches 29-OtherCaches "Other Caches" 29 &
+
 #togpi VirtualCache 23-VirtualCache VirtualCache 23 &
 #togpi Letterbox 24-Letterbox Letterbox 24 &
 #togpi Earthcache 25-Earthcache Earthcache 25 &

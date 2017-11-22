@@ -14,5 +14,5 @@ function doit() {
 }
 export -f doit
 
-parallel --delay 1 -j $TASKS -u doit ::: E8_Nord E7_Nord E5_6 E9_10 E7_8_Sued
-
+# parallel --delay 1 -j $TASKS -u doit ::: E8_Nord E7_Nord E5_6 E9_10 E7_8_Sued
+parallel --delay 1 -j $TASKS -u doit ::: UserFlagOst UserFlagWest

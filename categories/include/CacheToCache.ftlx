@@ -1,131 +1,5 @@
-<#macro CacheType type>
-  <#switch type>
-  <#case "A">Project Ape<#break>
-  <#case "B">Letterbox Hybrid<#break>
-  <#case "C">Cache In Trash Out Event<#break>
-  <#case "E">Event Cache<#break>
-  <#case "G">BenchMark<#break>
-  <#case "I">Wherigo Cache<#break>
-  <#case "L">Locationless (Reverse) Cache<#break>
-  <#case "M">Multi-cache<#break>
-  <#case "O">Other<#break>
-  <#case "R">Earthcache<#break>
-  <#case "T">Traditional Cache<#break>
-  <#case "U">Unknown Cache<#break>
-  <#case "V">Virtual Cache<#break>
-  <#case "W">Webcam Cache<#break>
-  <#case "X">Maze Exhibit<#break>
-  <#case "Y">Waymark<#break>
-  <#case "Z">Mega-Event Cache<#break>
-  <#default>Not supported
-</#switch>
-</#macro>
-
-<#macro LogType type>
-    <#switch type>
-        <#case "Announcement">Announce<#break>
-        <#case "Archive">Archive<#break>
-        <#case "Attended">Attended<#break>
-        <#case "Didn't find it">Not Found<#break>
-        <#case "Enable Listing">Enable<#break>
-        <#case "Found it">Found<#break>
-        <#case "Needs Archived">Needs Archived<#break>
-        <#case "Needs Maintenance">Needs Maintenance<#break>
-        <#case "Owner Maintenance">Maintenance<#break>
-        <#case "Post Reviewer Note">Note<#break>
-        <#case "Publish Listing">Publish<#break>
-        <#case "Retract Listing">Retract<#break>
-        <#case "Submit for Review">Submit<#break>
-        <#case "Temporarily Disable Listing">Disable<#break>
-        <#case "Unarchive">Unarchive<#break>
-        <#case "Update Coordinates">Update<#break>
-        <#case "Webcam Photo Taken">Photo<#break>
-        <#case "Will Attend">Will Attend<#break>
-        <#case "Write note">Note<#break>
-        <#default>Not supported
-    </#switch>
-</#macro>
-
-<#macro truefalse bool><#if bool = 0>false<#else>true</#if></#macro>
-
-<#macro falsetrue bool><#if bool = 0>true<#else>false</#if></#macro>
-
-<#macro attr value>
-<#switch value>
-  <#case  "1">Dogs<#break>
-  <#case  "2">Access or parking fee<#break>
-  <#case  "3">Climbing gear<#break>
-  <#case  "4">Boat<#break>
-  <#case  "5">Scuba gear<#break>
-  <#case  "6">Recommended for kids<#break>
-  <#case  "7">Takes less than an hour<#break>
-  <#case  "8">Scenic view<#break>
-  <#case  "9">Significant Hike<#break>
-  <#case "10">Difficult climbing<#break>
-  <#case "11">May require wading<#break>
-  <#case "12">May require swimming<#break>
-  <#case "13">Available at all times<#break>
-  <#case "14">Recommended at night<#break>
-  <#case "15">Available during winter<#break>
-  <#case "17">Poisonous plants<#break>
-  <#case "18">Dangerous Animals<#break>
-  <#case "19">Ticks<#break>
-  <#case "20">Abandoned mines<#break>
-  <#case "21">Cliff / falling rocks<#break>
-  <#case "22">Hunting<#break>
-  <#case "23">Dangerous area<#break>
-  <#case "24">Wheelchair accessible<#break>
-  <#case "25">Parking available<#break>
-  <#case "26">Public transportation<#break>
-  <#case "27">Drinking water nearby<#break>
-  <#case "28">Public restrooms nearby<#break>
-  <#case "29">Telephone nearby<#break>
-  <#case "30">Picnic tables nearby<#break>
-  <#case "31">Camping available<#break>
-  <#case "32">Bicycles<#break>
-  <#case "33">Motorcycles<#break>
-  <#case "34">Quads<#break>
-  <#case "35">Off-road vehicles<#break>
-  <#case "36">Snowmobiles<#break>
-  <#case "37">Horses<#break>
-  <#case "38">Campfires<#break>
-  <#case "39">Thorns<#break>
-  <#case "40">Stealth required<#break>
-  <#case "41">Stroller accessible<#break>
-  <#case "42">Needs Maintenance<#break>
-  <#case "43">Watch for livestock<#break>
-  <#case "44">Flashlight required<#break>
-  <#case "45">Lost And Found Tour<#break>
-  <#case "46">Truck Driver/RV<#break>
-  <#case "47">Field Puzzle<#break>
-  <#case "48">UV Light Required<#break>
-  <#case "49">Snowshoes<#break>
-  <#case "50">Cross Country Skis<#break>
-  <#case "51">Special Tool Required<#break>
-  <#case "52">Night Cache<#break>
-  <#case "53">Park and Grab<#break>
-  <#case "54">Abandoned Structure<#break>
-  <#case "55">Short hike (less than 1km)<#break>
-  <#case "56">Medium hike (1km-10km)<#break>
-  <#case "57">Long Hike (+10km)<#break>
-  <#case "58">Fuel Nearby<#break>
-  <#case "59">Food Nearby<#break>
-  <#case "60">Wireless Beacon<#break>
-  <#case "61">Partnership Cache<#break>
-  <#case "62">Seasonal Access<#break>
-  <#case "63">Tourist Friendly<#break>
-  <#case "64">Tree Climbing<#break>
-  <#case "65">Front Yard (Private Residence)<#break>
-  <#case "66">Teamwork Required<#break>
-</#switch>
-</#macro>
-
-<#macro attrString text>
-  <#list text?split(",") as attrValue>
-    <#if attrValue?starts_with("0-")>No <#else>Yes </#if><#t>
-    <@attr value=attrValue[2..] />, <#t>
-  </#list>
-</#macro>
+<?xml version="1.0" encoding="${encoding}"?>
+<#include "Types.ftlx">
 
 <#assign cacheQuery = "
 select ca.Code, ca.Name, toUtf8(ca.SmartName) as SmartName, ca.Latitude, ca.Longitude, ca.CacheType,
@@ -164,7 +38,6 @@ order by lo.lDate desc
 limit 5;
 ">
 
-<?xml version="1.0" encoding="${encoding}"?>
 <gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" creator="Markus Bubendorf"
     xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd http://www.groundspeak.com/cache/1/0/1 http://www.groundspeak.com/cache/1/0/1/cache.xsd"
     xmlns="http://www.topografix.com/GPX/1/0">
@@ -195,16 +68,16 @@ limit 5;
             <groundspeak:terrain>${ca.Terrain?c}</groundspeak:terrain>
             <groundspeak:country>${ca.Country}</groundspeak:country>
             <groundspeak:state>${ca.State}</groundspeak:state>
-            <groundspeak:short_description html="false">
+            <groundspeak:short_description>
                 <#list sql('${lflLogQuery?replace("{CODE}", ca.Code)}') as log>
                     <@LogType type=log.lType/>:${log.lDate?string["d.M.yy"]} <#t>
                 </#list>
             ${ca.ShortDescription?replace('<[^>]*>', '', 'r')?replace('(\r\n)+', '\r\n', 'rm')}
             </groundspeak:short_description>
-            <groundspeak:long_description
-                html="false">${ca.LongDescription?replace('<(?!br)[^>]*>', '', 'rm')?replace('(\r\n)+', '\r\n', 'rm')?replace('<br[ /]*>\\s*<br[ /]*>', '<br/>', 'rm')}</groundspeak:long_description>
+            <groundspeak:long_description>${ca.LongDescription?replace('<(?!br)[^>]*>', '', 'rm')?replace('(\r\n)+', '\r\n', 'rm')?replace('<br[ /]*>\\s*<br[ /]*>', '<br/>', 'rm')}</groundspeak:long_description>
             <groundspeak:encoded_hints>${ca.Hints}
-                <#if (ca.UserNote?length > 0)>*** ${ca.UserNote}</#if><#t></groundspeak:encoded_hints>
+                <#if (ca.UserNote?length > 0)>&lt;strong&gt;***
+                ${ca.UserNote}&lt;/strong&gt;</#if><#t></groundspeak:encoded_hints>
             <groundspeak:logs>
               <groundspeak:log id="-3">
                 <groundspeak:type>Write note</groundspeak:type>
