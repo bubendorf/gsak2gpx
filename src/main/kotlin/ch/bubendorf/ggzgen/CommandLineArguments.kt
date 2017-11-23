@@ -13,7 +13,7 @@ class CommandLineArguments {
     var isHelp: Boolean = false
 
     @Parameter(names = arrayOf("-i", "--input"), description = "input file. Use '-' to read from stdin.", required = true)
-    var input: String? = null
+    var input: String = ""
 
     @Parameter(names = arrayOf("-o", "--output"), description = "output file", required = false)
     var output: String? = null
@@ -32,7 +32,7 @@ class CommandLineArguments {
 
     val isValid: Boolean
         get() {
-            if ("-" != input && !File(input!!).exists()) {
+            if ("-" != input && !File(input).exists()) {
                 LOGGER.error("Input file '$input' does not exist!")
                 return false
             }

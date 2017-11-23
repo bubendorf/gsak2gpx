@@ -14,7 +14,7 @@ CATEGORIES=Traditional,Mystery,Multi,OtherCaches
 GPX_ENCODING=utf-8
 GPI_ENCODING=windows-1252
 
-java $OPTS -jar target/gsak2gpx-1.0.jar --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
+java $OPTS -jar target/gsak2gpx-1.1.jar --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
 
 # param 1: file
 # param 2: offset

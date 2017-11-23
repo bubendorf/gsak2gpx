@@ -26,7 +26,7 @@ class GGZGen {
     private var totalCacheCount = 0
     private var inHeader = true
     private var writer: Writer? = null
-    private var cmdArgs: CommandLineArguments? = null
+    private val cmdArgs: CommandLineArguments = CommandLineArguments()
 
     private var zipStream: ZipOutputStream? = null
     private var zipCountingStream: CountingOutputStream? = null
@@ -35,10 +35,9 @@ class GGZGen {
     private var entryCountingStream: CountingOutputStream? = null
     private var zipEntry: ZipEntry? = null
 
-    private var fileIndex: FileIndex? = null
+    private var fileIndex: FileIndex = FileIndex("")
     private val fileIndices = ArrayList<FileIndex>()
     private var cacheIndex: CacheIndex? = null
-
 
     private val indexFile: String
         get() {
@@ -52,25 +51,24 @@ class GGZGen {
         }
 
     @Throws(Exception::class)
-    public fun ggzgen(args: Array<String>) {
-        cmdArgs = CommandLineArguments()
-        val jCommander = JCommander(cmdArgs!!)
+    fun ggzgen(args: Array<String>) {
+        val jCommander = JCommander(cmdArgs)
         jCommander.parse(*args)
 
-        if (cmdArgs!!.isHelp) {
+        if (cmdArgs.isHelp) {
             jCommander.usage()
             System.exit(1)
         }
 
-        if (!cmdArgs!!.isValid) {
+        if (!cmdArgs.isValid) {
             System.exit(2)
         }
 
         val reader: BufferedReader
-        if ("-" == cmdArgs!!.input) {
-            reader = BufferedReader(InputStreamReader(System.`in`, cmdArgs!!.encoding))
+        if ("-" == cmdArgs.input) {
+            reader = BufferedReader(InputStreamReader(System.`in`, cmdArgs.encoding))
         } else {
-            reader = BufferedReader(InputStreamReader(FileInputStream(cmdArgs!!.input!!), cmdArgs!!.encoding), 65536)
+            reader = BufferedReader(InputStreamReader(FileInputStream(cmdArgs.input), cmdArgs.encoding), 65536)
         }
         reader.forEachLine { rawline ->
             val line = rawline.trim { it <= ' ' }
@@ -96,7 +94,7 @@ class GGZGen {
                         // Start Tag
                         tagCount++
                         nextCacheIndex()
-                        if (tagCount >= cmdArgs!!.count || entryCountingStream!!.count >= cmdArgs!!.size) {
+                        if (tagCount >= cmdArgs.count || entryCountingStream!!.count >= cmdArgs.size) {
                             // Maximale Grösse erreicht ==> Neue Datei eröffnen
                             openZipEntry()
                         }
@@ -155,7 +153,7 @@ class GGZGen {
         if (cacheIndex != null) {
             cacheIndex!!.awesomeness = 3.0
             cacheIndex!!.file_len = entryCountingStream!!.count - cacheIndex!!.file_pos
-            fileIndex!!.addCacheIndex(cacheIndex!!)
+            fileIndex.addCacheIndex(cacheIndex!!)
         }
         cacheIndex = CacheIndex()
         cacheIndex!!.file_pos = entryCountingStream!!.count
@@ -163,7 +161,7 @@ class GGZGen {
 
     @Throws(FileNotFoundException::class)
     private fun openZipFile() {
-        val fileOutputStream = FileOutputStream(cmdArgs!!.output!!)
+        val fileOutputStream = FileOutputStream(cmdArgs.output!!)
         val bufferedStream = BufferedOutputStream(fileOutputStream, 65536)
         zipCountingStream = CountingOutputStream(bufferedStream)
         zipStream = ZipOutputStream(zipCountingStream!!)
@@ -175,7 +173,7 @@ class GGZGen {
     private fun closeZipFile() {
         zipEntry = ZipEntry("index/com/garmin/geocaches/v0/index.xml")
         zipStream!!.putNextEntry(zipEntry!!)
-        writer = OutputStreamWriter(zipStream!!, cmdArgs!!.encoding)
+        writer = OutputStreamWriter(zipStream!!, cmdArgs.encoding)
         val indexFile = indexFile
         writer!!.write(indexFile)
         writer!!.flush()
@@ -187,21 +185,21 @@ class GGZGen {
     private fun openZipEntry() {
         closeZipEntry()
 
-        val fileName = if ("-" == cmdArgs!!.input) "stdin.gpx" else cmdArgs!!.input
+        val fileName = if ("-" == cmdArgs.input) "stdin.gpx" else cmdArgs.input
         val ext = FilenameUtils.getExtension(fileName)
         val basename = FilenameUtils.getBaseName(fileName)
-        val newFileName = String.format(cmdArgs!!.format, basename, fileIndices.size, ext)
+        val newFileName = String.format(cmdArgs.format, basename, fileIndices.size, ext)
 
         LOGGER.debug("New file: " + newFileName)
         zipEntry = ZipEntry("data/" + newFileName)
         zipStream!!.putNextEntry(zipEntry!!)
 
         fileIndex = FileIndex(newFileName)
-        fileIndices.add(fileIndex!!)
+        fileIndices.add(fileIndex)
 
         entryCountingStream = CountingOutputStream(zipStream)
         checkedStream = CheckedOutputStream(entryCountingStream, CRC32())
-        writer = OutputStreamWriter(checkedStream!!, cmdArgs!!.encoding)
+        writer = OutputStreamWriter(checkedStream!!, cmdArgs.encoding)
         writer!!.write(header)
         tagCount = 0
     }
@@ -212,7 +210,7 @@ class GGZGen {
             writer!!.write(footer!!)
             writer!!.flush()
             checkedStream!!.flush()
-            fileIndex!!.crc = java.lang.Long.toHexString(checkedStream!!.checksum.value)
+            fileIndex.crc = java.lang.Long.toHexString(checkedStream!!.checksum.value)
             writer = null
             zipStream!!.closeEntry()
             zipEntry = null
@@ -221,9 +219,9 @@ class GGZGen {
             val currentZipStreamPosition = zipCountingStream!!.count
             val zipSizeOfEntry = currentZipStreamPosition - lastEntryZipStreamPosition
             LOGGER.info(
-                    FilenameUtils.getName(cmdArgs!!.output) + "(" +
-                            fileIndex!!.name + "):" +
-                            "Count=" + fileIndex!!.cacheIndexSize +
+                    FilenameUtils.getName(cmdArgs.output) + "(" +
+                            fileIndex.name + "):" +
+                            "Count=" + fileIndex.cacheIndexSize +
                             ",Total=" + totalCacheCount +
                             ",Filesize=" + entryCountingStream!!.count +
                             ",OnDisk=" + zipSizeOfEntry + " (" + oneDigitNumberFormat.format(100.0 / entryCountingStream!!.count * zipSizeOfEntry) + "%)")

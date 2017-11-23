@@ -76,8 +76,8 @@ limit 5;
             </groundspeak:short_description>
             <groundspeak:long_description>${ca.LongDescription?replace('<(?!br)[^>]*>', '', 'rm')?replace('(\r\n)+', '\r\n', 'rm')?replace('<br[ /]*>\\s*<br[ /]*>', '<br/>', 'rm')}</groundspeak:long_description>
             <groundspeak:encoded_hints>${ca.Hints}
-                <#if (ca.UserNote?length > 0)>&lt;strong&gt;***
-                ${ca.UserNote}&lt;/strong&gt;</#if><#t></groundspeak:encoded_hints>
+                <#if (ca.UserNote?length > 0)>***
+                ${ca.UserNote}</#if><#t></groundspeak:encoded_hints>
             <groundspeak:logs>
               <groundspeak:log id="-3">
                 <groundspeak:type>Write note</groundspeak:type>

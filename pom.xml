@@ -5,11 +5,11 @@
     <groupId>ch.bubendorf</groupId>
     <artifactId>gsak2gpx</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.1</version>
     <name>gsak2gpx</name>
     <url>http://maven.apache.org</url>
     <prerequisites>
-        <maven>3.0</maven>
+        <maven>3.0.2</maven>
     </prerequisites>
 
     <developers>
@@ -160,7 +160,7 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.20.1</version>
+            <version>3.21.0</version>
         </dependency>
 
         <dependency>
