@@ -12,7 +12,7 @@ class CacheIndex {
     var file_len: Int = 0
     var awesomeness: Double = 0.0
     var difficulty: Double = 0.0
-    var size: Int = 0           
+    var size: Int = 0
     var terrain: Double = 0.0
 
     fun toXML(): String {

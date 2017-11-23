@@ -59,7 +59,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>ch.bubendorf.gsak2gpx.Gsak2Gpx</mainClass>
+                            <mainClass>ch.bubendorf.gsak2gpx.Gsak2GpxKt</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
