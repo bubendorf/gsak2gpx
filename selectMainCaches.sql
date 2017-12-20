@@ -1,10 +1,10 @@
 -- Die Extension fuer diverse Funktionen (cos(), sqrt(), etc.) laden
 SELECT load_extension('/Users/mbu/src/gsak2gpx/lib/libsqlitefunctions.dylib');
+SELECT load_extension('/home/mbu/src/gsak2gpx/lib/libsqlitefunctions');
 
 -- Eine 'Variable' erstellen mit der man die Radien dynamisch machen kann
 CREATE TEMP TABLE IF NOT EXISTS Variables (Name TEXT PRIMARY KEY, Value TEXT);
 INSERT OR REPLACE INTO Variables VALUES ('Faktor', 0.8);
-
 
 -- Caches um Wangen herum (cos(47.23468) ==> 0.678997); 75km
 update caches

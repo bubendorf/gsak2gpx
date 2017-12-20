@@ -1,11 +1,8 @@
 #!/bin/bash
 #OPTS="-Xmx2G"
-DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
-CAT_PATH="/Users/mbu/src/gsak2gpx/categories/attributepoi /Users/mbu/src/gsak2gpx/categories/include"
-GPX_PATH=/Users/mbu/src/gsak2gpx/output/gpigen
-OUT_PATH=/Users/mbu/src/gsak2gpx/output
-IMG_PATH=/Users/mbu/src/gsak2gpx/images/gpigen
-TASKS=4
+. ./env.sh
+export IMG_PATH=$BASE/images/gpigen
+
 CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5
 #CATEGORIES=HasParking
 # gpsbabel kommt NICHT mit utf-8 zurecht! Also nehmen wir halt das Windows-Zeugs!
@@ -27,14 +24,14 @@ function togpi {
 # $2 Name der GPI Datei
 # $3 Name der Kategorie
 # $4 Time Offset, used to create unique GPI identifiers
-  /bin/echo `gdate "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
-  START_TIME=`gdate +%s%N`
+  /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
+  START_TIME=`$DATE +%s%N`
 #  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING,notes,descr -F $OUT_PATH/$2.gpi
   gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $OUT_PATH/$2.gpi
   replaceByte $OUT_PATH/$2.gpi 16 $4
   replaceByte $OUT_PATH/$2.gpi 17 $4
-  STOP_TIME=`gdate +%s%N`
-  /bin/echo -n `gdate "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
+  STOP_TIME=`$DATE +%s%N`
+  /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
 
@@ -42,8 +39,8 @@ function multigpi {
 # $1 Name der GPI Datei
 # $2.. Name der GPX und der BMP Dateien
 # $3.. Name der Kategorie
-  /bin/echo `gdate "+%Y-%m-%d %H:%M:%S:%3N"` Converting to $1.gpi
-  START_TIME=`gdate +%s%N`
+  /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Converting to $1.gpi
+  START_TIME=`$DATE +%s%N`
   OUT="-F $OUT_PATH/$1.gpi"
   EXEC="gpsbabel -D 0"
   for ((i=2;i<=$#;i+=2))
@@ -54,8 +51,8 @@ function multigpi {
   EXEC="$EXEC -F $OUT_PATH/$1.gpi"
 #  echo $EXEC
   $EXEC
-  STOP_TIME=`gdate +%s%N`
-  /bin/echo -n `gdate "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
+  STOP_TIME=`$DATE +%s%N`
+  /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
 

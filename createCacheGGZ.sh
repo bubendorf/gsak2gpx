@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 export OPTS="-XX:+UseParallelGC -Xmx1500M -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
-export DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
-export CAT_PATH="/Users/mbu/src/gsak2gpx/categories/ggz /Users/mbu/src/gsak2gpx/categories/include"
-export OUT_PATH=/Users/mbu/src/gsak2gpx/output
-export TASKS=4
+. ./env.sh
+
+
 export ENCODING=utf-8
 export CACHES_PER_GPX=300
 export MAX_SIZE=2985000

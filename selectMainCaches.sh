@@ -1,5 +1,5 @@
 #!/bin/bash
-DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
+. ./env.sh
 
 if [ "clear" = "$1" ]
 then
@@ -25,7 +25,7 @@ then
 
   echo "Selektierere Caches im Radius von ${RADIUS}km rund um lat=$LAT lon=$LON herum."
   sqlite3 $DB <<HierBeginntUndEndetDasSQL
-  SELECT load_extension('/Users/mbu/src/gsak2gpx/lib/libsqlitefunctions.dylib');
+  SELECT load_extension('$SQL_EXT');
   update caches
     set UserFlag = 1
     where sqrt(square((latitude - $LAT)*111.195) + square((longitude - $LON)*111.195*cos($LAT / 57.29578))) <= $RADIUS
