@@ -10,15 +10,15 @@ import java.util.*
 
 class ResultSetCollectionModel(private val rs: ResultSet, private val category: String) : TemplateCollectionModel {
 
-    private var resultSetIterator: ResultSetModelIterator? = null
+    private val resultSetIterator: ResultSetModelIterator = ResultSetModelIterator(rs, category)
 
     @Throws(TemplateModelException::class)
     override fun iterator(): TemplateModelIterator {
-        if (resultSetIterator != null) {
+/*        if (resultSetIterator != null) {
             throw TemplateModelException("iterator() must not be called multiple times!")
-        }
-        resultSetIterator = ResultSetModelIterator(rs, category)
-        return resultSetIterator!!
+        } */
+//        resultSetIterator = ResultSetModelIterator(rs, category)
+        return resultSetIterator
     }
 
     internal class ResultSetModelIterator(val rs: ResultSet, val category: String) : TemplateModelIterator {
@@ -38,7 +38,6 @@ class ResultSetCollectionModel(private val rs: ResultSet, private val category: 
             } catch (e: Exception) {
                 throw TemplateModelException(e)
             }
-
         }
 
         @Throws(TemplateModelException::class)
@@ -55,7 +54,6 @@ class ResultSetCollectionModel(private val rs: ResultSet, private val category: 
             } catch (e: SQLException) {
                 throw TemplateModelException(e)
             }
-
         }
     }
 
@@ -105,7 +103,6 @@ class ResultSetCollectionModel(private val rs: ResultSet, private val category: 
         }
 
         companion object {
-
             private val EMPTY_STRING = SimpleScalar("")
             private val TIME_PARSER = SimpleDateFormat("HH:mm:ss")
         }

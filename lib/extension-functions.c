@@ -1834,11 +1834,22 @@ int RegisterExtensionFunctions(sqlite3 *db){
   return 0;
 }
 
+// Added by mbu
+static int nocaseCollatingFunc(
+  void *NotUsed,
+  int nKey1, const void *pKey1,
+  int nKey2, const void *pKey2
+){
+  return sqlite3_stricmp((const char *)pKey1, (const char *)pKey2);
+}
+
+
 #ifdef COMPILE_SQLITE_EXTENSIONS_AS_LOADABLE_MODULE
 int sqlite3_extension_init(
     sqlite3 *db, char **pzErrMsg, const sqlite3_api_routines *pApi){
   SQLITE_EXTENSION_INIT2(pApi);
   RegisterExtensionFunctions(db);
+  sqlite3_create_collation(db, "gsaknocase", SQLITE_UTF8, (void *)SQLITE_UTF8, nocaseCollatingFunc); // Added by mbu
   return 0;
 }
 #endif /* COMPILE_SQLITE_EXTENSIONS_AS_LOADABLE_MODULE */

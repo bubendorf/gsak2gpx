@@ -19,7 +19,7 @@ class CommandLineArguments {
     var database = "sqlite.db3"
 
     @Parameter(names = arrayOf("-c", "--categories"), description = "Comma separated list of Categories", required = false)
-    var categories: String? = null
+    var categories: String = ""
 
     @Parameter(names = arrayOf("-p", "--categoryPath"), description = "Category Paths", variableArity = true, required = false)
     var categoryPaths = Arrays.asList(".", "./include")
@@ -34,8 +34,8 @@ class CommandLineArguments {
     var encoding = "utf-8"
 
     val categoryList: List<String>
-        get() = if (categories != null && categories!!.length > 0) {
-            ArrayList(Arrays.asList(*categories!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()))
+        get() = if (categories.length > 0) {
+            ArrayList(Arrays.asList(*categories.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()))
         } else emptyList()
 
     // "-" means stdout. In that case only one category is allowed
@@ -55,8 +55,8 @@ class CommandLineArguments {
             }
 
             if ("-" == outputPath) {
-                if (categoryList!!.size > 1) {
-                    LOGGER.error("Multiple categories are not allowed if outputPath is set to '-'.")
+                if (categoryList.size > 1) {
+                    LOGGER.error("Multiple categories are not allowed if outputPath is '-'.")
                     return false
                 }
             } else {

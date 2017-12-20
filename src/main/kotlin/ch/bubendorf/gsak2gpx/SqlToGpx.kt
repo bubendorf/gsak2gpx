@@ -17,7 +17,6 @@ import java.sql.SQLException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.util.*
 
 class SqlToGpx(private val database: String, private val categoryPaths: List<String>, private val category: String, private val outputPath: String, private val encoding: String) {
 
@@ -83,27 +82,24 @@ class SqlToGpx(private val database: String, private val categoryPaths: List<Str
 
             val mtl = MultiTemplateLoader(fileTemplateLoaders as Array<out TemplateLoader>?)
             cfg.templateLoader = mtl
-            //            cfg.setDirectoryForTemplateLoading(new File(categoryPath));
             cfg.defaultEncoding = encoding
             cfg.templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
             cfg.logTemplateExceptions = false
             cfg.outputFormat = XMLOutputFormat.INSTANCE
 
-            val rootModel = HashMap<String, Any>()
-            rootModel.put("sql", sqlTemplateMethod)
-            rootModel.put("category", category)
-            rootModel.put("encoding", encoding)
-            rootModel.put("date", LocalDate.now())
-            rootModel.put("time", LocalTime.now())
-            rootModel.put("datetime", LocalDateTime.now())
+            val rootModel = hashMapOf(
+            "sql" to sqlTemplateMethod,
+            "category" to category,
+            "encoding" to encoding,
+            "date" to LocalDate.now(),
+            "time" to LocalTime.now(),
+            "datetime" to LocalDateTime.now())
 
             val template = cfg.getTemplate(category + ".ftlx")
-            val out: Writer
-            if ("-" == outputPath) {
-                out = OutputStreamWriter(System.out, encoding)
-                //out = new PrintStream(System.out, false, encoding);
+            val out = if ("-" == outputPath) {
+                OutputStreamWriter(System.out, encoding)
             } else {
-                out = OutputStreamWriter(FileOutputStream("$outputPath/$category.gpx"), encoding)
+                OutputStreamWriter(FileOutputStream("$outputPath/$category.gpx"), encoding)
             }
             val environment = template.createProcessingEnvironment(rootModel, out)
             environment.outputEncoding = encoding
