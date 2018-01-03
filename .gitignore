@@ -3,3 +3,5 @@ gsak2gpx.iml
 output
 target
 temp
+lib/*.so
+lib/*.dylib

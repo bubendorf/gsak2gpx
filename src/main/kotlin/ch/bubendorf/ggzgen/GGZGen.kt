@@ -17,6 +17,10 @@ fun main(args: Array<String>) {
     GGZGen().ggzgen(args)
 }
 
+/**
+ * Converts a single GPX file with Geocaches into a GGZ file.
+ * Uses regular expressions to parse the GPX XML file.
+ */
 class GGZGen {
 
     private var header = ""

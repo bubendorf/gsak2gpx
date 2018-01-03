@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Erzeugt die GPI Dateien mit GeoCaches
+
 OPTS="-Xmx2G -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
 . ./env.sh
 export IMG_PATH=$BASE/images/cachepoi

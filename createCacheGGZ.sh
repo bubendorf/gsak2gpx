@@ -1,7 +1,9 @@
 #!/bin/bash
+
+ # Erzeugt die GGZ Dateien
+
 export OPTS="-XX:+UseParallelGC -Xmx1500M -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
 . ./env.sh
-
 
 export ENCODING=utf-8
 export CACHES_PER_GPX=300

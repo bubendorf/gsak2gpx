@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Kopiert die *ggz und *gpi Dateien auf das Garmin Oregon 700 welches unter /Volumes/GARMIN gemounted sein muss.
+# Das Garmin wird anschliessend 'ausgeworfen'.
+
 rm /Volumes/GARMIN/Garmin/GGZ/*.ggz
 cp -pv output/*.ggz /Volumes/GARMIN/Garmin/GGZ/ &
 

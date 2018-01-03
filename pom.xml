@@ -24,7 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <targetJdk>1.8</targetJdk>
-        <kotlin.version>1.1.60</kotlin.version>
+        <kotlin.version>1.2.10</kotlin.version>
     </properties>
 
     <build>
@@ -160,7 +160,7 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.21.0</version>
+            <version>3.21.0.1</version>
         </dependency>
 
         <dependency>
@@ -173,12 +173,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
+            <version>1.8.0-beta0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
+            <version>1.8.0-beta0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -214,7 +214,7 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
+            <artifactId>kotlin-test-junit</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>

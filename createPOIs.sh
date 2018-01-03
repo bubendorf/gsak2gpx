@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Erzeugt die GPi Dateien mit den Attributen und sonstigen Zusatzinfos
+
 #OPTS="-Xmx2G"
 . ./env.sh
 export IMG_PATH=$BASE/images/gpigen
