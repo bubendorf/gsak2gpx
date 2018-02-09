@@ -3,7 +3,7 @@
 
 if [ "-h" = "$1" ]
 then
-  echo "Usage: selectMainCaches.sh [clear] [lat lon radiusInKm]"
+  echo "Usage: selectMainCaches.sh [clear] [-factor f] [lat lon radiusInKm]"
   exit 1
 fi
 
@@ -14,6 +14,15 @@ then
   sqlite3 $DB 'update Caches set UserFlag = 0;'
   shift
 fi
+
+FAKTOR=0.8
+if [ "-factor" = "$1" -a -n "$2" ]
+then
+  FAKTOR=$2
+  shift
+  shift
+fi
+echo "Verwende einen Faktor von $FAKTOR"
 
 # Falls nun eine Koordinate und ein Radius in der Kommandozeile ist
 # dann werden die Caches um diesen Punkt herum ausgewaehlt.
@@ -41,10 +50,16 @@ then
 HierBeginntUndEndetDasSQL
 elif [ "$#" -ne 0 ]
 then
-  echo "Usage: selectMainCaches.sh [clear] [lat lon radiusInKm]"
+  echo "Usage: selectMainCaches.sh [clear] [-factor f]  [lat lon radiusInKm]"
   exit 1
 fi
 
+DIST_WANGEN=75
+DIST_BERN=30
+DIST_BASEL=60
+DIST_OLTEN=60
+DIST_LENZBURG=50
+DIST_ZUERICH=30
 
 # Und nun das UserFlag bei den wichtigen Caches setzen
 echo "Total Caches:"
@@ -52,44 +67,40 @@ sqlite3 $DB <<HierBeginntUndEndetDasSQL
 -- Die Extension fuer diverse Funktionen (cos(), sqrt(), etc.) laden
 SELECT load_extension('$SQL_EXT');
 
--- Eine 'Variable' erstellen mit der man die Radien dynamisch machen kann
-CREATE TEMP TABLE IF NOT EXISTS Variables (Name TEXT PRIMARY KEY, Value TEXT);
-INSERT OR REPLACE INTO Variables VALUES ('Faktor', 0.8);
-
 -- Caches um Wangen herum (cos(47.23468) ==> 0.678997); 75km
 update caches
 set UserFlag = 1
-where sqrt(square((latitude - 47.23468)*111.195) + square((longitude - 7.65588)*111.195*0.678997)) <= 75 * (SELECT Value FROM Variables WHERE Name = 'Faktor')
+where sqrt(square((latitude - 47.23468)*111.195) + square((longitude - 7.65588)*111.195*0.678997)) <= $DIST_WANGEN * $FAKTOR
 and (CacheType <> 'U' or HasCorrected) and Archived = 0 and TempDisabled = 0 and Found = 0;
 
 -- Caches um Bern herum (cos = 0.68266); 30km
 update caches
 set UserFlag = 1
-where sqrt(square((latitude - 46.94798)*111.195) + square((longitude - 7.44743)*111.195*0.68266)) <= 30 * (SELECT Value FROM Variables WHERE Name = 'Faktor')
+where sqrt(square((latitude - 46.94798)*111.195) + square((longitude - 7.44743)*111.195*0.68266)) <= $DIST_BERN * $FAKTOR
 and (CacheType <> 'U' or HasCorrected) and Archived = 0 and TempDisabled = 0 and Found = 0;
 
 -- Caches um Basel herum; 60km
 update caches
 set UserFlag = 1
-where sqrt(square((latitude - 47.55814)*111.195) + square((longitude - 7.58769)*111.195*0.67484)) <= 60 * (SELECT Value FROM Variables WHERE Name = 'Faktor')
+where sqrt(square((latitude - 47.55814)*111.195) + square((longitude - 7.58769)*111.195*0.67484)) <= $DIST_BASEL * $FAKTOR
 and (CacheType <> 'U' or HasCorrected) and Archived = 0 and TempDisabled = 0 and Found = 0;
 
 -- Caches um Olten herum; 60km
 update caches
 set UserFlag = 1
-where sqrt(square((latitude - 47.35333)*111.195) + square((longitude - 7.907785)*111.195*0.67748)) <= 60 * (SELECT Value FROM Variables WHERE Name = 'Faktor')
+where sqrt(square((latitude - 47.35333)*111.195) + square((longitude - 7.907785)*111.195*0.67748)) <= $DIST_OLTEN * $FAKTOR
 and (CacheType <> 'U' or HasCorrected) and Archived = 0 and TempDisabled = 0 and Found = 0;
 
 -- Caches um Lenzburg herum; 50km
 update caches
 set UserFlag = 1
-where sqrt(square((latitude - 47.38735)*111.195) + square((longitude - 8.18034)*111.195*0.67704)) <= 50 * (SELECT Value FROM Variables WHERE Name = 'Faktor')
+where sqrt(square((latitude - 47.38735)*111.195) + square((longitude - 8.18034)*111.195*0.67704)) <= $DIST_LENZBURG * $FAKTOR
 and (CacheType <> 'U' or HasCorrected) and Archived = 0 and TempDisabled = 0 and Found = 0;
 
 -- Caches um Zuerich herum; 30km
 update caches
 set UserFlag = 1
-where sqrt(square((latitude - 47.37174)*111.195) + square((longitude - 8.54226)*111.195*0.67724)) <= 30 * (SELECT Value FROM Variables WHERE Name = 'Faktor')
+where sqrt(square((latitude - 47.37174)*111.195) + square((longitude - 8.54226)*111.195*0.67724)) <= $DIST_ZUERICH * $FAKTOR
 and (CacheType <> 'U' or HasCorrected) and Archived = 0 and TempDisabled = 0 and Found = 0;
 
 select count(*) from caches where UserFlag=1;
