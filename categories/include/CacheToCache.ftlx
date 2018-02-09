@@ -31,7 +31,7 @@ limit ${loglimit!\"15\"};
 ">
 
 <#assign lflLogQuery = "
-select lo.lType, lo.lDate
+select distinct lo.lType, lo.lDate
 from Logs lo
 where lo.lParent = '{CODE}'
 order by lo.lDate desc

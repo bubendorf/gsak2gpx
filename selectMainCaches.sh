@@ -39,7 +39,10 @@ then
     and (CacheType <> 'U' or HasCorrected) and Archived = 0 and TempDisabled = 0 and Found = 0;
   select count(*) from caches where UserFlag=1;
 HierBeginntUndEndetDasSQL
-
+elif [ "$#" -ne 0 ]
+then
+  echo "Usage: selectMainCaches.sh [clear] [lat lon radiusInKm]"
+  exit 1
 fi
 
 
