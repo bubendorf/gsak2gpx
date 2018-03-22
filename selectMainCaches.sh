@@ -39,7 +39,7 @@ then
   fi
 
   echo "Selektierere Caches im Radius von ${RADIUS}km rund um lat=$LAT lon=$LON herum."
-  echo "Zusaetzliche Caches aufgrund der Parameter:"
+  echo -n "Zusaetzliche Caches aufgrund der Parameter:"
   sqlite3 $DB <<HierBeginntUndEndetDasSQL
   SELECT load_extension('$SQL_EXT');
   update caches
@@ -62,7 +62,7 @@ DIST_LENZBURG=50
 DIST_ZUERICH=30
 
 # Und nun das UserFlag bei den wichtigen Caches setzen
-echo "Total Caches:"
+echo -n "Total Caches:"
 sqlite3 $DB <<HierBeginntUndEndetDasSQL
 -- Die Extension fuer diverse Funktionen (cos(), sqrt(), etc.) laden
 SELECT load_extension('$SQL_EXT');
