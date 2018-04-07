@@ -26,10 +26,14 @@ class Gsak2Gpx {
         }
 
         val categories = cmdArgs.categoryList
-
+        val params = cmdArgs.params.associate {
+            val split = it.split("=")
+            Pair(split[0], split[1])
+        }
         val tasks = categories.map { category ->
             Callable {
-                SqlToGpx(cmdArgs.database, cmdArgs.categoryPaths, category, cmdArgs.outputPath, cmdArgs.encoding).doit()
+                SqlToGpx(cmdArgs.database, cmdArgs.categoryPaths, category, cmdArgs.outputPath, cmdArgs.suffix,
+                        cmdArgs.extension, cmdArgs.encoding, cmdArgs.outputFormat, params).doit()
             }
         }.toList()
 

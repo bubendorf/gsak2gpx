@@ -11,7 +11,7 @@ export MAX_SIZE=2985000
 
 function doit() {
 # $1 Name der Kategorie und der GGZ Datei
-  java $OPTS -jar target/gsak2gpx-1.1.jar --database $DB --categoryPath $CAT_PATH --categories $1 --outputPath - --encoding $ENCODING | java $OPTS -cp target/gsak2gpx-1.1.jar ch.bubendorf.ggzgen.GGZGenKt --input - --output $OUT_PATH/$1.ggz --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
+  java $OPTS -jar $JAR --database $DB --categoryPath $CAT_PATH --categories $1 --outputPath - --encoding $ENCODING | java $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $OUT_PATH/$1.ggz --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
 }
 export -f doit
 

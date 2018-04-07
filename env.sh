@@ -19,6 +19,7 @@ fi
 export CAT_PATH="$BASE/categories/ggz $BASE/categories/cachepoi $BASE/categories/attributepoi $BASE/categories/include" 
 export OUT_PATH=$BASE/output
 export GPX_PATH=$OUT_PATH/cachepoi
+export JAR=target/gsak2gpx-1.2.jar
 
 mkdir -p $OUT_PATH
 mkdir -p $GPX_PATH

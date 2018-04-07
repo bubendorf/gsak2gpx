@@ -1,0 +1,2 @@
+<#assign where="ca.CacheType = 'U'" >
+<#include "CacheToCSV.ftlx">

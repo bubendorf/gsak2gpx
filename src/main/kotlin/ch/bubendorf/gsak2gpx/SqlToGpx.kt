@@ -3,14 +3,16 @@ package ch.bubendorf.gsak2gpx
 import freemarker.cache.FileTemplateLoader
 import freemarker.cache.MultiTemplateLoader
 import freemarker.cache.TemplateLoader
-import freemarker.core.XMLOutputFormat
 import freemarker.template.Configuration
 import freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS
 import freemarker.template.TemplateExceptionHandler
 import org.slf4j.LoggerFactory
 import org.sqlite.Function
 import org.sqlite.SQLiteConfig
-import java.io.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
+import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset
 import java.sql.DriverManager
 import java.sql.SQLException
@@ -18,13 +20,21 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-class SqlToGpx(private val database: String, private val categoryPaths: List<String>, private val category: String, private val outputPath: String, private val encoding: String) {
+class SqlToGpx(private val database: String,
+               private val categoryPaths: List<String>,
+               private val category: String,
+               private val outputPath: String,
+               private val suffix: String,
+               private val extension: String,
+               private val encoding: String,
+               private val outputFormat: String,
+               private val params: Map<String, String>) {
 
     private val LOGGER = LoggerFactory.getLogger(SqlToGpx::class.java.simpleName)
 
     fun doit() {
         try {
-            LOGGER.info("Start with " + category)
+            LOGGER.info("Start with $suffix$category$extension")
             val startTime = System.currentTimeMillis()
             Class.forName("org.sqlite.JDBC")
             LOGGER.debug("Open " + database)
@@ -85,7 +95,7 @@ class SqlToGpx(private val database: String, private val categoryPaths: List<Str
             cfg.defaultEncoding = encoding
             cfg.templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
             cfg.logTemplateExceptions = false
-            cfg.outputFormat = XMLOutputFormat.INSTANCE
+            cfg.outputFormat = cfg.getOutputFormat(outputFormat)
 
             val rootModel = hashMapOf(
             "sql" to sqlTemplateMethod,
@@ -94,12 +104,13 @@ class SqlToGpx(private val database: String, private val categoryPaths: List<Str
             "date" to LocalDate.now(),
             "time" to LocalTime.now(),
             "datetime" to LocalDateTime.now())
+            rootModel.putAll(params)
 
             val template = cfg.getTemplate(category + ".ftlx")
             val out = if ("-" == outputPath) {
                 OutputStreamWriter(System.out, encoding)
             } else {
-                OutputStreamWriter(FileOutputStream("$outputPath/$category.gpx"), encoding)
+                OutputStreamWriter(FileOutputStream("$outputPath/$suffix$category$extension"), encoding)
             }
             val environment = template.createProcessingEnvironment(rootModel, out)
             environment.outputEncoding = encoding
@@ -107,7 +118,7 @@ class SqlToGpx(private val database: String, private val categoryPaths: List<Str
             out.close()
 
             val duration = System.currentTimeMillis() - startTime
-            LOGGER.info("Finished " + category + " after " + duration + "ms")
+            LOGGER.info("Finished $suffix$category$extension after ${duration}ms")
         } catch (e: Exception) {
             LOGGER.error(e.message, e)
         }

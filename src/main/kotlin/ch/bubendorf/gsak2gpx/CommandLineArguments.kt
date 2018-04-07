@@ -10,7 +10,7 @@ class CommandLineArguments {
     private val LOGGER = LoggerFactory.getLogger(CommandLineArguments::class.java.simpleName)
 
     // gsak2gpx --database=<PathToDB> --categories=<Kategorie> --categoryPath=<PathToCategories> --ouputPath=<OutputPath>
-    // gsak2gpx -d <PathToDB> -c <Kategorie> -p <PathToCategories> -o <OutputPath>
+    // gsak2gpx -d <PathToDB> -c <Category> -p <PathToCategories> -o <OutputPath>
 
     @Parameter(names = arrayOf("-h", "--help"), help = true)
     var isHelp: Boolean = false
@@ -24,8 +24,20 @@ class CommandLineArguments {
     @Parameter(names = arrayOf("-p", "--categoryPath"), description = "Category Paths", variableArity = true, required = false)
     var categoryPaths = Arrays.asList(".", "./include")
 
+    @Parameter(names = arrayOf("-m", "--param"), description = "List of key value pairs (key=value)", variableArity = true, required = false)
+    var params = ArrayList<String>()
+
     @Parameter(names = arrayOf("-o", "--outputPath"), description = "Output Path. Use - to write to stdout", required = false)
     var outputPath = "."
+
+    @Parameter(names = arrayOf("-x", "--extension"), description = "Extension of the generated files", required = false)
+    var extension = ".gpx"
+
+    @Parameter(names = arrayOf("-f", "--outputFormat"), description = "Output format to use (XML, html, json, etc.)", required = false)
+    var outputFormat = "XML"
+
+    @Parameter(names = arrayOf("-s", "--suffix"), description = "Suffix of the generated files", required = false)
+    var suffix = ""
 
     @Parameter(names = arrayOf("-n", "--tasks"), description = "Number of parallel tasks", required = false)
     var tasks = -1

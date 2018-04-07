@@ -31,6 +31,7 @@ class SqlTemplateMethod(private val connection: Connection) : TemplateMethodMode
 
             return ResultSetCollectionModel(rs, category)
         } catch (e: SQLException) {
+            LOGGER.error("SQL error ${e.message} with $sql")
             throw TemplateModelException(e)
         }
 
