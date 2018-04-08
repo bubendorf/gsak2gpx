@@ -1,0 +1,18 @@
+<#if (country?has_content)>
+    <#assign whereCountry = "and ca.Country='${country}'" >
+</#if>
+<#assign wpQuery = "
+select wp.cParent, wp.cCode, wp.cName, wp.cType, wp.cLat, wp.cLon,
+       wm.cComment, ca.Name, toUtf8(ca.SmartName) as SmartName
+from Waypoints wp
+join WayMemo wm on wm.cParent = wp.cParent and wm.cCode = wp.cCode
+join Caches ca on wp.cParent = ca.Code
+where ${where}
+${whereCountry!}
+order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
+limit ${limit!\"500000\"};">
+delimiter=|
+<#list sql('${wpQuery}', '${category}') as wp>
+${wp.cLon}|${wp.cLat}|${wp.cName?replace("Parkplatz", "P")?replace("Parking", "P")?replace("Orig - ", "O-")}-${wp.SmartName}|${wp.cName}<#if (wp.cComment?length > 0)> - ${wp.cComment}</#if>||||||
+</#list>
+
