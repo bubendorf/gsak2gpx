@@ -55,52 +55,57 @@ function convertToRupi() {
 }
 export -f convertToRupi
 
-#parallel --delay 1 -j $TASKS -u createCountry ::: Switzerland Germany France Netherlands Liechtenstein Austria Italy :::+ CH DE FR NL LI AT IT
-#parallel -j $TASKS -u convertToRupi ::: Parking Traditional Traditional_Corr Traditional_Disa Multi Multi_Corr Multi_Disa Unknown Unknown_Corr Unknown_Disa
+function copyToDest() {
+	mkdir -p $RUPI_PATH/aut
+	rm -f $RUPI_PATH/aut/*
+	ln $RAWRUPI_PATH/AT_* $RUPI_PATH/aut
 
-mkdir -p $RUPI_PATH/aut
-rm -f $RUPI_PATH/aut/*
-ln $RAWRUPI_PATH/AT_* $RUPI_PATH/aut
+	mkdir -p $RUPI_PATH/che
+	rm -f $RUPI_PATH/che/*
+	ln $RAWRUPI_PATH/CH_* $RUPI_PATH/che
 
-mkdir -p $RUPI_PATH/che
-rm -f $RUPI_PATH/che/*
-ln $RAWRUPI_PATH/CH_* $RUPI_PATH/che
+#	mkdir -p $RUPI_PATH/deu01
+#	rm -f $RUPI_PATH/deu01/*
+#	ln $RAWRUPI_PATH/DE_* $RUPI_PATH/deu01
 
-mkdir -p $RUPI_PATH/deu01
-rm -f $RUPI_PATH/deu01/*
-ln $RAWRUPI_PATH/DE_* $RUPI_PATH/deu01
+	mkdir -p $RUPI_PATH/deu03
+	rm -f $RUPI_PATH/deu03/*
+	ln $RAWRUPI_PATH/DE_* $RUPI_PATH/deu03
 
-mkdir -p $RUPI_PATH/deu03
-rm -f $RUPI_PATH/deu03/*
-ln $RAWRUPI_PATH/DE_* $RUPI_PATH/deu03
+#	mkdir -p $RUPI_PATH/fra01
+#	rm -f $RUPI_PATH/fra01/*
+#	ln $RAWRUPI_PATH/FR_* $RUPI_PATH/fra01
 
-mkdir -p $RUPI_PATH/fra01
-rm -f $RUPI_PATH/fra01/*
-ln $RAWRUPI_PATH/FR_* $RUPI_PATH/fra01
+#	mkdir -p $RUPI_PATH/fra07
+#	rm -f $RUPI_PATH/fra07/*
+#	ln $RAWRUPI_PATH/FR_* $RUPI_PATH/fra07
 
-mkdir -p $RUPI_PATH/fra07
-rm -f $RUPI_PATH/fra07/*
-ln $RAWRUPI_PATH/FR_* $RUPI_PATH/fra07
+	mkdir -p $RUPI_PATH/fra08
+	rm -f $RUPI_PATH/fra08/*
+	ln $RAWRUPI_PATH/FR_* $RUPI_PATH/fra08
 
-mkdir -p $RUPI_PATH/fra08
-rm -f $RUPI_PATH/fra08/*
-ln $RAWRUPI_PATH/FR_* $RUPI_PATH/fra08
+#	mkdir -p $RUPI_PATH/ita02
+#	rm -f $RUPI_PATH/ita02/*
+#	ln $RAWRUPI_PATH/IT_* $RUPI_PATH/ita02
 
-mkdir -p $RUPI_PATH/ita02
-rm -f $RUPI_PATH/ita02/*
-ln $RAWRUPI_PATH/IT_* $RUPI_PATH/ita02
+#	mkdir -p $RUPI_PATH/ita03
+#	rm -f $RUPI_PATH/ita03/*
+#	ln $RAWRUPI_PATH/IT_* $RUPI_PATH/ita03
 
-mkdir -p $RUPI_PATH/ita03
-rm -f $RUPI_PATH/ita03/*
-ln $RAWRUPI_PATH/IT_* $RUPI_PATH/ita03
+	mkdir -p $RUPI_PATH/lie
+	rm -f $RUPI_PATH/lie/*
+	ln $RAWRUPI_PATH/LI_* $RUPI_PATH/lie
 
-mkdir -p $RUPI_PATH/lie
-rm -f $RUPI_PATH/lie/*
-ln $RAWRUPI_PATH/LI_* $RUPI_PATH/lie
+	mkdir -p $RUPI_PATH/nid
+	rm -f $RUPI_PATH/nid/*
+	ln $RAWRUPI_PATH/NL_* $RUPI_PATH/nid
+}
 
-mkdir -p $RUPI_PATH/nid
-rm -f $RUPI_PATH/nid/*
-ln $RAWRUPI_PATH/NL_* $RUPI_PATH/nid
+parallel --delay 1 -j $TASKS -u createCountry ::: Switzerland Germany France Netherlands Liechtenstein Austria Italy :::+ CH DE FR NL LI AT IT
+parallel -j $TASKS -u convertToRupi ::: Parking Traditional Traditional_Corr Traditional_Disa Multi Multi_Corr Multi_Disa Unknown Unknown_Corr Unknown_Disa
+# copyToDest
+
+convertToRupi Parking
 
 #convertToRupi Traditional
 #convertToRupi Traditional_Corr

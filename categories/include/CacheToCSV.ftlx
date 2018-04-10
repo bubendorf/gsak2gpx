@@ -20,7 +20,8 @@ where ${where}
 ${whereCountry!}
 ${whereCorrected!}
 ${whereDisabled!}
-order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
+and ca.Longitude+0.0 <> 0 and ca.Latitude+0.0 <> 0 and ca.Latitude+0.0 > 39.0
+order by ca.Longitude+0.0 desc, ca.Latitude+0.0 desc
 limit ${limit!\"500000\"};">
 delimiter=|
 <#list sql('${cacheQuery}', '${category}') as ca>

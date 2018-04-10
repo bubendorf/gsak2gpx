@@ -9,7 +9,8 @@ join WayMemo wm on wm.cParent = wp.cParent and wm.cCode = wp.cCode
 join Caches ca on wp.cParent = ca.Code
 where ${where}
 ${whereCountry!}
-order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
+and wp.cLon+0.0 <> 0 and wp.cLat+0.0 <> 0 and wp.cLat+0.0 > 39.0
+order by wp.cLon+0.0 desc, wp.cLat+0.0 desc
 limit ${limit!\"500000\"};">
 delimiter=|
 <#list sql('${wpQuery}', '${category}') as wp>
