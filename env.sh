@@ -5,6 +5,7 @@ then
   export BASE=/home/mbu/src/gsak2gpx
   export DB=/home/mbu/GSAK8/data/Default/sqlite.db3
   export SQL_EXT=/home/mbu/src/gsak2gpx/lib/libsqlitefunctions
+  export ICON_PATH=/home/mbu/src/gsak2gpx/Icons
   DATE=date
   TASKS=2
 else
@@ -12,8 +13,9 @@ else
   export BASE=/Users/mbu/src/gsak2gpx
   export DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
   export SQL_EXT=/Users/mbu/src/gsak2gpx/lib/libsqlitefunctions.dylib
+  export ICON_PATH=/Users/mbu/ExtDisk/Geo/GSAK8/Sygic/Icons
   DATE=gdate
-  TASKS=4
+  TASKS=6
 fi
 
 export CAT_PATH="$BASE/categories/ggz $BASE/categories/cachepoi $BASE/categories/attributepoi $BASE/categories/include"
@@ -23,8 +25,7 @@ export RAWRUPI_PATH=$OUT_PATH/rawrupi
 export RUPI_PATH=$OUT_PATH/rupi
 export CSV_PATH=$OUT_PATH/csv
 export JAR=target/gsak2gpx-1.2.jar
-export RUPI_JAR=../rupi/target/rupi-1.1-SNAPSHOT-jar-with-dependencies.jar
-export ICON_PATH=/Users/mbu/ExtDisk/Geo/GSAK8/Sygic/Icons
+export RUPI_JAR=../rupi/target/rupi-1.1-jar-with-dependencies.jar
 
 mkdir -p $OUT_PATH
 mkdir -p $GPX_PATH
