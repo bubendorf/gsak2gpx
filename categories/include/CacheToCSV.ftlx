@@ -20,6 +20,7 @@ where ${where}
 ${whereCountry!}
 ${whereCorrected!}
 ${whereDisabled!}
+and ca.Found = 0
 and ca.Longitude+0.0 <> 0 and ca.Latitude+0.0 <> 0 and ca.Latitude+0.0 > 39.0
 order by ca.Longitude+0.0 desc, ca.Latitude+0.0 desc
 limit ${limit!\"500000\"};">

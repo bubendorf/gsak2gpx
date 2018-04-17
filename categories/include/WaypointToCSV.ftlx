@@ -9,6 +9,7 @@ join WayMemo wm on wm.cParent = wp.cParent and wm.cCode = wp.cCode
 join Caches ca on wp.cParent = ca.Code
 where ${where}
 ${whereCountry!}
+and ca.Found = 0
 and wp.cLon+0.0 <> 0 and wp.cLat+0.0 <> 0 and wp.cLat+0.0 > 39.0
 order by wp.cLon+0.0 desc, wp.cLat+0.0 desc
 limit ${limit!\"500000\"};">
@@ -16,4 +17,3 @@ delimiter=|
 <#list sql('${wpQuery}', '${category}') as wp>
 ${wp.cLon}|${wp.cLat}|${wp.cName?replace("Parkplatz", "P")?replace("Parking", "P")?replace("Orig - ", "O-")}-${wp.SmartName}|${wp.cName}<#if (wp.cComment?length > 0)> - ${wp.cComment}</#if>||||||
 </#list>
-

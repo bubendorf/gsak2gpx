@@ -23,7 +23,7 @@ export RAWRUPI_PATH=$OUT_PATH/rawrupi
 export RUPI_PATH=$OUT_PATH/rupi
 export CSV_PATH=$OUT_PATH/csv
 export JAR=target/gsak2gpx-1.2.jar
-export RUPI_JAR=../rupi/target/rupi-1.0-SNAPSHOT-jar-with-dependencies.jar
+export RUPI_JAR=../rupi/target/rupi-1.1-SNAPSHOT-jar-with-dependencies.jar
 export ICON_PATH=/Users/mbu/ExtDisk/Geo/GSAK8/Sygic/Icons
 
 mkdir -p $OUT_PATH

@@ -105,7 +105,7 @@ parallel --delay 1 -j $TASKS -u createCountry ::: Switzerland Germany France Net
 parallel -j $TASKS -u convertToRupi ::: Parking Traditional Traditional_Corr Traditional_Disa Multi Multi_Corr Multi_Disa Unknown Unknown_Corr Unknown_Disa
 # copyToDest
 
-convertToRupi Parking
+#convertToRupi Parking
 
 #convertToRupi Traditional
 #convertToRupi Traditional_Corr
