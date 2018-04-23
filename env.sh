@@ -21,8 +21,9 @@ fi
 export CAT_PATH="$BASE/categories/ggz $BASE/categories/cachepoi $BASE/categories/attributepoi $BASE/categories/include"
 export OUT_PATH=$BASE/output
 export GPX_PATH=$OUT_PATH/cachepoi
-export RAWRUPI_PATH=$OUT_PATH/rawrupi
 export RUPI_PATH=$OUT_PATH/rupi
+export SYGIC_R3D3_PATH=$OUT_PATH/SygicR3D3
+export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
 export CSV_PATH=$OUT_PATH/csv
 export JAR=target/gsak2gpx-1.2.jar
 export RUPI_JAR=../rupi/target/rupi-1.1-jar-with-dependencies.jar
@@ -30,5 +31,6 @@ export RUPI_JAR=../rupi/target/rupi-1.1-jar-with-dependencies.jar
 mkdir -p $OUT_PATH
 mkdir -p $GPX_PATH
 mkdir -p $RUPI_PATH
-mkdir -p $RAWRUPI_PATH
 mkdir -p $CSV_PATH
+mkdir -p $SYGIC_R3D3_PATH
+mkdir -p $SYGIC_R7D7_PATH
