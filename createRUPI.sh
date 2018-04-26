@@ -10,7 +10,7 @@ export CAT_PATH="$BASE/categories/rupi $BASE/categories/include"
 
 function createCSV() {
 # $1 Namen der Kategorien
-# $2 Land
+# $2 Land, muss dem GSAK Country entsprechen
 # $3 0=Enabled, 1=Disabled, Leer=Egal
 # $4 0=Ohne Corrected Coordinates, 1=Mit Corrected Coordinates, Leer=Egal
 # $5 Suffix der erzeugten Datei
@@ -20,10 +20,10 @@ function createCSV() {
 export -f createCSV
 
 function createCountry() {
-# $1 Land (Switzerland, Germany, etc.)
-# $2 Kueºrzel des Landes (CH, DE, etc.)
+# $1 Land (Switzerland, Germany, etc. Muss dem GSAK Country entsprechen)
+# $2 Kuerzel des Landes (CH, DE, etc. Kann eigentlich beliebig sein)
   createCSV Parking $1 "" "" $2_ .csv
-  createCSV Traditional,Multi,Unknown,Wherigo,Virtual,Earth,Letterbox $1 0 "" $2_ .csv
+  createCSV Traditional,Multi,Unknown,Wherigo,Virtual,Earth,Letterbox $1 0  0 $2_ .csv
   createCSV Traditional,Multi,Unknown,Wherigo,Virtual,Earth,Letterbox $1 0  1 $2_ _Corr.csv
   createCSV Traditional,Multi,Unknown,Wherigo,Virtual,Earth,Letterbox $1 1 "" $2_ _Disa.csv
 }
@@ -39,13 +39,17 @@ function copyIcon() {
 }
 export -f copyIcon
 
+# createCSV Traditional "" "" "" "Test" .csv
+#java -jar $RUPI_JAR --outputPath $RUPI_PATH $CSV_PATH/TestTraditional.csv
+#exit 0
+
 rm -f $CSV_PATH/*.csv
 rm -f $RUPI_PATH/*.csv $RUPI_PATH/*.png $RUPI_PATH/*.bmp $RUPI_PATH/*.rupi
 
 # Export von GSAK nach CSV
 parallel --delay 0.1s -j $TASKS -u createCountry ::: Switzerland Germany France Netherlands Liechtenstein Austria Italy :::+ CH DE FR NL LI AT IT
 
-# Kleine Dateien l√∂schen. Die enthalten keine Waypoints
+# Kleine Dateien loeschen. Die enthalten keine Waypoints
 find $CSV_PATH -name "*.csv" -size -15c -delete
 
 # Convert CSV to RUPI

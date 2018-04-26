@@ -21,8 +21,8 @@ ${whereCountry!}
 ${whereCorrected!}
 ${whereDisabled!}
 and ca.Found = 0
-and ca.Longitude+0.0 <> 0 and ca.Latitude+0.0 <> 0 and ca.Latitude+0.0 > 39.0
-order by ca.Longitude+0.0 desc, ca.Latitude+0.0 desc
+and ca.Longitude+0.0 <> 0 and ca.Latitude+0.0 <> 0
+order by ca.Longitude+0.0, ca.Latitude+0.0
 limit ${limit!\"500000\"};">
 delimiter=|
 <#list sql('${cacheQuery}', '${category}') as ca>
