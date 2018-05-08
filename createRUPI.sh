@@ -41,7 +41,7 @@ function copyIcon() {
 }
 export -f copyIcon
 
-# createCSV Traditional "" "" "" "Test" .csv
+#createCSV Virtual Switzerland 0 "" CH_ .csv
 #java -jar $RUPI_JAR --outputPath $RUPI_PATH $CSV_PATH/TestTraditional.csv
 #exit 0
 

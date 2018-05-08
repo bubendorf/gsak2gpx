@@ -26,7 +26,8 @@ export SYGIC_PATH=$HOME/Sync/Sygic/rupi
 export SYGIC_R3D3_PATH=$OUT_PATH/SygicR3D3
 export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
 export CSV_PATH=$OUT_PATH/csv
-export JAR=target/gsak2gpx-1.2.jar
+#export JAR=target/gsak2gpx-1.3.jar
+export JAR=build/libs/gsak2gpx-1.3-all.jar
 export RUPI_JAR=../rupi/build/libs/rupi-1.2-all.jar
 
 mkdir -p $OUT_PATH

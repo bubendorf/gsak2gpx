@@ -15,5 +15,5 @@ order by wp.cLon+0.0 desc, wp.cLat+0.0 desc
 limit ${limit!\"500000\"};">
 delimiter=|
 <#list sql('${wpQuery}', '${category}') as wp>
-${wp.cLon}|${wp.cLat}|${wp.cName?replace("Parkplatz", "P")?replace("Parking", "P")?replace("Orig - ", "O-")}-${wp.SmartName}|${wp.cName}<#if (wp.cComment?length > 10)> - ${wp.cComment[0..10]}</#if>||||||
+${wp.cLon}|${wp.cLat}|${wp.cName?replace("Parkplatz", "P")?replace("Parking", "P")?replace("Orig - ", "O-")}-${wp.SmartName}|${mbu.oneline(mbu.substring(wp.cComment, 0, 40))}||||||
 </#list>

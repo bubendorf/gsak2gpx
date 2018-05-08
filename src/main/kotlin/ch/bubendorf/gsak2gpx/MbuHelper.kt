@@ -1,16 +1,12 @@
 package ch.bubendorf.gsak2gpx
 
-import freemarker.template.*
+class MbuHelper {
+    fun substring(text: String, start: Int, end: Int): String {
+        val realEnd = Math.min(end, text.length)
+        return text.substring(start, realEnd)
+    }
 
-class SubString : TemplateMethodModelEx {
-
-    @Throws(TemplateModelException::class)
-    override fun exec(args: List<*>): TemplateModel {
-        if (args.size != 3) {
-            throw TemplateModelException("Wrong number of arguments.Must be three")
-        }
-
-        return SimpleNumber(
-                (args[1] as String).indexOf(args[0] as String))
+    fun oneline(text: String) : String {
+        return text.replace("\n", "").replace("\r", "")
     }
 }

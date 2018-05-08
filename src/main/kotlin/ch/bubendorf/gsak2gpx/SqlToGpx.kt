@@ -99,6 +99,7 @@ class SqlToGpx(private val database: String,
 
             val rootModel = hashMapOf(
             "sql" to sqlTemplateMethod,
+            "mbu" to MbuHelper(),
             "category" to category,
             "encoding" to encoding,
             "date" to LocalDate.now(),
