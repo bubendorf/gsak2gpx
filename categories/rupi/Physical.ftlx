@@ -1,0 +1,2 @@
+<#assign where="wp.cType = 'Physical Stage'" >
+<#include "WaypointToCSV.ftlx">

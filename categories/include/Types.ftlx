@@ -6,6 +6,7 @@
   <#case "E">Event Cache<#break>
   <#case "G">BenchMark<#break>
   <#case "I">Wherigo Cache<#break>
+  <#case "J">Giga-Event Cache<#break>
   <#case "L">Locationless (Reverse) Cache<#break>
   <#case "M">Multi-cache<#break>
   <#case "O">Other<#break>

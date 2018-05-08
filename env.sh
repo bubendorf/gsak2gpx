@@ -22,6 +22,7 @@ export CAT_PATH="$BASE/categories/ggz $BASE/categories/cachepoi $BASE/categories
 export OUT_PATH=$BASE/output
 export GPX_PATH=$OUT_PATH/cachepoi
 export RUPI_PATH=$OUT_PATH/rupi
+export SYGIC_PATH=$HOME/Sync/Sygic/rupi
 export SYGIC_R3D3_PATH=$OUT_PATH/SygicR3D3
 export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
 export CSV_PATH=$OUT_PATH/csv

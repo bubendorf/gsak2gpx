@@ -1,0 +1,2 @@
+<#assign where="ca.CacheType = 'E' or ca.CacheType = 'Z' or ca.CacheType = 'C' or ca.CacheType = 'F' or ca.CacheType = 'J'" >
+<#include "CacheToCSV.ftlx">

@@ -16,7 +16,7 @@ cm.UserNote, cm.Hints
 from Caches ca
 join Custom cu on ca.code = cu.cCode
 join CacheMemo cm on ca.code=cm.Code
-where ${where}
+where (${where})
 ${whereCountry!}
 ${whereCorrected!}
 ${whereDisabled!}
