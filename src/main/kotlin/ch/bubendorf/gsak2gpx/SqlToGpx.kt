@@ -1,5 +1,6 @@
 package ch.bubendorf.gsak2gpx
 
+import ch.bubendorf.utils.BuildVersion
 import freemarker.cache.FileTemplateLoader
 import freemarker.cache.MultiTemplateLoader
 import freemarker.cache.TemplateLoader
@@ -34,7 +35,7 @@ class SqlToGpx(private val database: String,
 
     fun doit() {
         try {
-            LOGGER.info("Start with $suffix$category$extension")
+            LOGGER.info("Start gsak2${outputFormat} Version ${BuildVersion.getBuildVersion()} with $suffix$category$extension")
             val startTime = System.currentTimeMillis()
             Class.forName("org.sqlite.JDBC")
             LOGGER.debug("Open " + database)

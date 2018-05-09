@@ -9,8 +9,6 @@ fun main(args: Array<String>) {
 }
 
 class Gsak2Gpx {
-
-    //    @Throws(Exception::class)
     fun gsak2gpx(args: Array<String>) {
         val cmdArgs = CommandLineArguments()
         val jCommander = JCommander(cmdArgs)
