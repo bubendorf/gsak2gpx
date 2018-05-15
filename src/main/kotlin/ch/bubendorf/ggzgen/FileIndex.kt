@@ -1,6 +1,9 @@
 package ch.bubendorf.ggzgen
 
-class FileIndex(val name: String,
+/**
+ * Represents the index into the GPX files.
+ */
+open class FileIndex(val name: String,
                 private val gch: MutableList<CacheIndex> = ArrayList()) {
     var crc: String? = null
 
@@ -11,16 +14,16 @@ class FileIndex(val name: String,
         gch.add(cacheIndex)
     }
 
-    fun toXML(): String {
-        val sb = StringBuilder()
+    fun toXML(): CharSequence {
+        val sb = StringBuilder(8192)
         sb.append("<file>\n")
-        sb.append("<name>").append(name).append("</name>\n")
-        sb.append("<crc>").append(crc).append("</crc>\n")
+        sb.append("<name>$name</name>\n")
+        sb.append("<crc>$crc</crc>\n")
         for (cacheIndex in gch) {
             sb.append(cacheIndex.toXML())
         }
 
         sb.append("</file>\n")
-        return sb.toString()
+        return sb
     }
 }

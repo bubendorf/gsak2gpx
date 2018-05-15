@@ -1,5 +1,6 @@
 package ch.bubendorf.ggzgen
 
+import ch.bubendorf.utils.BuildVersion
 import com.beust.jcommander.JCommander
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.io.output.CountingOutputStream
@@ -19,7 +20,8 @@ fun main(args: Array<String>) {
 
 /**
  * Converts a single GPX file with Geocaches into a GGZ file.
- * Uses regular expressions to parse the GPX XML file.
+ * Uses regular expressions to parse the GPX XML file and works best
+ * with the ouput from gsak2gpx.
  */
 class GGZGen {
 
@@ -54,7 +56,6 @@ class GGZGen {
             return sb.toString()
         }
 
-    @Throws(Exception::class)
     fun ggzgen(args: Array<String>) {
         val jCommander = JCommander(cmdArgs)
         jCommander.parse(*args)
@@ -68,11 +69,11 @@ class GGZGen {
             System.exit(2)
         }
 
-        val reader: BufferedReader
-        if ("-" == cmdArgs.input) {
-            reader = BufferedReader(InputStreamReader(System.`in`, cmdArgs.encoding))
+        LOGGER.info("Start GGZgen Version ${BuildVersion.getBuildVersion()} for ${cmdArgs.output}")
+        val reader = if ("-" == cmdArgs.input) {
+            BufferedReader(InputStreamReader(System.`in`, cmdArgs.encoding))
         } else {
-            reader = BufferedReader(InputStreamReader(FileInputStream(cmdArgs.input), cmdArgs.encoding), 65536)
+            BufferedReader(InputStreamReader(FileInputStream(cmdArgs.input), cmdArgs.encoding), 65536)
         }
         reader.forEachLine { rawline ->
             val line = rawline.trim { it <= ' ' }
@@ -147,33 +148,31 @@ class GGZGen {
         footer = ""
         nextCacheIndex()
         closeZipEntry()
+        LOGGER.info("Finished GGZgen (${FilenameUtils.getName(cmdArgs.output)}) with ${totalCacheCount} entries.")
         reader.close()
         closeZipFile()
     }
 
-    @Throws(IOException::class)
     private fun nextCacheIndex() {
         writer!!.flush()
         if (cacheIndex != null) {
             cacheIndex!!.awesomeness = 3.0
-            cacheIndex!!.file_len = entryCountingStream!!.count - cacheIndex!!.file_pos
+            cacheIndex!!.fileLen = entryCountingStream!!.count - cacheIndex!!.filePos
             fileIndex.addCacheIndex(cacheIndex!!)
         }
         cacheIndex = CacheIndex()
-        cacheIndex!!.file_pos = entryCountingStream!!.count
+        cacheIndex!!.filePos = entryCountingStream!!.count
     }
 
-    @Throws(FileNotFoundException::class)
     private fun openZipFile() {
         val fileOutputStream = FileOutputStream(cmdArgs.output!!)
         val bufferedStream = BufferedOutputStream(fileOutputStream, 65536)
         zipCountingStream = CountingOutputStream(bufferedStream)
         zipStream = ZipOutputStream(zipCountingStream!!)
         zipStream!!.setLevel(9)
-        zipStream!!.setComment("ggzgen by Markus Bubendorf")
+        zipStream!!.setComment("ggzgen V${BuildVersion.getBuildVersion()} by Markus Bubendorf")
     }
 
-    @Throws(IOException::class)
     private fun closeZipFile() {
         zipEntry = ZipEntry("index/com/garmin/geocaches/v0/index.xml")
         zipStream!!.putNextEntry(zipEntry!!)
@@ -185,7 +184,6 @@ class GGZGen {
         zipStream!!.close()
     }
 
-    @Throws(IOException::class)
     private fun openZipEntry() {
         closeZipEntry()
 
@@ -208,7 +206,6 @@ class GGZGen {
         tagCount = 0
     }
 
-    @Throws(IOException::class)
     private fun closeZipEntry() {
         if (writer != null) {
             writer!!.write(footer!!)
@@ -256,7 +253,7 @@ class GGZGen {
                 "other" to -1,
                 "not chosen" to -2,
                 "virtual" to 0,
-                "unknwon" to 0
+                "unknown" to 0
         )
 
     }

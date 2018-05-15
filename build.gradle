@@ -10,7 +10,11 @@ buildscript {
 }
 
 plugins {
-    id "com.github.johnrengelman.shadow" version "2.0.3"
+    id "com.github.johnrengelman.shadow" version "2.0.4"
+}
+plugins {
+    id "com.github.ben-manes.versions" version "0.17.0"
+    // Usage: gradle dependencyUpdates
 }
 
 // apply plugin: 'java'

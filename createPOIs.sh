@@ -1,6 +1,6 @@
-∑#!/bin/bash
+#!/bin/bash
 
-# Erzeugt die GPi Dateien mit den Attributen und sonstigen Zusatzinfos
+# Erzeugt die GPI Dateien mit den Attributen und sonstigen Zusatzinfos
 
 #OPTS="-Xmx2G"
 . ./env.sh

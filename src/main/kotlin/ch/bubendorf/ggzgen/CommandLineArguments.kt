@@ -18,7 +18,7 @@ class CommandLineArguments {
     @Parameter(names = arrayOf("-o", "--output"), description = "output file", required = false)
     var output: String? = null
 
-    @Parameter(names = arrayOf("-c", "--count"), description = "Split after that many tags", required = false)
+    @Parameter(names = arrayOf("-c", "--count"), description = "Split after that many tags/geocaches", required = false)
     var count = 500
 
     @Parameter(names = arrayOf("-s", "--size"), description = "Split if the file exceeds that size", required = false)

@@ -58,8 +58,8 @@ DIST_WANGEN=75
 DIST_BERN=30
 DIST_BASEL=60
 DIST_OLTEN=60
-DIST_LENZBURG=50
-DIST_ZUERICH=30
+DIST_LENZBURG=30
+DIST_ZUERICH=0
 
 # Und nun das UserFlag bei den wichtigen Caches setzen
 echo -n "Total Caches:"

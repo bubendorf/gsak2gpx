@@ -1,0 +1,4 @@
+<#assign where="ca.UserFlag = 1 and round(ca.latitude, 6) >= ${minlat} and round(ca.latitude, 6) < ${maxlat} and round(ca.longitude, 6) >= ${minlon} and round(ca.longitude, 6) < ${maxlon}" >
+<#assign limit="50000">
+<#assign loglimit="20">
+<#include "CacheToCache.ftlx">
