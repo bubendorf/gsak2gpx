@@ -25,6 +25,7 @@ class SqlToGpx(private val database: String,
                private val categoryPaths: List<String>,
                private val category: String,
                private val outputPath: String,
+               private val filename: String,
                private val suffix: String,
                private val extension: String,
                private val encoding: String,
@@ -35,7 +36,7 @@ class SqlToGpx(private val database: String,
 
     fun doit() {
         try {
-            LOGGER.info("Start gsak2${outputFormat} Version ${BuildVersion.getBuildVersion()} with $suffix$category$extension")
+            LOGGER.info("Start gsak2${outputFormat} Version ${BuildVersion.getBuildVersion()} with $suffix$filename$extension")
             val startTime = System.currentTimeMillis()
             Class.forName("org.sqlite.JDBC")
             LOGGER.debug("Open " + database)
@@ -102,17 +103,19 @@ class SqlToGpx(private val database: String,
             "sql" to sqlTemplateMethod,
             "mbu" to MbuHelper(),
             "category" to category,
+                    "filename" to filename,
             "encoding" to encoding,
             "date" to LocalDate.now(),
             "time" to LocalTime.now(),
-            "datetime" to LocalDateTime.now())
+                    "datetime" to LocalDateTime.now(),
+                    "version" to BuildVersion.getBuildVersion())
             rootModel.putAll(params)
 
             val template = cfg.getTemplate(category + ".ftlx")
             val out = if ("-" == outputPath) {
                 OutputStreamWriter(System.out, encoding)
             } else {
-                OutputStreamWriter(FileOutputStream("$outputPath/$suffix$category$extension"), encoding)
+                OutputStreamWriter(FileOutputStream("$outputPath/$suffix$filename$extension"), encoding)
             }
             val environment = template.createProcessingEnvironment(rootModel, out)
             environment.outputEncoding = encoding
@@ -120,7 +123,7 @@ class SqlToGpx(private val database: String,
             out.close()
 
             val duration = System.currentTimeMillis() - startTime
-            LOGGER.info("Finished $suffix$category$extension after ${duration}ms")
+            LOGGER.info("Finished $suffix$filename$extension after ${duration}ms")
         } catch (e: Exception) {
             LOGGER.error(e.message, e)
         }

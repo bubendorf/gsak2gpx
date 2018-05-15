@@ -20,17 +20,21 @@ fi
 
 export CAT_PATH="$BASE/categories/ggz $BASE/categories/cachepoi $BASE/categories/attributepoi $BASE/categories/include"
 export OUT_PATH=$BASE/output
+export GGZ_PATH=$OUT_PATH/ggz
+export GPI_PATH=$OUT_PATH/gpi
 export GPX_PATH=$OUT_PATH/cachepoi
 export RUPI_PATH=$OUT_PATH/rupi
 export SYGIC_PATH=$HOME/Sync/Sygic/rupi
 export SYGIC_R3D3_PATH=$OUT_PATH/SygicR3D3
 export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
 export CSV_PATH=$OUT_PATH/csv
-#export JAR=target/gsak2gpx-1.3.jar
-export JAR=build/libs/gsak2gpx-1.3-all.jar
+#export JAR=target/gsak2gpx-1.3.1.jar
+export JAR=build/libs/gsak2gpx-1.3.1-all.jar
 export RUPI_JAR=../rupi/build/libs/rupi-1.2-all.jar
 
 mkdir -p $OUT_PATH
+mkdir -p $GGZ_PATH
+mkdir -p $GPI_PATH
 mkdir -p $GPX_PATH
 mkdir -p $RUPI_PATH
 mkdir -p $CSV_PATH

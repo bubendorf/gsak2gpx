@@ -15,6 +15,9 @@ class CommandLineArguments {
     @Parameter(names = arrayOf("-i", "--input"), description = "input file. Use '-' to read from stdin.", required = true)
     var input: String = ""
 
+    @Parameter(names = arrayOf("-a", "--name"), description = "name of the internal files", required = false)
+    var name = ""
+
     @Parameter(names = arrayOf("-o", "--output"), description = "output file", required = false)
     var output: String? = null
 

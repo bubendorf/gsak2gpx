@@ -29,10 +29,10 @@ function togpi {
 # $4 Time Offset, used to create unique GPI identifiers
   /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
   START_TIME=`$DATE +%s%N`
-#  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING,notes,descr -F $OUT_PATH/$2.gpi
-  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $OUT_PATH/$2.gpi
-  replaceByte $OUT_PATH/$2.gpi 16 $4
-  replaceByte $OUT_PATH/$2.gpi 17 $4
+#  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING,notes,descr -F $GPI_PATH/$2.gpi
+  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $GPI_PATH/$2.gpi
+  replaceByte $GPI_PATH/$2.gpi 16 $4
+  replaceByte $GPI_PATH/$2.gpi 17 $4
   STOP_TIME=`$DATE +%s%N`
   /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
@@ -44,14 +44,14 @@ function multigpi {
 # $3.. Name der Kategorie
   /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Converting to $1.gpi
   START_TIME=`$DATE +%s%N`
-  OUT="-F $OUT_PATH/$1.gpi"
+  OUT="-F $GPI_PATH/$1.gpi"
   EXEC="gpsbabel -D 0"
   for ((i=2;i<=$#;i+=2))
   do
     let j=i+1
     EXEC="$EXEC -i gpx -f $GPX_PATH/${!i}.gpx -o garmin_gpi,category=\"${!j}\",bitmap=$IMG_PATH/${!i}.bmp,unique=0,writecodec=$GPI_ENCODING"
   done
-  EXEC="$EXEC -F $OUT_PATH/$1.gpi"
+  EXEC="$EXEC -F $GPI_PATH/$1.gpi"
 #  echo $EXEC
   $EXEC
   STOP_TIME=`$DATE +%s%N`

@@ -187,7 +187,7 @@ class GGZGen {
     private fun openZipEntry() {
         closeZipEntry()
 
-        val fileName = if ("-" == cmdArgs.input) "stdin.gpx" else cmdArgs.input
+        val fileName = if (cmdArgs.name.length > 0) cmdArgs.name else (if ("-" == cmdArgs.input) "stdin.gpx" else cmdArgs.input)
         val ext = FilenameUtils.getExtension(fileName)
         val basename = FilenameUtils.getBaseName(fileName)
         val newFileName = String.format(cmdArgs.format, basename, fileIndices.size, ext)

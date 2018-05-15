@@ -30,6 +30,9 @@ class CommandLineArguments {
     @Parameter(names = arrayOf("-o", "--outputPath"), description = "Output Path. Use - to write to stdout", required = false)
     var outputPath = "."
 
+    @Parameter(names = arrayOf("-a", "--filename"), description = "basename of the genrated file", required = false)
+    var filename = ""
+
     @Parameter(names = arrayOf("-x", "--extension"), description = "Extension of the generated files", required = false)
     var extension = ".gpx"
 
@@ -69,6 +72,10 @@ class CommandLineArguments {
             if ("-" == outputPath) {
                 if (categoryList.size > 1) {
                     LOGGER.error("Multiple categories are not allowed if outputPath is '-'.")
+                    return false
+                }
+                if (filename.length > 0) {
+                    LOGGER.error("A filename is not allowed if outputPath is '-'.")
                     return false
                 }
             } else {
