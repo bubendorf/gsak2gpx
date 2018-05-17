@@ -1,6 +1,9 @@
 package ch.bubendorf.ggzgen
 
 import org.apache.commons.lang.StringEscapeUtils
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.*
 
 /**
  * Simple data class for a single geocache.
@@ -29,11 +32,23 @@ open class CacheIndex {
                 "<file_pos>$filePos</file_pos>" +
                 "<file_len>$fileLen</file_len>" +
                 "<ratings>" +
-                "<awesomeness>$awesomeness</awesomeness>" +
-                "<difficulty>$difficulty</difficulty>" +
+                "<awesomeness>${awesomeness.toSimlpeString()}</awesomeness>" +
+                "<difficulty>${difficulty.toSimlpeString()}</difficulty>" +
                 "<size>$size</size>" +
-                "<terrain>$terrain</terrain>" +
+                "<terrain>${terrain.toSimlpeString()}</terrain>" +
                 "</ratings>" +
                 "</gch>\n"
+    }
+
+    fun Double.toSimlpeString():String {
+        return simpleStringFormat.format(this)
+    }
+
+    companion object {
+        val simpleStringFormat = NumberFormat.getInstance(Locale.ROOT)
+        init {
+            simpleStringFormat.minimumFractionDigits  = 0
+            simpleStringFormat.maximumFractionDigits = 1
+        }
     }
 }
