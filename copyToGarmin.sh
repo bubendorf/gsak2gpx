@@ -3,11 +3,11 @@
 # Kopiert die *ggz und *gpi Dateien auf das Garmin Oregon 700 welches unter /Volumes/GARMIN gemounted sein muss.
 # Das Garmin wird anschliessend 'ausgeworfen'.
 
-rm /Volumes/GARMIN/Garmin/GGZ/*.ggz
+rm -f /Volumes/GARMIN/Garmin/GGZ/*.ggz
 cp -pv output/ggz/*.ggz /Volumes/GARMIN/Garmin/GGZ/ &
 
-rm /Volumes/GARMIN/Garmin/POI/*.gpi
-rm /Volumes/GARMIN/Garmin/POI_Stash/*.gpi
+rm -f /Volumes/GARMIN/Garmin/POI/*.gpi
+rm -f /Volumes/GARMIN/Garmin/POI_Stash/*.gpi
 cp -pv output/gpi/*.gpi /Volumes/GARMIN/Garmin/POI &
 
 wait

@@ -26,8 +26,8 @@ open class CacheIndex {
                 "<type>$type</type>" +
                 "<lat>$lat</lat>" +
                 "<lon>$lon</lon>" +
-                "<filePos>$filePos</filePos>" +
-                "<fileLen>$fileLen</fileLen>" +
+                "<file_pos>$filePos</file_pos>" +
+                "<file_len>$fileLen</file_len>" +
                 "<ratings>" +
                 "<awesomeness>$awesomeness</awesomeness>" +
                 "<difficulty>$difficulty</difficulty>" +

@@ -43,13 +43,18 @@ then
   echo "Medium Longitude=$MIDDLE_LON"
   if [ $COUNT -ge 10000 ]
   then
-    MIDDLE_LAT=`sqlite3 $DB 'select round(latitude, 6) from Caches where userflag = 1 order by latitude limit 1 offset round((select count(*) from Caches where userflag = 1)/2);'`
-    echo "Medium Latitude=$MIDDLE_LAT"
-   (echo UserFlagBBox NordOst $MIDDLE_LAT 90 $MIDDLE_LON 180; echo UserFlagBBox NordWest $MIDDLE_LAT 90 -180 $MIDDLE_LON; echo UserFlagBBox SuedOst -90 $MIDDLE_LAT $MIDDLE_LON 180; echo UserFlagBBox SuedWest -90 $MIDDLE_LAT -180 $MIDDLE_LON;) | parallel --delay 0.5 --colsep " " -j $TASKS --ungroup doit
+    # Create four GGZ files
+    MIDDLE_LAT_WEST=`sqlite3 $DB "select round(latitude, 6) from Caches where userflag = 1 and longitude+0.0 <  $MIDDLE_LON order by latitude limit 1 offset round((select count(*) from Caches where userflag = 1 and longitude+0.0 <  $MIDDLE_LON)/2);"`
+    MIDDLE_LAT_EAST=`sqlite3 $DB "select round(latitude, 6) from Caches where userflag = 1 and longitude+0.0 >= $MIDDLE_LON order by latitude limit 1 offset round((select count(*) from Caches where userflag = 1 and longitude+0.0 >= $MIDDLE_LON)/2);"`
+    echo "Medium Latitude (West)=$MIDDLE_LAT_WEST"
+    echo "Medium Latitude (East)=$MIDDLE_LAT_EAST"
+   (echo UserFlagBBox NordOst $MIDDLE_LAT_EAST 90 $MIDDLE_LON 180; echo UserFlagBBox NordWest $MIDDLE_LAT_WEST 90 -180 $MIDDLE_LON; echo UserFlagBBox SuedOst -90 $MIDDLE_LAT_EAST $MIDDLE_LON 180; echo UserFlagBBox SuedWest -90 $MIDDLE_LAT_WEST -180 $MIDDLE_LON;) | parallel --delay 0.5 --colsep " " -j $TASKS --ungroup doit
   else
-    (echo UserFlagBBox Ost -90 90 $MIDDLE_LON 180; echo UserFlagBBox West -90 90 -180 $MIDDLE_LON;) | parallel --delay 0.5 --colsep " " -j $TASKS --ungroup doit 
+    # Create two GGZ files
+    (echo UserFlagBBox Ost -90 90 $MIDDLE_LON 180; echo UserFlagBBox West -90 90 -180 $MIDDLE_LON;) | parallel --delay 0.5 --colsep " " -j $TASKS --ungroup doit
   fi
 else
+  # Create one single GGZ file
   doit UserFlagCaches caches
 fi
 
