@@ -204,6 +204,10 @@ class GGZGen {
         writer = OutputStreamWriter(checkedStream!!, cmdArgs.encoding)
         writer!!.write(header)
         tagCount = 0
+        if (cacheIndex != null) {
+            writer!!.flush()
+            cacheIndex!!.filePos = entryCountingStream!!.count
+        }
     }
 
     private fun closeZipEntry() {
