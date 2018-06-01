@@ -32,7 +32,7 @@ open class CacheIndex {
                 "<file_pos>$filePos</file_pos>" +
                 "<file_len>$fileLen</file_len>" +
                 "<ratings>" +
-                "<awesomeness>${awesomeness.toSimlpeString()}</awesomeness>" +
+//                "<awesomeness>${awesomeness.toSimlpeString()}</awesomeness>" +
                 "<difficulty>${difficulty.toSimlpeString()}</difficulty>" +
                 "<size>$size</size>" +
                 "<terrain>${terrain.toSimlpeString()}</terrain>" +

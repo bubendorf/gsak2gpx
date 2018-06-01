@@ -1,6 +1,6 @@
 #!/bin/sh
 
-./createCacheGGZ.sh &
+./createGGZ.sh &
 sleep 2
 
 ./createPOIs.sh &

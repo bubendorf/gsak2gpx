@@ -150,7 +150,7 @@ class GGZGen {
         closeZipEntry()
         LOGGER.info("Finished GGZgen (${FilenameUtils.getName(cmdArgs.output)}) with ${totalCacheCount} entries.")
         reader.close()
-        closeZipFile()
+        writeIndexAndCloseZipFile()
     }
 
     private fun nextCacheIndex() {
@@ -173,7 +173,7 @@ class GGZGen {
         zipStream!!.setComment("ggzgen V${BuildVersion.getBuildVersion()} by Markus Bubendorf")
     }
 
-    private fun closeZipFile() {
+    private fun writeIndexAndCloseZipFile() {
         zipEntry = ZipEntry("index/com/garmin/geocaches/v0/index.xml")
         zipStream!!.putNextEntry(zipEntry!!)
         writer = OutputStreamWriter(zipStream!!, cmdArgs.encoding)
