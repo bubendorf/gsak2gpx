@@ -68,6 +68,9 @@ ln $RUPI_PATH/* $SYGIC_R7D7_PATH
 rm -f $SYGIC_R3D3_PATH/*.csv $SYGIC_R3D3_PATH/*.png $SYGIC_R3D3_PATH/*.bmp $SYGIC_R3D3_PATH/*.rupi
 ln $RUPI_PATH/* $SYGIC_R3D3_PATH
 
+rm -f $SYGIC_R4D4_PATH/*.csv $SYGIC_R4D4_PATH/*.png $SYGIC_R4D4_PATH/*.bmp $SYGIC_R4D4_PATH/*.rupi
+ln $RUPI_PATH/* $SYGIC_R4D4_PATH
+
 # Dem Syncthing ein "Scan" und "Override" schicken damit es Aenderungen von Clients ueberschreibt
 echo Trigger Syncthing
 curl -s -X POST -H 'X-API-Key: 2TGSSVxpbaogJ5rQ7hAajHk6ebfUQGRf' 'http://127.0.0.1:8384/rest/db/scan?folder=default'
@@ -76,6 +79,8 @@ curl -s -X POST -H 'X-API-Key: 2TGSSVxpbaogJ5rQ7hAajHk6ebfUQGRf' 'http://127.0.0
 curl -s -X POST -H 'X-API-Key: 2TGSSVxpbaogJ5rQ7hAajHk6ebfUQGRf' 'http://127.0.0.1:8384/rest/db/override?folder=t5mtj-tmdkt'
 curl -s -X POST -H 'X-API-Key: 2TGSSVxpbaogJ5rQ7hAajHk6ebfUQGRf' 'http://127.0.0.1:8384/rest/db/scan?folder=tyhfd-qkcbz'
 curl -s -X POST -H 'X-API-Key: 2TGSSVxpbaogJ5rQ7hAajHk6ebfUQGRf' 'http://127.0.0.1:8384/rest/db/override?folder=tyhfd-qkcbz'
+curl -s -X POST -H 'X-API-Key: 2TGSSVxpbaogJ5rQ7hAajHk6ebfUQGRf' 'http://127.0.0.1:8384/rest/db/scan?folder=m49bv-hare6'
+curl -s -X POST -H 'X-API-Key: 2TGSSVxpbaogJ5rQ7hAajHk6ebfUQGRf' 'http://127.0.0.1:8384/rest/db/override?folder=m49bv-hare6'
 
 #createCountry Switzerland CH
 #convertToRupi Parking

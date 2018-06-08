@@ -26,6 +26,7 @@ export GPX_PATH=$OUT_PATH/cachepoi
 export RUPI_PATH=$OUT_PATH/rupi
 export SYGIC_PATH=$HOME/Sync/Sygic/rupi
 export SYGIC_R3D3_PATH=$OUT_PATH/SygicR3D3
+export SYGIC_R4D4_PATH=$OUT_PATH/SygicR4D4
 export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
 export CSV_PATH=$OUT_PATH/csv
 #export JAR=target/gsak2gpx-1.3.1.jar
@@ -39,4 +40,5 @@ mkdir -p $GPX_PATH
 mkdir -p $RUPI_PATH
 mkdir -p $CSV_PATH
 mkdir -p $SYGIC_R3D3_PATH
+mkdir -p $SYGIC_R4D4_PATH
 mkdir -p $SYGIC_R7D7_PATH
