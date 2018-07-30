@@ -8,7 +8,7 @@
     <#assign whereCorrected = "and ca.HasCorrected=${corrected}" >
 </#if>
 <#assign cacheQuery = "
-select ca.Code, ca.Name, toUtf8(ca.SmartName) as SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
+select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
 ca.Difficulty, oneChar(ca.Difficulty) as Dif1a, ca.Terrain, oneChar(ca.Terrain) as Ter1a, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate, ca.TempDisabled,
 ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.Country, ca.State, ca.County,
 cu.GCV_AverageVote, cu.FavRatio, cu.AvgLogsPerYear, cu.MeinKommentar,

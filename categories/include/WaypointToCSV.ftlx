@@ -3,7 +3,7 @@
 </#if>
 <#assign wpQuery = "
 select wp.cParent, wp.cCode, wp.cName, wp.cType, wp.cLat, wp.cLon,
-       wm.cComment, ca.Name, toUtf8(ca.SmartName) as SmartName
+       wm.cComment, ca.Name, ca.SmartName
 from Waypoints wp
 join WayMemo wm on wm.cParent = wp.cParent and wm.cCode = wp.cCode
 join Caches ca on wp.cParent = ca.Code

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="${encoding}"?>
 <#include "Types.ftlx">
 <#assign cacheQuery = "
-select ca.Code, ca.Name, toUtf8(ca.SmartName) as SmartName, ca.Latitude, ca.Longitude, ca.CacheType,
+select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType,
 ca.Elevation, ca.Difficulty, ca.Terrain, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate,
 ca.TempDisabled, ca.Archived,
 ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.County, ca.Country, ca.State, ca.Distance,
