@@ -4,6 +4,7 @@ select wp.cParent, wp.cCode, wp.cName, wp.cType, wp.cLat, wp.cLon,
 from Waypoints wp
 join WayMemo wm on wm.cParent = wp.cParent and wm.cCode = wp.cCode
 join Caches ca on wp.cParent = ca.Code
+join Custom cu on ca.code = cu.cCode
 ${join!}
 where ${where}
 order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}

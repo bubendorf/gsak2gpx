@@ -6,7 +6,7 @@
 . ./env.sh
 export IMG_PATH=$BASE/images/gpigen
 
-CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5
+CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5,Tour1
 #CATEGORIES=HasParking
 # gpsbabel kommt NICHT mit utf-8 zurecht! Also nehmen wir halt das Windows-Zeugs!
 # Valid values are windows-1250 to windows-1257.
@@ -27,12 +27,13 @@ function togpi {
 # $2 Name der GPI Datei
 # $3 Name der Kategorie
 # $4 Time Offset, used to create unique GPI identifiers
+  TIME_OFFSET=$((60*$4))
   /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
   START_TIME=`$DATE +%s%N`
 #  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING,notes,descr -F $GPI_PATH/$2.gpi
-  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $GPI_PATH/$2.gpi
-  replaceByte $GPI_PATH/$2.gpi 16 $4
-  replaceByte $GPI_PATH/$2.gpi 17 $4
+  $GPSBABEL -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING,timeoffset=$TIME_OFFSET -F $GPI_PATH/$2.gpi
+#  replaceByte $GPI_PATH/$2.gpi 16 $4
+#  replaceByte $GPI_PATH/$2.gpi 17 $4
   STOP_TIME=`$DATE +%s%N`
   /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
@@ -45,7 +46,7 @@ function multigpi {
   /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Converting to $1.gpi
   START_TIME=`$DATE +%s%N`
   OUT="-F $GPI_PATH/$1.gpi"
-  EXEC="gpsbabel -D 0"
+  EXEC="$GPSBABEL -D 0"
   for ((i=2;i<=$#;i+=2))
   do
     let j=i+1
@@ -65,15 +66,16 @@ togpi HasParking 52-Attr-HasParking A-HasParking 52 &
 togpi Parking 35-Parking "Parking Place" 35 &
 togpi Favorites 50-Attr-Favorites A-Favoriten 50 &
 togpi Simple 51-Attr-Simple A-Simple 51 &
-togpi Virtual 11-Virtual "Virtual Stage" 11 &
+togpi Virtual 16-Virtual "Virtual Stage" 16 &
 togpi Corrected 53-Attr-Corrected A-Corrected 53 &
 togpi Original 34-Original "Original Coordinats" 34 &
 togpi Reference 33-Reference "Reference Point" 33 &
 togpi Trailhead 32-Trailhead Trailhead 32 &
-togpi Physical 10-Physical "Physical Stage" 10 &
+togpi Physical 17-Physical "Physical Stage" 17 &
 togpi Terrain5 54-Attr-Terrain5 A-Terrain5 54 &
 togpi Disabled 55-Attr-Disabled A-Disabled 55 &
 togpi Final 31-Final Final 31 &
+togpi Tour1 10-Tour1 "Tour 1" 10 &
 
 wait
 

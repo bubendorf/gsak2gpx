@@ -31,7 +31,7 @@ function togpi {
   /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
   START_TIME=`$DATE +%s%N`
 #  echo Convert $1.gpx to $1.gpi
-  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $GPI_PATH/$2.gpi
+  $GPSBABEL -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $GPI_PATH/$2.gpi
   replaceByte $GPI_PATH/$2.gpi 16 $4
   replaceByte $GPI_PATH/$2.gpi 17 $4
   STOP_TIME=`$DATE +%s%N`
@@ -47,7 +47,7 @@ function multigpi {
   /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Converting to $1.gpi
   START_TIME=`$DATE +%s%N`
   OUT="-F $GPI_PATH/$1.gpi"
-  EXEC="gpsbabel -D 0"
+  EXEC="$GPSBABEL -D 0"
   for ((i=4;i<=$#;i+2))
   do
     EXEC="$EXEC -i gpx -f $GPX_PATH/${!i}.gpx"
