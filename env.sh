@@ -19,7 +19,7 @@ else
 fi
 
 # export GPSBABEL=/usr/local/bin/gpsbabel
-export GPSBABEL=/Users/mbu/src/gpsbabel/gpsbabel
+export GPSBABEL=~/bin/gpsbabel
 export CAT_PATH="$BASE/categories/ggz $BASE/categories/cachepoi $BASE/categories/attributepoi $BASE/categories/include"
 export OUT_PATH=$BASE/output
 export GGZ_PATH=$OUT_PATH/ggz
