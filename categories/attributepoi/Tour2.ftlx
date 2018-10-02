@@ -1,0 +1,2 @@
+<#assign where="cu.Tour2 = 1 and wp.cType <> 'Parking Area'" >
+<#include "WaypointToPOI.ftlx">

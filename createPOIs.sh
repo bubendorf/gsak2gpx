@@ -6,7 +6,7 @@
 . ./env.sh
 export IMG_PATH=$BASE/images/gpigen
 
-CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5,Tour1
+CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5,Tour1,Tour2,Tour3
 #CATEGORIES=HasParking
 # gpsbabel kommt NICHT mit utf-8 zurecht! Also nehmen wir halt das Windows-Zeugs!
 # Valid values are windows-1250 to windows-1257.
@@ -76,6 +76,6 @@ togpi Terrain5 54-Attr-Terrain5 A-Terrain5 54 &
 togpi Disabled 55-Attr-Disabled A-Disabled 55 &
 togpi Final 31-Final Final 31 &
 togpi Tour1 10-Tour1 "Tour 1" 10 &
-
+togpi Tour2 11-Tour2 "Tour 2" 11 &
+togpi Tour3 12-Tour3 "Tour 3" 12 &
 wait
-
