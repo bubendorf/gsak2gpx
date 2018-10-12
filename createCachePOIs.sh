@@ -14,8 +14,6 @@ CATEGORIES=Traditional,Mystery,Multi,OtherCaches
 GPX_ENCODING=utf-8
 GPI_ENCODING=windows-1252
 
-java $OPTS -jar $JAR --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
-
 # param 1: file
 # param 2: offset
 # param 3: value
@@ -28,15 +26,22 @@ function togpi {
 # $2 Name der GPI Datei
 # $3 Name der Kategorie
 # $4 Time Offset, used to create unique GPI identifiers
-  /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
-  START_TIME=`$DATE +%s%N`
-#  echo Convert $1.gpx to $1.gpi
-  $GPSBABEL -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $GPI_PATH/$2.gpi
-  replaceByte $GPI_PATH/$2.gpi 16 $4
-  replaceByte $GPI_PATH/$2.gpi 17 $4
-  STOP_TIME=`$DATE +%s%N`
-  /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
-  /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
+  rm $GPI_PATH/$2.gpi
+  filesize=$( wc -c "$GPX_PATH/$1.gpx" | awk '{print $1}' )
+  if [ $filesize -ge 550 ]
+  then 
+	  /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
+	  START_TIME=`$DATE +%s%N`
+	#  echo Convert $1.gpx to $1.gpi
+	  $GPSBABEL -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $GPI_PATH/$2.gpi
+	  replaceByte $GPI_PATH/$2.gpi 16 $4
+	  replaceByte $GPI_PATH/$2.gpi 17 $4
+	  STOP_TIME=`$DATE +%s%N`
+	  /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
+	  /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
+  else
+    echo "File $GPX_PATH/$1.gpx is empty. Skipping!"
+  fi
 }
 
 function multigpi {
@@ -59,6 +64,8 @@ function multigpi {
   /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
+
+java $OPTS -jar $JAR --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
 
 togpi Traditional 20-Traditional "Traditional Cache" 20 &
 togpi Mystery 22-Mystery "Mystery Cache" 22 &
