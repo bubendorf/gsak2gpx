@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="${encoding}" standalone="no"?>
 <#assign cacheQuery = "
 select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
 ca.Difficulty, oneChar(ca.Difficulty) as Dif1a, ca.Terrain, oneChar(ca.Terrain) as Ter1a, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate, ca.TempDisabled,
@@ -11,15 +12,24 @@ ${join!}
 where ${where}
 order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
 limit ${limit!\"200000\"};">
-<?xml version="1.0" encoding="${encoding}" standalone="no"?>
+<#assign bboxQuery = "
+select round(min(ca.Latitude-0.0), 6) as minlat, round(min(ca.Longitude-0.0), 6) as minlon, 
+       round(max(ca.Latitude+0.0), 6) as maxlat, round(max(ca.Longitude+0.0), 6) as maxlon
+from Caches ca
+join Custom cu on ca.code = cu.cCode
+${join!}
+where ${where};
+">
+<#list sql('${bboxQuery}') as bbox>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     creator="Markus Bubendorf" version="1.1"
     xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
     <metadata>
         <desc>GPX output for Garmin POI Loader</desc>
         <time>${datetime}</time>
-        <bounds minlat="-53" minlon="-45" maxlat="80" maxlon="45"/>
+        <bounds minlat="${bbox.minlat}" minlon="${bbox.minlon}" maxlat="${bbox.maxlat}" maxlon="${bbox.maxlon}" />
     </metadata>
+</#list>
 
 <#list sql('${cacheQuery}', '${category}') as wpt>
     <wpt lat="${wpt.Latitude}" lon="${wpt.Longitude}">

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="${encoding}" standalone="no"?>
 <#assign wpQuery = "
 select wp.cParent, wp.cCode, wp.cName, wp.cType, wp.cLat, wp.cLon,
        wm.cComment, ca.Name, ca.SmartName
@@ -9,15 +10,24 @@ ${join!}
 where ${where}
 order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
 limit ${limit!\"200000\"};">
-<?xml version="1.0" encoding="${encoding}" standalone="no"?>
+<#assign bboxQuery = "
+select round(min(wp.cLat-0.0), 6) as minlat, round(min(wp.cLon-0.0), 6) as minlon, 
+       round(max(wp.cLat+0.0), 6) as maxlat, round(max(wp.cLon+0.0), 6) as maxlon
+from Waypoints wp
+join Caches ca on wp.cParent = ca.Code
+join Custom cu on ca.code = cu.cCode
+where ${where};
+">
+<#list sql('${bboxQuery}') as bbox>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     creator="Markus Bubendorf" version="1.1"
     xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
     <metadata>
         <desc>GPX output for Garmin POI Loader</desc>
         <time>${datetime}</time>
-        <bounds maxlat="53.000000" maxlon="45.0000" minlat="-53.000000" minlon="-45.000000"/>
+        <bounds minlat="${bbox.minlat}" minlon="${bbox.minlon}" maxlat="${bbox.maxlat}" maxlon="${bbox.maxlon}" />
     </metadata>
+</#list>
 
 <#list sql('${wpQuery}', '${category}') as wp>
     <wpt lat="${wp.cLat}" lon="${wp.cLon}">

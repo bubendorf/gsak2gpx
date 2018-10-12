@@ -19,9 +19,11 @@ order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
 limit ${limit!\"50000\"};
 ">
 <#assign bboxQuery = "
-select round(min(ca.Latitude)-0.000001, 6) as minlat, round(min(ca.Longitude)-0.000001, 6) as minlon, 
-       round(max(ca.Latitude)+0.000001, 6) as maxlat, round(max(ca.Longitude)+0.000001, 6) as maxlon
+select round(min(ca.Latitude-0.0), 6) as minlat, round(min(ca.Longitude-0.0), 6) as minlon, 
+       round(max(ca.Latitude+0.0), 6) as maxlat, round(max(ca.Longitude+0.0), 6) as maxlon
 from Caches ca
+join Custom cu on ca.code = cu.cCode
+${join!}
 where ${where};
 ">
 <#assign logQuery = "
