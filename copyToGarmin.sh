@@ -3,6 +3,12 @@
 # Kopiert die *ggz und *gpi Dateien auf das Garmin Oregon 700 welches unter /Volumes/GARMIN gemounted sein muss.
 # Das Garmin wird anschliessend 'ausgeworfen'.
 
+while [ ! -d "/Volumes/GARMIN/Garmin" ]
+do
+  echo "Waiting for Garmin Oregon..."
+  sleep 2
+done
+
 rm -f /Volumes/GARMIN/Garmin/GGZ/*.ggz
 cp -pv output/ggz/*.ggz /Volumes/GARMIN/Garmin/GGZ/ &
 

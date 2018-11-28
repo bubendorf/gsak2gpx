@@ -49,14 +49,14 @@ rm -f $CSV_PATH/*.csv
 rm -f $RUPI_PATH/*.csv $RUPI_PATH/*.png $RUPI_PATH/*.bmp $RUPI_PATH/*.rupi
 
 # Export von GSAK nach CSV
-parallel --delay 0.2s -j $TASKS -u createCountry ::: Switzerland Germany France Netherlands Liechtenstein Austria Italy :::+ CH DE FR NL LI AT IT
+parallel --delay 0.2s -j $TASKS -u createCountry ::: Switzerland Germany France Netherlands Liechtenstein Austria Italy Belarus Russia Czechia Latvia Poland Finland Norway Sweden Estonia Ukraine Lithuania :::+ CH DE FR NL LI AT IT BY RU CZ LV PL FI NO SE EE UA LT
 
 # Kleine (<15 Bytes) Dateien loeschen. Die enthalten keine Waypoints
 find $CSV_PATH -name "*.csv" -size -15c -delete
 
 # Convert CSV to RUPI
 java -jar $RUPI_JAR --encoding $ENCODING --outputPath $RUPI_PATH $CSV_PATH/*.csv
-parallel -j $TASKS -u copyIcon ::: Parking Traditional Traditional_Corr Traditional_Disa Multi Multi_Corr Multi_Disa Unknown Unknown_Corr Unknown_Disa Wherigo Wherigo_Corr Wherigo_Disa VirtualCache VirtualCache_Corr VirtualCache_Disa Earth Earth_Corr Earth_Disa Letterbox Letterbox_Corr Letterbox_Disa Event Virtual Physical ::: CH DE FR NL LI AT IT
+parallel -j $TASKS -u copyIcon ::: Parking Traditional Traditional_Corr Traditional_Disa Multi Multi_Corr Multi_Disa Unknown Unknown_Corr Unknown_Disa Wherigo Wherigo_Corr Wherigo_Disa VirtualCache VirtualCache_Corr VirtualCache_Disa Earth Earth_Corr Earth_Disa Letterbox Letterbox_Corr Letterbox_Disa Event Virtual Physical ::: CH DE FR NL LI AT IT BY RU CZ LV PL FI NO SE EE UA LT
 
 # Link copies to the various import folders
 rm -f $SYGIC_PATH/*.csv $SYGIC_PATH/*.png $SYGIC_PATH/*.bmp $SYGIC_PATH/*.rupi

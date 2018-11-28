@@ -5,6 +5,8 @@
 export OPTS="-XX:+UseParallelGC -Xmx1500M -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
 . ./env.sh
 
+./updateSmartNames.sh
+
 export ENCODING=utf-8
 # Maximum number of geocaches in a single GPX file within the GGZ file
 # export CACHES_PER_GPX=300
