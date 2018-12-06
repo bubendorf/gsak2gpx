@@ -4,7 +4,7 @@
 
 OPTS="-Xmx2G -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
 . ./env.sh
-export IMG_PATH=$BASE/images/cachepoi
+export IMG_PATH=images/cachepoi
 
 CATEGORIES=Traditional,Mystery,Multi,OtherCaches
 #CATEGORIES=OtherCaches
@@ -26,10 +26,10 @@ function togpi {
 # $2 Name der GPI Datei
 # $3 Name der Kategorie
 # $4 Time Offset, used to create unique GPI identifiers
-  rm $GPI_PATH/$2.gpi
+  rm -f $GPI_PATH/$2.gpi
   filesize=$( wc -c "$GPX_PATH/$1.gpx" | awk '{print $1}' )
   if [ $filesize -ge 550 ]
-  then 
+  then
 	  /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
 	  START_TIME=`$DATE +%s%N`
 	#  echo Convert $1.gpx to $1.gpi
@@ -65,7 +65,7 @@ function multigpi {
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
 
-java $OPTS -jar $JAR --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
+java $OPTS -jar $JAR --database `$CYG2DOS $DB` --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
 
 togpi Traditional 20-Traditional "Traditional Cache" 20 &
 togpi Mystery 22-Mystery "Mystery Cache" 22 &

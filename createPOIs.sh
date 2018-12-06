@@ -4,7 +4,7 @@
 
 #OPTS="-Xmx2G"
 . ./env.sh
-export IMG_PATH=$BASE/images/gpigen
+export IMG_PATH=images/gpigen
 
 CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5,Tour1,Tour2,Tour3
 #CATEGORIES=HasParking
@@ -25,17 +25,15 @@ function togpi {
 # $2 Name der GPI Datei
 # $3 Name der Kategorie
 # $4 Time Offset, used to create unique GPI identifiers
-  rm $GPI_PATH/$2.gpi
+  rm -f $GPI_PATH/$2.gpi
   filesize=$( wc -c "$GPX_PATH/$1.gpx" | awk '{print $1}' )
   if [ $filesize -ge 550 ]
-  then 
-	  TIME_OFFSET=$((60*$4))
+  then
 	  /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
 	  START_TIME=`$DATE +%s%N`
-	#  gpsbabel -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING,notes,descr -F $GPI_PATH/$2.gpi
-	  $GPSBABEL -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING,timeoffset=$TIME_OFFSET -F $GPI_PATH/$2.gpi
-	#  replaceByte $GPI_PATH/$2.gpi 16 $4
-	#  replaceByte $GPI_PATH/$2.gpi 17 $4
+	  $GPSBABEL -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $GPI_PATH/$2.gpi
+	  replaceByte $GPI_PATH/$2.gpi 16 $4
+	  replaceByte $GPI_PATH/$2.gpi 17 $4
 	  STOP_TIME=`$DATE +%s%N`
 	  /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
 	  /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
@@ -66,7 +64,8 @@ function multigpi {
 }
 
 # multigpi 99-Attributes.gpi Favorites A-Favoriten Simple A-Simple HasParking A-HasParking Corrected A-Corrected Terrain5 A-Terrain5 Disabled A-Disabled
-java $OPTS -jar $JAR --database $DB --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
+
+java $OPTS -jar $JAR --database `$CYG2DOS $DB` --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
 
 togpi HasParking 52-Attr-HasParking A-HasParking 52 &
 togpi Parking 35-Parking "Parking Place" 35 &

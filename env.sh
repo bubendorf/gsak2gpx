@@ -1,33 +1,53 @@
 #!/bin/bash
-if [ -f /home/mbu/GSAK8/data/Default/sqlite.db3 ]
+if [ -f /cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data/Default/sqlite.db3 ]
 then
-# Seems we are on N042
-  export BASE=/home/mbu/src/gsak2gpx
-  export DB=/home/mbu/GSAK8/data/Default/sqlite.db3
-  export SQL_EXT=/home/mbu/src/gsak2gpx/lib/libsqlitefunctions
-  export ICON_PATH=/home/mbu/src/gsak2gpx/Icons
+# Seems we are on Gala
+  export BASE=/cygdrive/c/src/Kotlin/gsak2gpx
+  export DB=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data/Default/sqlite.db3
+  export SQL_EXT=/cygdrive/c/src/cygwin/sqlitefunctions/libsqlitefunctions.dll
+  export ICON_PATH=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/Sygic/Icons
+  export CYG2DOS="cygpath -d "
+  export SYNCTHING_KEY="oxxZbivHdtmzKHYbwS2vFwSSGQJQPUfM"
+  export SYGIC_PATH=/cygdrive/c/Users/Markus/Sync/Sygic/rupi
   DATE=date
-  TASKS=2
+  TASKS=8
+  export GSAK8_INST=/cygdrive/c/Geo/GSAK8
+  export GPSBABEL=$GSAK8_INST/gpsbabel.exe
 else
-# Seems we are on the Mac
-  export BASE=/Users/mbu/src/gsak2gpx
-  export DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
-  export SQL_EXT=/Users/mbu/src/gsak2gpx/lib/libsqlitefunctions.dylib
-  export ICON_PATH=/Users/mbu/ExtDisk/Geo/GSAK8/Sygic/Icons
-  DATE=gdate
-  TASKS=6
+  if [ -f /home/mbu/GSAK8/data/Default/sqlite.db3 ]
+  then
+  # Seems we are on N042
+    export BASE=/home/mbu/src/gsak2gpx
+    export DB=/home/mbu/GSAK8/data/Default/sqlite.db3
+    export SQL_EXT=/home/mbu/src/gsak2gpx/lib/libsqlitefunctions
+    export ICON_PATH=/home/mbu/src/gsak2gpx/Icons
+	export CYG2DOS="echo "
+	export SYGIC_PATH=$HOME/Sync/Sygic/rupi
+    DATE=date
+    TASKS=2
+  export GPSBABEL=~/bin/gpsbabel
+  else
+  # Seems we are on the Mac
+    export BASE=/Users/mbu/src/gsak2gpx
+    export DB=/Users/mbu/ExtDisk/Geo/GSAK8/data/Default/sqlite.db3
+    export SQL_EXT=/Users/mbu/src/gsak2gpx/lib/libsqlitefunctions.dylib
+    export ICON_PATH=/Users/mbu/ExtDisk/Geo/GSAK8/Sygic/Icons
+	export CYG2DOS="echo "
+	export SYNCTHING_KEY="2TGSSVxpbaogJ5rQ7hAajHk6ebfUQGRf"
+    export SYGIC_PATH=$HOME/Sync/Sygic/rupi
+    DATE=gdate
+    TASKS=6
+  export GPSBABEL=~/bin/gpsbabel
+  fi
 fi
 
 # export GPSBABEL=/usr/local/bin/gpsbabel
-export GPSBABEL=~/bin/gpsbabel
-export CAT_PATH="$BASE/categories/ggz $BASE/categories/cachepoi $BASE/categories/attributepoi $BASE/categories/include"
-export OUT_PATH=$BASE/output
+export CAT_PATH="categories/ggz categories/cachepoi categories/attributepoi categories/include"
+export OUT_PATH=output
 export GGZ_PATH=$OUT_PATH/ggz
 export GPI_PATH=$OUT_PATH/gpi
 export GPX_PATH=$OUT_PATH/cachepoi
 export RUPI_PATH=$OUT_PATH/rupi
-export SYGIC_PATH=$HOME/Sync/Sygic/rupi
-export SYGIC_R3D3_PATH=$OUT_PATH/SygicR3D3
 export SYGIC_R4D4_PATH=$OUT_PATH/SygicR4D4
 export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
 export CSV_PATH=$OUT_PATH/csv
@@ -41,6 +61,5 @@ mkdir -p $GPI_PATH
 mkdir -p $GPX_PATH
 mkdir -p $RUPI_PATH
 mkdir -p $CSV_PATH
-mkdir -p $SYGIC_R3D3_PATH
 mkdir -p $SYGIC_R4D4_PATH
 mkdir -p $SYGIC_R7D7_PATH

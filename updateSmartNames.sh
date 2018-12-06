@@ -5,7 +5,7 @@ echo Update SmartNames
 
 LENGTH=24
 WIDTH=206
-JAR=/Users/mbu/src/SmartNames/build/libs/SmartNames-0.2-all.jar
+JAR=../SmartNames/build/libs/SmartNames-0.2-all.jar
 OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug"
 
-java $OPTS -jar $JAR --database $DB --length $LENGTH --width $WIDTH --extension $SQL_EXT
+java $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT`

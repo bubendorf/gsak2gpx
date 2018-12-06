@@ -28,8 +28,8 @@ function doit() {
   else
     GGZNAME=$2
   fi
-  java $OPTS -jar $JAR --database $DB --categoryPath $CAT_PATH --categories $1 --param minlat=$3 maxlat=$4 minlon=$5 maxlon=$6 --outputPath - --encoding $ENCODING | \
-    java $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $GGZ_PATH/$GGZNAME.ggz --name $GGZNAME.gpx --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
+  java $OPTS -jar $JAR --database `$CYG2DOS $DB` --categoryPath $CAT_PATH --categories $1 --param minlat=$3 maxlat=$4 minlon=$5 maxlon=$6 --outputPath - --encoding $ENCODING | \
+  java $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $GGZ_PATH/$GGZNAME.ggz --name $GGZNAME.gpx --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
 }
 export -f doit
 
