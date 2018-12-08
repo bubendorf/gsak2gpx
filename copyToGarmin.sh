@@ -1,30 +1,21 @@
 #!/bin/sh
 
-# Kopiert die *ggz und *gpi Dateien auf das Garmin Oregon 700 welches unter /Volumes/GARMIN gemounted sein muss.
+# Kopiert die *ggz und *gpi Dateien auf das Garmin Oregon 700 welches unter G: bzw. /cygdrive/g gemounted sein muss.
 # Das Garmin wird anschliessend 'ausgeworfen'.
 
-while [ ! -d "/Volumes/GARMIN/Garmin" ]
+while [ ! -d "/cygdrive/g/Garmin" ]
 do
-  echo "Waiting for Garmin Oregon..."
+  echo "Waiting for Garmin Oregon on /cygdrive/g ..."
   sleep 2
 done
 
-rm -f /Volumes/GARMIN/Garmin/GGZ/*.ggz
-cp -pv output/ggz/*.ggz /Volumes/GARMIN/Garmin/GGZ/ &
+rm -f /cygdrive/g/Garmin/GGZ/*.ggz
+cp -v --preserve=timestamps output/ggz/*.ggz /cygdrive/g/Garmin/GGZ/ &
 
-rm -f /Volumes/GARMIN/Garmin/POI/*.gpi
-rm -f /Volumes/GARMIN/Garmin/POI_Stash/*.gpi
-cp -pv output/gpi/*.gpi /Volumes/GARMIN/Garmin/POI &
+rm -f /cygdrive/g/Garmin/POI/*.gpi
+rm -f /cygdrive/g/Garmin/POI_Stash/*.gpi
+cp -v --preserve=timestamps output/gpi/*.gpi /cygdrive/g/Garmin/POI &
 
 wait
 
-find /Volumes/GARMIN -name '*.DS_Store' -type f -delete
-find /Volumes/NO\ NAME -name '*.DS_Store' -type f -delete
-
-sudo rm -rf ~/.Trash
-sudo rm -rf /Volumes/*/.Trashes
-
-diskutil unmountDisk /dev/disk2
-diskutil unmountDisk /dev/disk3
-diskutil eject /dev/disk2
-diskutil eject /dev/disk3
+/cygdrive/c/Users/Markus/Programme/UweSieber/RemoveDrive/x64/RemoveDrive.exe G:

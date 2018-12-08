@@ -28,7 +28,10 @@ function doit() {
   else
     GGZNAME=$2
   fi
+  # Teil 1: Aus den Caches der Datenbank eine GPX Datei erzeugen
+  # Teil 2: Und direkt in den GPX_TO_GGZ Konverter rein schreiben
   java $OPTS -jar $JAR --database `$CYG2DOS $DB` --categoryPath $CAT_PATH --categories $1 --param minlat=$3 maxlat=$4 minlon=$5 maxlon=$6 --outputPath - --encoding $ENCODING | \
+  tee $GGZGPX_PATH/$GGZNAME.gpx | \
   java $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $GGZ_PATH/$GGZNAME.ggz --name $GGZNAME.gpx --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
 }
 export -f doit

@@ -46,7 +46,8 @@ export CAT_PATH="categories/ggz categories/cachepoi categories/attributepoi cate
 export OUT_PATH=output
 export GGZ_PATH=$OUT_PATH/ggz
 export GPI_PATH=$OUT_PATH/gpi
-export GPX_PATH=$OUT_PATH/cachepoi
+export POIGPX_PATH=$OUT_PATH/cachepoi
+export GGZGPX_PATH=$OUT_PATH/gpx
 export RUPI_PATH=$OUT_PATH/rupi
 export SYGIC_R4D4_PATH=$OUT_PATH/SygicR4D4
 export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
@@ -58,7 +59,8 @@ export RUPI_JAR=../rupi/build/libs/rupi-1.2-all.jar
 mkdir -p $OUT_PATH
 mkdir -p $GGZ_PATH
 mkdir -p $GPI_PATH
-mkdir -p $GPX_PATH
+mkdir -p $POIGPX_PATH
+mkdir -p $GGZGPX_PATH
 mkdir -p $RUPI_PATH
 mkdir -p $CSV_PATH
 mkdir -p $SYGIC_R4D4_PATH

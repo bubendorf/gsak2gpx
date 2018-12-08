@@ -26,19 +26,19 @@ function togpi {
 # $3 Name der Kategorie
 # $4 Time Offset, used to create unique GPI identifiers
   rm -f $GPI_PATH/$2.gpi
-  filesize=$( wc -c "$GPX_PATH/$1.gpx" | awk '{print $1}' )
+  filesize=$( wc -c "$POIGPX_PATH/$1.gpx" | awk '{print $1}' )
   if [ $filesize -ge 550 ]
   then
 	  /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
 	  START_TIME=`$DATE +%s%N`
-	  $GPSBABEL -i gpx -f $GPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $GPI_PATH/$2.gpi
+	  $GPSBABEL -i gpx -f $POIGPX_PATH/$1.gpx -o garmin_gpi,category="$3",bitmap=$IMG_PATH/$1.bmp,unique=0,writecodec=$GPI_ENCODING -F $GPI_PATH/$2.gpi
 	  replaceByte $GPI_PATH/$2.gpi 16 $4
 	  replaceByte $GPI_PATH/$2.gpi 17 $4
 	  STOP_TIME=`$DATE +%s%N`
 	  /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
 	  /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
   else
-    echo "File $GPX_PATH/$1.gpx is empty. Skipping!"
+    echo "File $POIGPX_PATH/$1.gpx is empty. Skipping!"
   fi
 }
 
@@ -53,7 +53,7 @@ function multigpi {
   for ((i=2;i<=$#;i+=2))
   do
     let j=i+1
-    EXEC="$EXEC -i gpx -f $GPX_PATH/${!i}.gpx -o garmin_gpi,category=\"${!j}\",bitmap=$IMG_PATH/${!i}.bmp,unique=0,writecodec=$GPI_ENCODING"
+    EXEC="$EXEC -i gpx -f $POIGPX_PATH/${!i}.gpx -o garmin_gpi,category=\"${!j}\",bitmap=$IMG_PATH/${!i}.bmp,unique=0,writecodec=$GPI_ENCODING"
   done
   EXEC="$EXEC -F $GPI_PATH/$1.gpi"
 #  echo $EXEC
@@ -65,7 +65,7 @@ function multigpi {
 
 # multigpi 99-Attributes.gpi Favorites A-Favoriten Simple A-Simple HasParking A-HasParking Corrected A-Corrected Terrain5 A-Terrain5 Disabled A-Disabled
 
-java $OPTS -jar $JAR --database `$CYG2DOS $DB` --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $GPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
+java $OPTS -jar $JAR --database `$CYG2DOS $DB` --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
 
 togpi HasParking 52-Attr-HasParking A-HasParking 52 &
 togpi Parking 35-Parking "Parking Place" 35 &
