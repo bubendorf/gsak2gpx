@@ -3,11 +3,11 @@
 
 if [ "-h" = "$1" ]
 then
-  echo "Usage: selectMainCaches.sh [clear] [-factor f] [lat lon radiusInKm]"
+  echo "Usage: selectMainCaches.sh [-clear] [-factor f] [-spoiler] [lat lon radiusInKm]"
   exit 1
 fi
 
-if [ "clear" = "$1" ]
+if [ "-clear" = "$1" ]
 then
   # Erst mal das UserFlag fuer alle Caches loeschen
   echo "UserFlags werden zurueck gesetzt!"
@@ -24,7 +24,13 @@ then
 fi
 echo "Verwende einen Faktor von $FAKTOR"
 
-COMMON_WHERE="(CacheType <> 'U' or HasCorrected) and Archived = 0 and TempDisabled = 0 and Found = 0"
+if [ "-spoiler" = "$1" ]
+then
+  COMMON_WHERE="Archived = 0 and Found = 0"
+  shift
+else
+  COMMON_WHERE="(CacheType <> 'U' or HasCorrected) and Archived = 0 and TempDisabled = 0 and Found = 0"
+fi
 COMMON_WHERE="$COMMON_WHERE and ((CacheType <> 'E' and CacheType <> 'C' and CacheType <> 'Z') or (PlacedDate > date('now','-1 day') and PlacedDate < date('now','+14 day')))"
 
 # Falls nun eine Koordinate und ein Radius in der Kommandozeile ist
