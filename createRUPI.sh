@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Erzeugt die RUPI Dateien
+# Erzeugt die RUPI Dateien für Sygic
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd $DIR
 . ./env.sh
@@ -18,7 +18,11 @@ function createCSV() {
 # $4 0=Ohne Corrected Coordinates, 1=Mit Corrected Coordinates, Leer=Egal
 # $5 Suffix der erzeugten Datei
 # $6 Extension der erzeugten Datei
-  java $OPTS -jar $JAR --database `$CYG2DOS $DB` --categoryPath $CAT_PATH --categories $1 --outputPath $CSV_PATH --outputFormat plainText --suffix $5 --extension $6 --param country=$2 disabled=$3 corrected=$4 --encoding $ENCODING
+  java $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $1 --outputPath $CSV_PATH --outputFormat plainText --suffix $5 --extension $6 --param country=$2 disabled=$3 corrected=$4 --encoding $ENCODING
+#  if [ -f $DB2 ]
+#  then
+#    java $OPTS -jar $JAR --append --databases `$CYG2DOS $DB2` --categoryPath $CAT_PATH --categories $1 --outputPath $CSV_PATH --outputFormat plainText --suffix $5 --extension $6 --param country=$2 disabled=$3 corrected=$4 --encoding $ENCODING
+#  fi
 }
 export -f createCSV
 
@@ -45,12 +49,12 @@ function copyIcon() {
 }
 export -f copyIcon
 
-#createCSV Virtual Switzerland 0 "" CH_ .csv
-#java -jar $RUPI_JAR --outputPath $RUPI_PATH $CSV_PATH/TestTraditional.csv
-#exit 0
-
 rm -f $CSV_PATH/*.csv
 rm -f $RUPI_PATH/*.csv $RUPI_PATH/*.png $RUPI_PATH/*.bmp $RUPI_PATH/*.rupi
+
+#createCSV Multi Germany 0 0 DE_ .csv
+#java -jar $RUPI_JAR --outputPath $RUPI_PATH $CSV_PATH/TestTraditional.csv
+#exit 0
 
 # Export von GSAK nach CSV
 echo "Export von GSAK nach CSV"

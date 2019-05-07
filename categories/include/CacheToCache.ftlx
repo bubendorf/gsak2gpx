@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="${encoding}"?>
+<#if (count == 1)><?xml version="1.0" encoding="${encoding}"?></#if>
 <#include "Types.ftlx">
 <#assign cacheQuery = "
 select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType,
@@ -42,6 +42,8 @@ where lo.lParent = '{CODE}'
 order by lo.lDate desc
 limit 5;
 ">
+<#compress>
+<#if (count == 1)>
 <#list sql('${bboxQuery}') as bbox>
 <gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" creator="Markus Bubendorf"
     xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd http://www.groundspeak.com/cache/1/0/1 http://www.groundspeak.com/cache/1/0/1/cache.xsd"
@@ -51,9 +53,11 @@ limit 5;
     <email>markus@bubendorf.ch</email>
     <time>${datetime}</time>
     <keywords>cache, geocache, groundspeak</keywords>
-    <bounds minlat="${bbox.minlat}" minlon="${bbox.minlon}" maxlat="${bbox.maxlat}" maxlon="${bbox.maxlon}" />
+    <#if (total == 1)><bounds minlat="${bbox.minlat}" minlon="${bbox.minlon}" maxlat="${bbox.maxlat}" maxlon="${bbox.maxlon}" /></#if>
 </#list>
-
+</#if>
+<!-- ${count}/${total}: ${database} -->
+<!-- ${category} -->
 <#list sql('${cacheQuery}', '${category}') as ca>
     <wpt lat="${ca.Latitude}" lon="${ca.Longitude}">
         <ele>${ca.Elevation?c}</ele>
@@ -130,4 +134,7 @@ limit 5;
         </groundspeak:cache>
     </wpt>
 </#list>
+<#if (count == total)>
 </gpx>
+</#if>
+</#compress>

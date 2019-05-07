@@ -24,7 +24,9 @@ and ca.Found = 0
 and ca.Longitude+0.0 <> 0 and ca.Latitude+0.0 <> 0
 order by ca.Longitude+0.0, ca.Latitude+0.0
 limit ${limit!\"500000\"};">
+<#if (!append)>
 delimiter=|
+</#if>
 <#list sql('${cacheQuery}', '${category}') as ca>
 ${ca.Longitude}|${ca.Latitude}|${ca.Name?replace("|","")} (${ca.Code}) by ${ca.PlacedBy} (${ca.Difficulty?c}/${ca.Terrain?c})|${ca.Hints?replace("|","")?replace("(\r\n)+", " ",'r')[0..*240]}||||||
 </#list>

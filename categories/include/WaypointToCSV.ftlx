@@ -13,7 +13,9 @@ and ca.Found = 0
 and wp.cLon+0.0 <> 0 and wp.cLat+0.0 <> 0 and wp.cLat+0.0 > 39.0
 order by wp.cLon+0.0 desc, wp.cLat+0.0 desc
 limit ${limit!\"500000\"};">
+<#if (!append)>
 delimiter=|
+</#if>
 <#list sql('${wpQuery}', '${category}') as wp>
 ${wp.cLon}|${wp.cLat}|${wp.cName?replace("Parkplatz", "P")?replace("Parking", "P")?replace("Orig - ", "O-")}-${wp.SmartName}|${mbu.oneline(mbu.substring(wp.cComment, 0, 40))}||||||
 </#list>

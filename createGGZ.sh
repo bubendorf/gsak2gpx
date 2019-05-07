@@ -5,7 +5,7 @@
 export OPTS="-XX:+UseParallelGC -Xmx1500M -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
 . ./env.sh
 
-./updateSmartNames.sh
+#./updateSmartNames.sh
 
 export ENCODING=utf-8
 # Maximum number of geocaches in a single GPX file within the GGZ file
@@ -30,27 +30,40 @@ function doit() {
   fi
   # Teil 1: Aus den Caches der Datenbank eine GPX Datei erzeugen
   # Teil 2: Und direkt in den GPX_TO_GGZ Konverter rein schreiben
-  java $OPTS -jar $JAR --database `$CYG2DOS $DB` --categoryPath $CAT_PATH --categories $1 --param minlat=$3 maxlat=$4 minlon=$5 maxlon=$6 --outputPath - --encoding $ENCODING | \
+  java $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $1 \
+       --param minlat=$3 maxlat=$4 minlon=$5 maxlon=$6 --outputPath - --encoding $ENCODING | \
   tee $GGZGPX_PATH/$GGZNAME.gpx | \
-  java $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $GGZ_PATH/$GGZNAME.ggz --name $GGZNAME.gpx --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
+  java $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $GGZ_PATH/$GGZNAME.ggz --name $GGZNAME.gpx \
+       --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
 }
 export -f doit
 
 # Delete all GGZ files from the output directory
 rm -f $GGZ_PATH/*.ggz
 
+#doit UserFlagCaches caches
+#exit 0
+
 # Get the number of geocaches to export. Depending on that number one, two or four GGZ files are created
-COUNT=`sqlite3 $DB 'select count(*) from caches where userflag = 1'`
+if [ -f "$DB2" ]
+then
+#  echo "Attach $DB2"
+  export DB2UNION="ATTACH DATABASE '$DB2' as db2; CREATE temp VIEW allcaches as select * from caches union select * from db2.caches;";
+else
+  export DB2UNION="CREATE temp VIEW allcaches as select * from caches;";
+fi
+COUNT=`sqlite3 $DB "$DB2UNION; select count(*) from allcaches where userflag = 1"`
 echo "Anzahl Geocaches: $COUNT"
+
 if [ $COUNT -ge 5000 ]
 then
-  MIDDLE_LON=`sqlite3 $DB 'select round(longitude, 6) from Caches where userflag = 1 order by longitude limit 1 offset round((select count(*) from Caches where userflag = 1)/2);'`
+  MIDDLE_LON=`sqlite3 $DB "$DB2UNION; select round(longitude, 6) from allcaches where userflag = 1 order by longitude+0.0 limit 1 offset round((select count(*) from allcaches where userflag = 1)/2);"`
   echo "Medium Longitude=$MIDDLE_LON"
   if [ $COUNT -ge 10000 ]
   then
     # Create four GGZ files
-    MIDDLE_LAT_WEST=`sqlite3 $DB "select round(latitude, 6) from Caches where userflag = 1 and longitude+0.0 <  $MIDDLE_LON order by latitude limit 1 offset round((select count(*) from Caches where userflag = 1 and longitude+0.0 <  $MIDDLE_LON)/2);"`
-    MIDDLE_LAT_EAST=`sqlite3 $DB "select round(latitude, 6) from Caches where userflag = 1 and longitude+0.0 >= $MIDDLE_LON order by latitude limit 1 offset round((select count(*) from Caches where userflag = 1 and longitude+0.0 >= $MIDDLE_LON)/2);"`
+    MIDDLE_LAT_WEST=`sqlite3 $DB "$DB2UNION; select round(latitude, 6) from allcaches where userflag = 1 and longitude+0.0 <  $MIDDLE_LON order by latitude+0.0 limit 1 offset round((select count(*) from allcaches where userflag = 1 and longitude+0.0 <  $MIDDLE_LON)/2);"`
+    MIDDLE_LAT_EAST=`sqlite3 $DB "$DB2UNION; select round(latitude, 6) from allcaches where userflag = 1 and longitude+0.0 >= $MIDDLE_LON order by latitude+0.0 limit 1 offset round((select count(*) from allcaches where userflag = 1 and longitude+0.0 >= $MIDDLE_LON)/2);"`
     echo "Medium Latitude (West)=$MIDDLE_LAT_WEST"
     echo "Medium Latitude (East)=$MIDDLE_LAT_EAST"
    (echo UserFlagBBox NordOst $MIDDLE_LAT_EAST 90 $MIDDLE_LON 180; echo UserFlagBBox NordWest $MIDDLE_LAT_WEST 90 -180 $MIDDLE_LON; echo UserFlagBBox SuedOst -90 $MIDDLE_LAT_EAST $MIDDLE_LON 180; echo UserFlagBBox SuedWest -90 $MIDDLE_LAT_WEST -180 $MIDDLE_LON;) | parallel --delay 0.5 --colsep " " -j $TASKS --ungroup doit
