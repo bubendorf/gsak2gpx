@@ -65,7 +65,7 @@ function multigpi {
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
 
-java $OPTS -jar $JAR --database `$CYG2DOS $DB` --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
+java $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
 
 togpi Traditional 20-Traditional "Traditional Cache" 20 &
 togpi Mystery 22-Mystery "Mystery Cache" 22 &

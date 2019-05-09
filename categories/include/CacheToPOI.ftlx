@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="${encoding}" standalone="no"?>
+<#if (count == 1)><?xml version="1.0" encoding="${encoding}" standalone="no"?></#if>
 <#assign cacheQuery = "
 select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
 ca.Difficulty, oneChar(ca.Difficulty) as Dif1a, ca.Terrain, oneChar(ca.Terrain) as Ter1a, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate, ca.TempDisabled,
@@ -20,6 +20,8 @@ join Custom cu on ca.code = cu.cCode
 ${join!}
 where ${where};
 ">
+<#compress>
+<#if (count == 1)>
 <#list sql('${bboxQuery}') as bbox>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     creator="Markus Bubendorf" version="1.1"
@@ -27,10 +29,12 @@ where ${where};
     <metadata>
         <desc>GPX output for Garmin POI Loader</desc>
         <time>${datetime}</time>
-        <bounds minlat="${bbox.minlat}" minlon="${bbox.minlon}" maxlat="${bbox.maxlat}" maxlon="${bbox.maxlon}" />
+        <#if (total == 1)><bounds minlat="${bbox.minlat}" minlon="${bbox.minlon}" maxlat="${bbox.maxlat}" maxlon="${bbox.maxlon}" /></#if>
     </metadata>
 </#list>
-
+</#if>
+<!-- ${count}/${total}: ${database} -->
+<!-- ${category} -->
 <#list sql('${cacheQuery}', '${category}') as wpt>
     <wpt lat="${wpt.Latitude}" lon="${wpt.Longitude}">
         <name>${wpt.CacheType}${wpt.Dif1a}${wpt.Ter1a}-${wpt.SmartName}</name>
@@ -57,4 +61,7 @@ where ${where};
         </desc>
     </wpt>
 </#list>
+<#if (count == total)>
 </gpx>
+</#if>
+</#compress>
