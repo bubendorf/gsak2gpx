@@ -1,7 +1,6 @@
 package ch.bubendorf.ggzgen
 
 import org.apache.commons.lang.StringEscapeUtils
-import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
 
@@ -40,7 +39,7 @@ open class CacheIndex {
                 "</gch>\n"
     }
 
-    fun Double.toSimlpeString():String {
+    private fun Double.toSimlpeString():String {
         return simpleStringFormat.format(this)
     }
 

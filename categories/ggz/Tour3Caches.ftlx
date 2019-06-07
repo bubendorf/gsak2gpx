@@ -1,0 +1,4 @@
+<#assign where="cu.Tour3 = 1" >
+<#assign limit="50000">
+<#assign loglimit="20">
+<#include "CacheToCache.ftlx">

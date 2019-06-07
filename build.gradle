@@ -22,7 +22,7 @@ apply plugin: 'kotlin'
 apply plugin: 'application'
 
 group = 'ch.bubendorf'
-version = '1.4.0'
+version = '1.4.1'
 mainClassName = 'ch.bubendorf.gsak2gpx.Gsak2GpxKt'
 description = "gsak2gpx"
 

@@ -42,7 +42,9 @@ export -f doit
 rm -f $GGZ_PATH/*.ggz
 
 #doit UserFlagCaches caches
+parallel doit {}Caches {} ::: Tour1 Tour2 Tour3
 #exit 0
+
 
 # Get the number of geocaches to export. Depending on that number one, two or four GGZ files are created
 if [ -f "$DB2" ]

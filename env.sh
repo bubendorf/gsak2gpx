@@ -4,7 +4,7 @@ then
 # Seems we are on Gala
   export BASE=/cygdrive/c/src/Kotlin/gsak2gpx
   export DB=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data/Default/sqlite.db3
-  export DB2=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data/RoadTrip/sqlite.db3
+#  export DB2=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data/RoadTrip/sqlite.db3
   export SQL_EXT=/cygdrive/c/src/cygwin/sqlitefunctions/libsqlitefunctions.dll
   export ICON_PATH=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/Sygic/Icons
   export CYG2DOS="cygpath -w "
@@ -42,6 +42,9 @@ else
   fi
 fi
 
+# Die zu verwendente sqlite Version
+SQLITE=sqlite3
+
 # export GPSBABEL=/usr/local/bin/gpsbabel
 export CAT_PATH="categories/ggz categories/cachepoi categories/attributepoi categories/include"
 export OUT_PATH=output
@@ -52,10 +55,11 @@ export GGZGPX_PATH=$OUT_PATH/gpx
 export RUPI_PATH=$OUT_PATH/rupi
 export SYGIC_R4D4_PATH=$OUT_PATH/SygicR4D4
 export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
+export SYGIC_R8D8_PATH=$OUT_PATH/SygicR8D8
 export CSV_PATH=$OUT_PATH/csv
 #export JAR=target/gsak2gpx-1.3.2.jar
-export JAR=build/libs/gsak2gpx-1.4.0-all.jar
-export RUPI_JAR=../rupi/build/libs/rupi-1.2-all.jar
+export JAR=build/libs/gsak2gpx-1.4.1-all.jar
+export RUPI_JAR=../rupi/build/libs/rupi-1.2.2-all.jar
 
 mkdir -p $OUT_PATH
 mkdir -p $GGZ_PATH

@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
 /**
  * Converts a single GPX file with Geocaches into a GGZ file.
  * Uses regular expressions to parse the GPX XML file and works best
- * with the ouput from gsak2gpx.
+ * with the output from gsak2gpx.
  */
 class GGZGen {
 
@@ -77,7 +77,7 @@ class GGZGen {
         }
         reader.forEachLine { rawline ->
             val line = rawline.trim { it <= ' ' }
-            if (line.length > 0) {
+            if (line.isNotEmpty()) {
 
                 if (inHeader && CACHE_WAYPOINT_PATTERN.matcher(line).matches()) {
                     inHeader = false
@@ -145,16 +145,20 @@ class GGZGen {
             }
         }
 
-        footer = ""
-        nextCacheIndex()
-        closeZipEntry()
-        LOGGER.info("Finished GGZgen (${FilenameUtils.getName(cmdArgs.output)}) with ${totalCacheCount} entries.")
         reader.close()
-        writeIndexAndCloseZipFile()
+        if (totalCacheCount > 0) {
+            footer = ""
+            nextCacheIndex()
+            closeZipEntry()
+            writeIndexAndCloseZipFile()
+        }
+        LOGGER.info("Finished GGZgen (${FilenameUtils.getName(cmdArgs.output)}) with $totalCacheCount entries.")
     }
 
     private fun nextCacheIndex() {
-        writer!!.flush()
+        if (writer != null) {
+            writer!!.flush()
+        }
         if (cacheIndex != null) {
             cacheIndex!!.awesomeness = 3.0
             cacheIndex!!.fileLen = entryCountingStream!!.count - cacheIndex!!.filePos
@@ -187,13 +191,13 @@ class GGZGen {
     private fun openZipEntry() {
         closeZipEntry()
 
-        val fileName = if (cmdArgs.name.length > 0) cmdArgs.name else (if ("-" == cmdArgs.input) "stdin.gpx" else cmdArgs.input)
+        val fileName = if (cmdArgs.name.isNotEmpty()) cmdArgs.name else (if ("-" == cmdArgs.input) "stdin.gpx" else cmdArgs.input)
         val ext = FilenameUtils.getExtension(fileName)
         val basename = FilenameUtils.getBaseName(fileName)
         val newFileName = String.format(cmdArgs.format, basename, fileIndices.size, ext)
 
-        LOGGER.debug("New file: " + newFileName)
-        zipEntry = ZipEntry("data/" + newFileName)
+        LOGGER.debug("New file: $newFileName")
+        zipEntry = ZipEntry("data/$newFileName")
         zipStream!!.putNextEntry(zipEntry!!)
 
         fileIndex = FileIndex(newFileName)
