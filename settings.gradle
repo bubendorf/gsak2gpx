@@ -1,1 +1,5 @@
 rootProject.name = 'gsak2gpx'
+
+//include ":smartnames"
+//project(":smartnames").projectDir = file("../SmartNames")
+

@@ -94,6 +94,21 @@ class SqlToGpx(private val databases: List<String>,
                     }
                 })
 
+                val mbu = MbuHelper()
+
+                Function.create(connection, "smartName", object : Function() {
+                    @Throws(SQLException::class)
+                    override fun xFunc() {
+                        try {
+                            val value = value_text(0)
+                            val maxLength = value_int(1)
+                            result(mbu.smartname(value, maxLength))
+                        } catch (e: Exception) {
+                            throw SQLException(e)
+                        }
+                    }
+                })
+
                 val sqlTemplateMethod = SqlTemplateMethod(connection)
                 val cfg = Configuration(DEFAULT_INCOMPATIBLE_IMPROVEMENTS)
 
@@ -110,7 +125,7 @@ class SqlToGpx(private val databases: List<String>,
 
                 val rootModel = hashMapOf(
                     "sql" to sqlTemplateMethod,
-                    "mbu" to MbuHelper(),
+                    "mbu" to mbu,
                     "category" to category,
                     "filename" to filename,
                     "database" to database,
