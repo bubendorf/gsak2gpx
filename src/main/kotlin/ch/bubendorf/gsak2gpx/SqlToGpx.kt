@@ -96,12 +96,12 @@ class SqlToGpx(private val databases: List<String>,
 
                 val mbu = MbuHelper()
 
-                Function.create(connection, "smartName", object : Function() {
+                Function.create(connection, "smartname", object : Function() {
                     @Throws(SQLException::class)
                     override fun xFunc() {
                         try {
                             val value = value_text(0)
-                            val maxLength = value_int(1)
+                            val maxLength = if (args() > 1) value_int(1) else 24
                             result(mbu.smartname(value, maxLength))
                         } catch (e: Exception) {
                             throw SQLException(e)
