@@ -35,7 +35,7 @@ where ${where};
 <!-- ${category} -->
 <#list sql('${wpQuery}', '${category}') as wp>
     <wpt lat="${wp.cLat}" lon="${wp.cLon}">
-        <name>${mbu.smartname(wp.cName, 14)}-${mbu.smartname(wp.Name, 14)}</name>
+        <name>${mbu.smartname(wp.cName, 14)?replace('-$', '', 'r')}-${mbu.smartname(wp.Name, 14)}</name>
         <desc>${wp.cName}<#if (wp.cComment?length > 0)> - ${wp.cComment}</#if></desc>
     </wpt>
 </#list>

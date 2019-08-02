@@ -27,7 +27,7 @@ function togpi {
 # $4 Time Offset, used to create unique GPI identifiers
   rm -f $GPI_PATH/$2.gpi
   filesize=$( wc -c "$POIGPX_PATH/$1.gpx" | awk '{print $1}' )
-  if [ $filesize -ge 550 ]
+  if [ $filesize -ge 760 ]
   then
 	  /bin/echo `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` Convert $1.gpx to $1.gpi
 	  START_TIME=`$DATE +%s%N`
