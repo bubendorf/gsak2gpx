@@ -11,6 +11,7 @@ OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug"
 
 echo "Update SmartNames"
 # SmartNames setzen
+echo java $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT`
 java $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
 
 echo "Das AverageFoundsPerYear, FavRatio und Child Waypoints aktualisieren"
