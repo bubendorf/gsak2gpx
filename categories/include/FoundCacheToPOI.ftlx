@@ -1,13 +1,10 @@
 <#if (count == 1)><?xml version="1.0" encoding="${encoding}" standalone="no"?></#if>
 <#assign cacheQuery = "
 select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
-ca.Difficulty, oneChar(ca.Difficulty) as Dif1a, ca.Terrain, oneChar(ca.Terrain) as Ter1a, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate, ca.TempDisabled,
-ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.Country, ca.State, ca.County,
-cu.FavRatio, cu.AvgLogsPerYear, cu.MeinKommentar,
-cm.UserNote, cm.Hints
+ca.Difficulty, oneChar(ca.Difficulty) as Dif1a, ca.Terrain, oneChar(ca.Terrain) as Ter1a, ca.PlacedBy, ca.PlacedDate, ca.FoundByMeDate, ca.TempDisabled,
+ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.Country, ca.State, ca.County, cu.ArchivedDate
 from Caches ca
 join Custom cu on ca.code = cu.cCode
-join CacheMemo cm on ca.code=cm.Code
 ${join!}
 where ${where}
 order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
@@ -41,20 +38,12 @@ where ${where};
         <desc>${wpt.Name} von ${wpt.PlacedBy}
         ${wpt.CacheType} D:${wpt.Difficulty?c}/T:${wpt.Terrain?c}
             Placed: ${wpt.PlacedDate}
-            Last Found: ${wpt.LastFoundDate}
-            <#if (wpt.Hints?length > 0)>Hinweis: ${wpt.Hints}
+            Found: ${wpt.FoundByMeDate}
+            <#if (wpt.ArchivedDate?length != 0)>Archived: ${wpt.ArchivedDate}
             </#if><#t>
             <#if (wpt.Elevation != 0)>Höhe: ${wpt.Elevation}
             </#if><#t>
             <#if (wpt.County?length > 0)>Ort: ${wpt.County}
-            </#if><#t>
-            <#if (wpt.FavRatio > 0)>FavRatio: ${wpt.FavRatio}%
-            </#if><#t>
-            <#if (wpt.AvgLogsPerYear > 0)>AvgLosPerYear: ${wpt.AvgLogsPerYear}
-            </#if><#t>
-            <#if (wpt.UserNote?length > 0)>UserNote: ${wpt.UserNote}
-            </#if><#t>
-            <#if (wpt.MeinKommentar?length > 0)>Kommentar: ${wpt.MeinKommentar}
             </#if><#t>
         </desc>
     </wpt>

@@ -9,7 +9,7 @@ WIDTH=206
 JAR=../SmartNames/build/libs/SmartNames-0.3-all.jar
 OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug"
 
-echo "Update SmartNames"
+echo "Update SmartNames default DB"
 # SmartNames setzen
 echo java $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT`
 java $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
@@ -30,5 +30,9 @@ SQLCodeSQLCode
 
 if [ ! -z $DB2 -a -f $DB2 ]
 then
+  echo "Update SmartNames alternative DB"
   java $OPTS -jar $JAR --database `$CYG2DOS $DB2` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
 fi
+
+echo "Update SmartNames found DB"
+java $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log

@@ -6,7 +6,7 @@ then
   export DB=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data/Default/sqlite.db3
 #  export DB2=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data/RoadTrip/sqlite.db3
 #  export DB=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data/Test/sqlite.db3
-  export FOUND_DB=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data/Found/sqlite.db3
+  export FOUND_DB=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/data.old/Found/sqlite.db3
   export SQL_EXT=/cygdrive/c/src/cygwin/sqlitefunctions/libsqlitefunctions.dll
   export ICON_PATH=/cygdrive/c/Users/Markus/AppData/Roaming/GSAK8/Sygic/Icons
   export CYG2DOS="cygpath -w "

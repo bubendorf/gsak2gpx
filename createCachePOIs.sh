@@ -66,16 +66,17 @@ function multigpi {
 }
 
 java $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS &
-sleep 0.5
-java $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories FoundCaches --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks 1 &
-
+sleep 1.5
+java $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories Found,FoundArchive --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS &
 wait
 
 togpi Traditional 20-Traditional "Traditional Cache" 20 &
 sleep 8
 togpi Mystery 22-Mystery "Mystery Cache" 22 &
 sleep 1
-togpi FoundCaches 30-FoundCaches "Found Caches" 30 &
+togpi Found 30-Found "Found Caches" 30 &
+sleep 1
+togpi FoundArchive 31-FoundArchive "Found Archive" 30 &
 sleep 1
 togpi Multi 21-Multi "Multi Cache" 21 &
 sleep 1

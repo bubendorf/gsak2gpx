@@ -1,2 +1,0 @@
-<#assign where="1=1" >
-<#include "CacheToPOI.ftlx">
