@@ -1,0 +1,2 @@
+<#assign where="ca.Status = 'A'" >
+<#include "CacheToPOI.ftlx">
