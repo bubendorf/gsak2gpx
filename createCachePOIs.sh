@@ -74,9 +74,9 @@ togpi Traditional 20-Traditional "Traditional Cache" 20 &
 sleep 8
 togpi Mystery 22-Mystery "Mystery Cache" 22 &
 sleep 1
-togpi Found 30-Found "Found Caches" 30 &
+togpi Found 40-Found "Found Caches" 40 &
 sleep 1
-togpi FoundArchive 31-FoundArchive "Found Archive" 30 &
+togpi FoundArchive 41-FoundArchive "Found Archive" 41 &
 sleep 1
 togpi Multi 21-Multi "Multi Cache" 21 &
 sleep 1

@@ -1,6 +1,7 @@
 .idea
 gsak2gpx.iml
 output
+out
 target
 temp
 lib/*.so
@@ -8,4 +9,3 @@ lib/*.dylib
 .gradle
 build
 gradle
-
