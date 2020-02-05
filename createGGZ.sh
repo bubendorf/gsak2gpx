@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Creates the GGZ files
-
 export OPTS="-XX:+UseParallelGC -Xmx1500M -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
 . ./env.sh
 
@@ -22,29 +21,36 @@ function doit() {
 # $4 BoundingBox Max-Latitude
 # $5 BoundingBox Min-Longitude
 # $6 BoundingBox Max-Longitude
+#echo $1 $2
+#echo $JAVA
+#return
   if [ -z "$2" ]
   then
     GGZNAME=$1
   else
     GGZNAME=$2
   fi
+
   # Teil 1: Aus den Caches der Datenbank eine GPX Datei erzeugen
   # Teil 2: Und direkt in den GPX_TO_GGZ Konverter rein schreiben
-  java $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $1 \
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $1 \
        --param minlat=$3 maxlat=$4 minlon=$5 maxlon=$6 --outputPath - --encoding $ENCODING | \
   tee $GGZGPX_PATH/$GGZNAME.gpx | \
-  java $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $GGZ_PATH/$GGZNAME.ggz --name $GGZNAME.gpx \
+  $JAVA $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $GGZ_PATH/$GGZNAME.ggz --name $GGZNAME.gpx \
        --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
 }
 export -f doit
 
 # Delete all GGZ files from the output directory
 rm -f $GGZ_PATH/*.ggz
+rm -f $GGZGPX_PATH/*.gpx
 
 #doit UserFlagCaches caches
 parallel doit {}Caches {} ::: Tour1 Tour2 Tour3
+#doit Tour1Caches Tour1
+#doit Tour2Caches Tour2
+#doit Tour3Caches Tour3
 #exit 0
-
 
 # Get the number of geocaches to export. Depending on that number one, two or four GGZ files are created
 if [ -f "$DB2" ]

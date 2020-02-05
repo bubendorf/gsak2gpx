@@ -12,7 +12,7 @@ then
   # Erst mal das UserFlag fuer alle Caches loeschen
   echo "UserFlags werden zurueck gesetzt!"
   sqlite3 $DB <<SQLCodeSQLCode
-.once /dev/null;
+.once /dev/null
 PRAGMA journal_mode=memory;
 update Caches set UserFlag = 0;
 SQLCodeSQLCode

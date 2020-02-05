@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd $DIR
@@ -11,8 +11,8 @@ OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug"
 
 echo "Update SmartNames default DB"
 # SmartNames setzen
-echo java $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT`
-java $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
+echo $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT`
+$JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
 
 echo "Das AverageFoundsPerYear, FavRatio und Child Waypoints aktualisieren"
 # Das AverageFoundsPerYear aktualisieren
@@ -31,8 +31,8 @@ SQLCodeSQLCode
 if [ ! -z $DB2 -a -f $DB2 ]
 then
   echo "Update SmartNames alternative DB"
-  java $OPTS -jar $JAR --database `$CYG2DOS $DB2` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB2` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
 fi
 
 echo "Update SmartNames found DB"
-java $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
+$JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
