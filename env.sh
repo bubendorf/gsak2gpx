@@ -70,6 +70,8 @@ else
 fi
 
 # Die zu verwendente sqlite Version
+#SQLITE=/home/mbu/bin/sqlite3
+#SQLITE=/usr/bin/sqlite3
 SQLITE=sqlite3
 
 # export GPSBABEL=/usr/local/bin/gpsbabel

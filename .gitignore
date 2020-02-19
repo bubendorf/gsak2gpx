@@ -9,3 +9,4 @@ lib/*.dylib
 .gradle
 build
 gradle
+log

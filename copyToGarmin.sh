@@ -11,11 +11,12 @@ do
 done
 
 rm -f /mnt/g/Garmin/GGZ/*.ggz
-cp -v --preserve=timestamps output/ggz/*.ggz /mnt/g/Garmin/GGZ/ &
+#CPOPTS="--preserve=timestamps"
+cp -v $CPOPTS output/ggz/*.ggz /mnt/g/Garmin/GGZ/ &
 
 rm -f /mnt/g/Garmin/POI/*.gpi
 rm -f /mnt/g/Garmin/POI_Stash/*.gpi
-cp -v --preserve=timestamps output/gpi/*.gpi /mnt/g/Garmin/POI &
+cp -v $CPOPTS output/gpi/*.gpi /mnt/g/Garmin/POI &
 
 wait
 
