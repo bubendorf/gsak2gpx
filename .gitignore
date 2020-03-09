@@ -10,3 +10,4 @@ lib/*.dylib
 build
 gradle
 log
+*.swp
