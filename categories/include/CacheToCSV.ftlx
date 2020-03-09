@@ -7,6 +7,11 @@
 <#if (corrected?has_content)>
     <#assign whereCorrected = "and ca.HasCorrected=${corrected}" >
 </#if>
+<#if (found?has_content)>
+    <#assign whereFound = "and ca.Found=${found}" >
+<#else>
+    <#assign whereFound = "and ca.Found=0" >
+</#if>
 <#assign cacheQuery = "
 select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
 ca.Difficulty, oneChar(ca.Difficulty) as Dif1a, ca.Terrain, oneChar(ca.Terrain) as Ter1a, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate, ca.TempDisabled,
@@ -20,7 +25,7 @@ where (${where})
 ${whereCountry!}
 ${whereCorrected!}
 ${whereDisabled!}
-and ca.Found = 0
+${whereFound!}
 and ca.Longitude+0.0 <> 0 and ca.Latitude+0.0 <> 0
 order by ca.Longitude+0.0, ca.Latitude+0.0
 limit ${limit!\"500000\"};">

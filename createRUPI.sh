@@ -18,11 +18,9 @@ function createCSV() {
 # $4 0=Ohne Corrected Coordinates, 1=Mit Corrected Coordinates, Leer=Egal
 # $5 Suffix der erzeugten Datei
 # $6 Extension der erzeugten Datei
-  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $1 --outputPath $CSV_PATH --outputFormat plainText --suffix $5 --extension $6 --param country="$2" disabled=$3 corrected=$4 --encoding $ENCODING
-#  if [ -f $DB2 ]
-#  then
-#    $JAVA $OPTS -jar $JAR --append --databases `$CYG2DOS $DB2` --categoryPath $CAT_PATH --categories $1 --outputPath $CSV_PATH --outputFormat plainText --suffix $5 --extension $6 --param country="$2" disabled=$3 corrected=$4 --encoding $ENCODING
-#  fi
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $1 \
+        --outputPath $CSV_PATH --outputFormat plainText --suffix $5 --extension $6 \
+        --param country="$2" disabled=$3 corrected=$4 --encoding $ENCODING
 }
 export -f createCSV
 
@@ -37,6 +35,17 @@ function createCountry() {
 }
 export -f createCountry
 
+function createFoundCSV() {
+# $1 Land (Switzerland, Germany, etc. Muss dem GSAK Country entsprechen)
+# $2 Kuerzel des Landes (CH, DE, etc. Kann eigentlich beliebig sein)
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories Active \
+        --outputPath $CSV_PATH --outputFormat plainText --suffix $2_ --extension _Found.csv \
+        --param country="$1" found=1 --encoding $ENCODING
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories Archived \
+        --outputPath $CSV_PATH --outputFormat plainText --suffix $2_ --extension _Found.csv \
+        --param country="$1" found=1 --encoding $ENCODING
+}
+
 function copyIcon() {
 # $1 Name der Kategorie bzw. des Teilnames der Dateien
 # $2 Kuerzel des Landes (CH, DE, etc.)
@@ -44,6 +53,8 @@ function copyIcon() {
 #echo "ln $ICON_PATH/$1.bmp $RUPI_PATH/$2_$1.bmp"
   if [ -f $RUPI_PATH/$2_$1.rupi ]
   then
+#echo "copyIcon mit $1 und $2"
+#echo "ln $ICON_PATH/$1.bmp $RUPI_PATH/$2_$1.bmp"
     ln $ICON_PATH/$1.bmp $RUPI_PATH/$2_$1.bmp
   fi
 }
@@ -58,27 +69,37 @@ rm -f $RUPI_PATH/*.csv $RUPI_PATH/*.png $RUPI_PATH/*.bmp $RUPI_PATH/*.rupi
 
 # Export von GSAK nach CSV
 echo "Export von GSAK nach CSV"
+createFoundCSV Switzerland CH &
+sleep 0.1
+createFoundCSV Germany DE &
+sleep 0.1
+createFoundCSV France FR &
+sleep 0.1
+wait
+#exit 0
+
 parallel --delay 0.2 -j $TASKS -u createCountry ::: Switzerland Germany France Netherlands Liechtenstein Austria Italy Belarus Czechia Latvia Poland Finland Norway Sweden Estonia Ukraine Lithuania Russia Slovakia "Aland Islands" :::+ CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
-#createCountry Lithuania LT
-#createCountry Russia RU
-#createCountry Slovakia SK
-#createCountry "Aland Islands" AX
 #exit 0
 
 # Kleine (<15 Bytes) Dateien loeschen. Die enthalten keine Waypoints
 find $CSV_PATH -name "*.csv" -size -15c -delete
 
 # Die machen aus irgend einem Grunde Probleme!
-rm $CSV_PATH/RU_Parking.csv
-rm $CSV_PATH/RU_Unknown_Corr.csv
-rm $CSV_PATH/IT_Wherigo_Corr.csv
+rm -f $CSV_PATH/RU_Parking.csv
+rm -f $CSV_PATH/RU_Unknown_Corr.csv
+rm -f $CSV_PATH/IT_Wherigo_Corr.csv
 
 # Convert CSV to RUPI
 echo "Convert CSV to RUPI"
 $JAVA -jar $RUPI_JAR --encoding $ENCODING --outputPath $RUPI_PATH $CSV_PATH/*.csv
 
 echo "Verlinken der Icons"
-parallel -j $TASKS -u copyIcon ::: Parking Traditional Traditional_Corr Traditional_Disa Multi Multi_Corr Multi_Disa Unknown Unknown_Corr Unknown_Disa Wherigo Wherigo_Corr Wherigo_Disa VirtualCache VirtualCache_Corr VirtualCache_Disa Earth Earth_Corr Earth_Disa Letterbox Letterbox_Corr Letterbox_Disa Event Virtual Physical ::: CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
+parallel -j $TASKS -u copyIcon ::: \
+         Active_Found Archived_Found Parking Traditional Traditional_Corr Traditional_Disa Multi \
+         Multi_Corr Multi_Disa Unknown Unknown_Corr Unknown_Disa Wherigo Wherigo_Corr Wherigo_Disa \
+         VirtualCache VirtualCache_Corr VirtualCache_Disa Earth Earth_Corr Earth_Disa Letterbox \
+         Letterbox_Corr Letterbox_Disa Event Virtual Physical ::: \
+         CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
 
 # Link copies to the various import folders
 rm -f $SYGIC_PATH/*.csv $SYGIC_PATH/*.png $SYGIC_PATH/*.bmp $SYGIC_PATH/*.rupi

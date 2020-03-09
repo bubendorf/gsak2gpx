@@ -3,6 +3,7 @@
 # Kopiert die *ggz und *gpi Dateien auf das Garmin Oregon 700 welches unter G: bzw. /mnt/g gemounted sein muss.
 # Das Garmin wird anschliessend 'ausgeworfen'.
 
+sudo mount -t drvfs G: /mnt/g 2>/dev/null
 while [ ! -d "/mnt/g/Garmin" ]
 do
   sudo mount -t drvfs G: /mnt/g 2>/dev/null
