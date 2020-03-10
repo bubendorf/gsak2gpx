@@ -38,13 +38,12 @@ export -f createCountry
 function createFoundCSV() {
 # $1 Land (Switzerland, Germany, etc. Muss dem GSAK Country entsprechen)
 # $2 Kuerzel des Landes (CH, DE, etc. Kann eigentlich beliebig sein)
-  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories Active \
-        --outputPath $CSV_PATH --outputFormat plainText --suffix $2_ --extension _Found.csv \
-        --param country="$1" found=1 --encoding $ENCODING
-  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories Archived \
+# $3 Category
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories $3 \
         --outputPath $CSV_PATH --outputFormat plainText --suffix $2_ --extension _Found.csv \
         --param country="$1" found=1 --encoding $ENCODING
 }
+export -f createFoundCSV
 
 function copyIcon() {
 # $1 Name der Kategorie bzw. des Teilnames der Dateien
@@ -67,18 +66,22 @@ rm -f $RUPI_PATH/*.csv $RUPI_PATH/*.png $RUPI_PATH/*.bmp $RUPI_PATH/*.rupi
 #$JAVA -jar $RUPI_JAR --outputPath $RUPI_PATH $CSV_PATH/TestTraditional.csv
 #exit 0
 
+function printArgs() {
+  echo $*
+}
+export -f printArgs
+
 # Export von GSAK nach CSV
 echo "Export von GSAK nach CSV"
-createFoundCSV Switzerland CH &
-sleep 0.1
-createFoundCSV Germany DE &
-sleep 0.1
-createFoundCSV France FR &
-sleep 0.1
-wait
+parallel --delay 0.0 -j $TASKS -u createFoundCSV ::: \
+         Switzerland Germany France Austria Italy Liechtenstein :::+ \
+         CH DE FR AT IT LI ::: \
+         Active Archived
 #exit 0
 
-parallel --delay 0.2 -j $TASKS -u createCountry ::: Switzerland Germany France Netherlands Liechtenstein Austria Italy Belarus Czechia Latvia Poland Finland Norway Sweden Estonia Ukraine Lithuania Russia Slovakia "Aland Islands" :::+ CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
+parallel --delay 0.1 -j $TASKS -u createCountry ::: \
+         Switzerland Germany France Netherlands Liechtenstein Austria Italy Belarus Czechia Latvia Poland Finland Norway Sweden Estonia Ukraine Lithuania Russia Slovakia "Aland Islands" :::+ \
+         CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
 #exit 0
 
 # Kleine (<15 Bytes) Dateien loeschen. Die enthalten keine Waypoints
@@ -91,7 +94,10 @@ rm -f $CSV_PATH/IT_Wherigo_Corr.csv
 
 # Convert CSV to RUPI
 echo "Convert CSV to RUPI"
-$JAVA -jar $RUPI_JAR --encoding $ENCODING --outputPath $RUPI_PATH $CSV_PATH/*.csv
+$JAVA -jar $RUPI_JAR --tasks 3 --encoding $ENCODING --outputPath $RUPI_PATH $CSV_PATH/*.csv
+#$JAVA -jar $RUPI_JAR --tasks 1 --encoding $ENCODING --outputPath $RUPI_PATH $(ls --sort=size $CSV_PATH/*.csv)
+
+#exit 0
 
 echo "Verlinken der Icons"
 parallel -j $TASKS -u copyIcon ::: \
@@ -111,9 +117,6 @@ ln $RUPI_PATH/* $SYGIC_R8D8_PATH
 rm -f $SYGIC_R7D7_PATH/*.csv $SYGIC_R7D7_PATH/*.png $SYGIC_R7D7_PATH/*.bmp $SYGIC_R7D7_PATH/*.rupi
 ln $RUPI_PATH/* $SYGIC_R7D7_PATH
 
-rm -f $SYGIC_R4D4_PATH/*.csv $SYGIC_R4D4_PATH/*.png $SYGIC_R4D4_PATH/*.bmp $SYGIC_R4D4_PATH/*.rupi
-ln $RUPI_PATH/* $SYGIC_R4D4_PATH
-
 # Dem Syncthing ein "Scan" und "Override" schicken damit es Aenderungen von Clients ueberschreibt
 echo "Start Trigger Syncthing"
 curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=default' &
@@ -124,9 +127,6 @@ curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/ov
 # SygicImportR7D7
 curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=tyhfd-qkcbz' &
 curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/override?folder=tyhfd-qkcbz' &
-# SygicImportR4D4
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=m49bv-hare6' &
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/override?folder=m49bv-hare6' &
 
 wait
 echo "Ende Trigger Syncthing"

@@ -83,12 +83,11 @@ export FENIX_PATH=$OUT_PATH/fenix
 export POIGPX_PATH=$OUT_PATH/cachepoi
 export GGZGPX_PATH=$OUT_PATH/gpx
 export RUPI_PATH=$OUT_PATH/rupi
-export SYGIC_R4D4_PATH=$OUT_PATH/SygicR4D4
 export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
 export SYGIC_R8D8_PATH=$OUT_PATH/SygicR8D8
 export CSV_PATH=$OUT_PATH/csv
 export JAR=build/libs/gsak2gpx-1.4.3-all.jar
-export RUPI_JAR=../rupi/build/libs/rupi-1.2.2-all.jar
+export RUPI_JAR=../rupi/build/libs/rupi-1.2.3-all.jar
 
 mkdir -p $OUT_PATH
 mkdir -p $GGZ_PATH
@@ -98,5 +97,5 @@ mkdir -p $POIGPX_PATH
 mkdir -p $GGZGPX_PATH
 mkdir -p $RUPI_PATH
 mkdir -p $CSV_PATH
-mkdir -p $SYGIC_R4D4_PATH
 mkdir -p $SYGIC_R7D7_PATH
+mkdir -p $SYGIC_R8D8_PATH
