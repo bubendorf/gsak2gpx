@@ -6,7 +6,7 @@ ca.Elevation, ca.Difficulty, ca.Terrain, ca.PlacedBy, ca.PlacedDate, ca.LastFoun
 ca.TempDisabled, ca.Archived,
 ca.Guid, ca.CacheId, ca.OwnerId, ca.OwnerName, ca.Container, ca.County, ca.Country, ca.State, ca.Distance,
 cm.LongDescription, cm.ShortDescription, ca.ShortHtm, ca.LongHtm, cm.Hints, cm.UserNote,
-cu.GefundenVon, cu.GCV_AverageVote, cu.FavRatio, cu.AvgLogsPerYear, cu.MeinKommentar,
+cu.GefundenVon, cu.FavRatio, cu.AvgLogsPerYear, cu.MeinKommentar,
 group_concat(at.aInc || '-' || at.aId) as Attributes, ca.Bearing
 from Caches ca
 join Custom cu on ca.code = cu.cCode
@@ -102,9 +102,7 @@ limit 5;
     &lt;br/&gt;</#if><#t>
 <#if (ca.County?length > 0)>Ort: ${ca.County}
     &lt;br/&gt;</#if><#t>
-<#if (ca.GCV_AverageVote > 0)>GCVote: ${ca.GCV_AverageVote}
-    &lt;br/&gt;</#if><#t>
-                    <#if (ca.FavRatio > 0)>FavRatio: ${ca.FavRatio}%
+<#if (ca.FavRatio > 0)>FavRatio: ${ca.FavRatio}%
     &lt;br/&gt;</#if><#t>
 <#if (ca.AvgLogsPerYear > 0)>AvgLosPerYear: ${ca.AvgLogsPerYear}
     &lt;br/&gt;</#if><#t>

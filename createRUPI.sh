@@ -80,9 +80,11 @@ parallel --delay 0.0 -j $TASKS -u createFoundCSV ::: \
 #exit 0
 
 parallel --delay 0.1 -j $TASKS -u createCountry ::: \
-         Switzerland Germany France Netherlands Liechtenstein Austria Italy Belarus Czechia Latvia Poland Finland Norway Sweden Estonia Ukraine Lithuania Russia Slovakia "Aland Islands" :::+ \
-         CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
-#exit 0
+         Switzerland Germany France Liechtenstein Austria Italy  :::+ \
+         CH DE FR LI AT IT
+#         Switzerland Germany France Netherlands Liechtenstein Austria Italy Belarus Czechia Latvia Poland Finland Norway Sweden Estonia Ukraine Lithuania Russia Slovakia "Aland Islands" :::+ \
+#         CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
+##exit 0
 
 # Kleine (<15 Bytes) Dateien loeschen. Die enthalten keine Waypoints
 find $CSV_PATH -name "*.csv" -size -15c -delete
