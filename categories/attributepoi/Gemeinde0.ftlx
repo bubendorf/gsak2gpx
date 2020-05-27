@@ -1,0 +1,2 @@
+<#assign where="(cu.Gemeinde = 0)" >
+<#include "CacheToPOI.ftlx">

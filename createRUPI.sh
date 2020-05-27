@@ -121,13 +121,13 @@ ln $RUPI_PATH/* $SYGIC_R7D7_PATH
 
 # Dem Syncthing ein "Scan" und "Override" schicken damit es Aenderungen von Clients ueberschreibt
 echo "Start Trigger Syncthing"
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=default' &
+curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=default'
 curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/override?folder=default' &
 # SygicImportR8D8
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=yguh9-xjrqe' &
+curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=yguh9-xjrqe'
 curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/override?folder=yguh9-xjrqe' &
 # SygicImportR7D7
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=tyhfd-qkcbz' &
+curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=tyhfd-qkcbz'
 curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/override?folder=tyhfd-qkcbz' &
 
 wait

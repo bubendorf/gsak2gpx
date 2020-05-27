@@ -1,0 +1,2 @@
+<#assign where="ca.FTF = 1" >
+<#include "FoundCacheToPOI.ftlx">

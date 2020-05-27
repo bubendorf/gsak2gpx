@@ -65,18 +65,22 @@ function multigpi {
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
 
-$JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS &
+$JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH \
+      --categories $CATEGORIES --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS &
 sleep 1.5
-$JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories Found,FoundArchive --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS &
+$JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH \
+      --categories FTF,Found,FoundArchive --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS &
 wait
 
 togpi Traditional 20-Traditional "Traditional Cache" 20 &
 sleep 8
 togpi Mystery 22-Mystery "Mystery Cache" 22 &
 sleep 1
-togpi Found 40-Found "Found Caches" 40 &
+togpi FTF 40-FTF "FTF" 40 &
 sleep 1
-togpi FoundArchive 41-FoundArchive "Found Archive" 41 &
+togpi Found 41-Found "Found Caches" 41 &
+sleep 1
+togpi FoundArchive 42-FoundArchive "Found Archive" 42 &
 sleep 1
 togpi Multi 21-Multi "Multi Cache" 21 &
 sleep 1

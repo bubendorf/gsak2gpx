@@ -1,2 +1,2 @@
-<#assign where="ca.Archived = 0" >
+<#assign where="ca.Archived = 0 AND ca.FTF = 0" >
 <#include "FoundCacheToPOI.ftlx">

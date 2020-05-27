@@ -6,7 +6,7 @@
 . ./env.sh
 export IMG_PATH=images/gpigen
 
-CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5,Tour1,Tour2,Tour3
+CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5,Gemeinde0,Tour1,Tour2,Tour3
 #CATEGORIES=HasParking
 # gpsbabel kommt NICHT mit utf-8 zurecht! Also nehmen wir halt das Windows-Zeugs!
 # Valid values are windows-1250 to windows-1257.
@@ -69,16 +69,18 @@ $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --
 
 togpi HasParking 52-Attr-HasParking A-HasParking 52 &
 togpi Parking 35-Parking "Parking Place" 35 &
-togpi Favorites 50-Attr-Favorites A-Favoriten 50 &
 togpi Simple 51-Attr-Simple A-Simple 51 &
 togpi Virtual 16-Virtual "Virtual Stage" 16 &
+sleep 2
 togpi Corrected 53-Attr-Corrected A-Corrected 53 &
 togpi Original 34-Original "Original Coordinats" 34 &
 togpi Reference 33-Reference "Reference Point" 33 &
 togpi Trailhead 32-Trailhead Trailhead 32 &
 togpi Physical 17-Physical "Physical Stage" 17 &
+togpi Favorites 50-Attr-Favorites A-Favoriten 50 &
 togpi Terrain5 54-Attr-Terrain5 A-Terrain5 54 &
 togpi Disabled 55-Attr-Disabled A-Disabled 55 &
+togpi Gemeinde0 49-Attr-Gemeinde0 A-Gemeinde0 49 &
 togpi Final 31-Final Final 31 &
 togpi Tour1 10-Tour1 "Tour 1" 10 &
 togpi Tour2 11-Tour2 "Tour 2" 11 &
