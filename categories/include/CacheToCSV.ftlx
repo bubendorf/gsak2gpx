@@ -14,9 +14,9 @@
 </#if>
 <#if (gemeinde0?has_content)>
     <#if (gemeinde0 == "0")>
-        <#assign whereFound = "and cu.Gemeinde=0" >
+        <#assign whereGemeinde0 = "and cu.Gemeinde=0" >
     <#else>
-        <#assign whereFound = "and cu.Gemeinde>0" >
+        <#assign whereGemeinde0 = "and cu.Gemeinde>0" >
     </#if>
 </#if>
 <#assign cacheQuery = "
@@ -33,6 +33,7 @@ ${whereCountry!}
 ${whereCorrected!}
 ${whereDisabled!}
 ${whereFound!}
+${whereGemeinde0!}
 and ca.Longitude+0.0 <> 0 and ca.Latitude+0.0 <> 0
 order by ca.Longitude+0.0, ca.Latitude+0.0
 limit ${limit!\"500000\"};">
