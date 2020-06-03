@@ -12,26 +12,29 @@ export ENCODING=utf-8
 export CAT_PATH="categories/rupi categories/include"
 
 function createCSV() {
-# $1 Namen der Kategorien
-# $2 Land, muss dem GSAK Country entsprechen
-# $3 0=Enabled, 1=Disabled, Leer=Egal
+# $1 CSV nit Namen der Kategorien
+# $2 Land, muss dem GSAK Country entsprechen ((Switzerland, Germany, etc.)
+# $3 Cache ist 0=Enabled, 1=Disabled, Leer=Egal
 # $4 0=Ohne Corrected Coordinates, 1=Mit Corrected Coordinates, Leer=Egal
-# $5 Suffix der erzeugten Datei
-# $6 Extension der erzeugten Datei
+# $5 0=Nur falls Gemeinde = 0, 1=Nur falls Gemeinde > 0, Leer=Egal
+# $6 Suffix der erzeugten Datei
+# $7 Extension der erzeugten Datei
   $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $1 \
-        --outputPath $CSV_PATH --outputFormat plainText --suffix $5 --extension $6 \
-        --param country="$2" disabled=$3 corrected=$4 --encoding $ENCODING
+        --outputPath $CSV_PATH --outputFormat plainText --suffix $6 --extension $7 \
+        --param country="$2" disabled=$3 corrected=$4 gemeinde0=$5 --encoding $ENCODING
 }
 export -f createCSV
 
 function createCountry() {
 # $1 Land (Switzerland, Germany, etc. Muss dem GSAK Country entsprechen)
 # $2 Kuerzel des Landes (CH, DE, etc. Kann eigentlich beliebig sein)
-  createCSV Parking "$1" "" "" $2_ .csv
-  createCSV Event,Virtual,Physical "$1" 0 "" $2_ .csv
-  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  0 $2_ .csv
-  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  1 $2_ _Corr.csv
-  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 1 "" $2_ _Disa.csv
+  createCSV Parking "$1" "" "" "" $2_ .csv
+  createCSV Event,Virtual,Physical "$1" 0 "" "" $2_ .csv
+  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  0  0 $2_ _G0.csv
+  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  1  0 $2_ _Corr_G0.csv
+  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  0  1 $2_ .csv
+  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  1  1 $2_ _Corr.csv
+  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 1 "" "" $2_ _Disa.csv
 }
 export -f createCountry
 
@@ -62,7 +65,7 @@ export -f copyIcon
 rm -f $CSV_PATH/*.csv
 rm -f $RUPI_PATH/*.csv $RUPI_PATH/*.png $RUPI_PATH/*.bmp $RUPI_PATH/*.rupi
 
-#createCSV Multi Germany 0 0 DE_ .csv
+#createCSV Multi Germany 0 0 "" DE_ .csv
 #$JAVA -jar $RUPI_JAR --outputPath $RUPI_PATH $CSV_PATH/TestTraditional.csv
 #exit 0
 
@@ -103,11 +106,18 @@ $JAVA -jar $RUPI_JAR --tasks 3 --encoding $ENCODING --outputPath $RUPI_PATH $CSV
 
 echo "Verlinken der Icons"
 parallel -j $TASKS -u copyIcon ::: \
-         Active_Found Archived_Found Parking Traditional Traditional_Corr Traditional_Disa Multi \
-         Multi_Corr Multi_Disa Unknown Unknown_Corr Unknown_Disa Wherigo Wherigo_Corr Wherigo_Disa \
-         VirtualCache VirtualCache_Corr VirtualCache_Disa Earth Earth_Corr Earth_Disa Letterbox \
-         Letterbox_Corr Letterbox_Disa Event Virtual Physical ::: \
+         Active_Found Archived_Found Parking \
+         Traditional Traditional_Corr Traditional_G0 Traditional_Corr_G0 Traditional_Disa \
+         Multi Multi_Corr Multi_G0 Multi_Corr_G0 Multi_Disa \
+         Unknown Unknown_Corr Unknown_G0 Unknown_Corr_G0 Unknown_Disa \
+         Wherigo Wherigo_Corr Wherigo_G0 Wherigo_Corr_G0 Wherigo_Disa \
+         VirtualCache VirtualCache_Corr VirtualCache_G0 VirtualCache_Corr_G0 VirtualCache_Disa \
+         Earth Earth_Corr Earth_G0 Earth_Corr_G0 Earth_Disa \
+         Letterbox Letterbox_Corr Letterbox_G0 Letterbox_Corr_G0 Letterbox_Disa \
+         Event Virtual Physical ::: \
          CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
+
+exit 0
 
 # Link copies to the various import folders
 rm -f $SYGIC_PATH/*.csv $SYGIC_PATH/*.png $SYGIC_PATH/*.bmp $SYGIC_PATH/*.rupi

@@ -12,6 +12,13 @@
 <#else>
     <#assign whereFound = "and ca.Found=0" >
 </#if>
+<#if (gemeinde0?has_content)>
+    <#if (gemeinde0 == "0")>
+        <#assign whereFound = "and cu.Gemeinde=0" >
+    <#else>
+        <#assign whereFound = "and cu.Gemeinde>0" >
+    </#if>
+</#if>
 <#assign cacheQuery = "
 select ca.Code, ca.Name, ca.SmartName, ca.Latitude, ca.Longitude, ca.CacheType, ca.Elevation,
 ca.Difficulty, oneChar(ca.Difficulty) as Dif1a, ca.Terrain, oneChar(ca.Terrain) as Ter1a, ca.PlacedBy, ca.PlacedDate, ca.LastFoundDate, ca.TempDisabled,

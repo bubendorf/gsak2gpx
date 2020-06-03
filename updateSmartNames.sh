@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# Ins Verzeichnis des Scrips wechseln
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd $DIR
 . ./env.sh
 
+# Angaben für den SmartName Algorithmus
 LENGTH=24
 WIDTH=206
 JAR=../SmartNames/build/libs/SmartNames-0.3-all.jar
@@ -14,16 +16,30 @@ echo "Update SmartNames default DB"
 echo $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT`
 $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
 
+echo "Update Gemeinde 0"
+$SQLITE $DB </home/mbu/GSAK8/data/Default/updateGemeinden.sql
+
 echo "Das AverageFoundsPerYear, FavRatio und Child Waypoints aktualisieren"
-# Das AverageFoundsPerYear aktualisieren
+# Das AverageFoundsPerYear, FavRatio und Child Waypoints aktualisieren
 $SQLITE $DB <<SQLCodeSQLCode
-update Custom 
+.output /dev/null
+PRAGMA journal_mode = MEMORY;
+PRAGMA synchronous = OFF;
+PRAGMA temp_store = MEMORY;
+PRAGMA cache_size = 262144;
+PRAGMA threads = 4;
+.output
+
+.print 'Update AvgLogsPerYear'
+update Custom
 set AvgLogsPerYear = (select round(count(*) / (max(14.0, julianday('now') - julianday(min(lDate))) + 1.0) * 365.24, 1) from Logs where lType = 'Found it' and lParent = cCode )
-where exists(select * from Logs where lType = 'Found it' and lParent = cCode);
+where exists(select lParent from Logs where lType = 'Found it' and lParent = cCode);
 
+.print 'Update FavRatio'
 update Custom set FavRatio = Round(100.0 * (select FavPoints From Caches where Code = cCode) / (select count(*) from Logs where lType = 'Found it' and lParent = cCode ), 1)
-where exists(select * from Logs where lType = 'Found it' and lParent = cCode);
+where exists(select lParent from Logs where lType = 'Found it' and lParent = cCode);
 
+.print 'Update Waypoints'
 update Waypoints set cName = substr(cName, length(cParent)+2) where cName like cParent || '%';
 
 SQLCodeSQLCode

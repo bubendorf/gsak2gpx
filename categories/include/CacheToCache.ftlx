@@ -121,9 +121,9 @@ limit 5;
                 <groundspeak:finder id="${log.lownerid?c}">${log.lBy}</groundspeak:finder>
                 <groundspeak:text encoded="False">
 				    <#if (log.lText?length > 1000)>
-					   ...${log.lText[log.lText?length-1000..]?replace('\\<.*?>', '', 'r')}
+					   ...${log.lText[log.lText?length-1000..]?replace('\\<.*?>', '', 'r')?replace('??', '')}
 					<#else>
-					   ${log.lText?replace('\\<.*?>', '', 'r')}
+					   ${log.lText?replace('\\<.*?>', '', 'r')?replace('??', '')}
 					</#if>
 				</groundspeak:text>
               </groundspeak:log>
