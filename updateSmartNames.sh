@@ -8,16 +8,13 @@ cd $DIR
 # Angaben für den SmartName Algorithmus
 LENGTH=24
 WIDTH=206
-JAR=../SmartNames/build/libs/SmartNames-0.3-all.jar
+JAR=../SmartNames/build/libs/SmartNames-0.3.3-all.jar
 OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug"
 
 echo "Update SmartNames default DB"
 # SmartNames setzen
 echo $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT`
 $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB` --length $LENGTH --width $WIDTH --extension `$CYG2DOS $SQL_EXT` 2>&1 | tee -a log/upateSmartNames.log
-
-echo "Update Gemeinde 0"
-$SQLITE $DB </home/mbu/GSAK8/data/Default/updateGemeinden.sql
 
 echo "Das AverageFoundsPerYear, FavRatio und Child Waypoints aktualisieren"
 # Das AverageFoundsPerYear, FavRatio und Child Waypoints aktualisieren
@@ -29,6 +26,9 @@ PRAGMA temp_store = MEMORY;
 PRAGMA cache_size = 262144;
 PRAGMA threads = 4;
 .output
+
+.print 'Remove all ?? from the Logs'
+update LogMemo set lText=replace(lText, '??', '') where lText like '%??%';
 
 .print 'Update AvgLogsPerYear'
 update Custom

@@ -1,0 +1,2 @@
+<#assign where="(ca.Difficulty + ca.Terrain) <= 3 and Country <> 'Switzerland'" >
+<#include "CacheToPOI.ftlx">

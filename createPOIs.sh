@@ -6,12 +6,15 @@
 . ./env.sh
 export IMG_PATH=images/gpigen
 
-CATEGORIES=Favorites,Parking,Virtual,HasParking,Reference,Trailhead,Simple,Physical,Original,Final,Disabled,Corrected,Terrain5,Gemeinde0,Tour1,Tour2,Tour3
+CATEGORIES=Favorites,Parking,Virtual,HasParkingCH,HasParkingFC,Reference,Trailhead,\
+SimpleCH,SimpleFC,Physical,Original,Final,Disabled,Corrected,Terrain5,Gemeinde0,\
+Tour1,Tour2,Tour3,Tour4
+
 #CATEGORIES=HasParking
 # gpsbabel kommt NICHT mit utf-8 zurecht! Also nehmen wir halt das Windows-Zeugs!
 # Valid values are windows-1250 to windows-1257.
-GPX_ENCODING=utf-8
-GPI_ENCODING=windows-1252
+export GPX_ENCODING=utf-8
+export GPI_ENCODING=windows-1252
 
 # param 1: file
 # param 2: offset
@@ -19,12 +22,14 @@ GPI_ENCODING=windows-1252
 function replaceByte() {
     printf "$(printf '\\x%02X' $3)" | dd of="$1" bs=1 seek=$2 count=1 conv=notrunc &> /dev/null
 }
+export -f replaceByte
 
 function togpi {
 # $1 Name der GPX und der BMP Dateien
 # $2 Name der GPI Datei
 # $3 Name der Kategorie
 # $4 Time Offset, used to create unique GPI identifiers
+  . ./env.sh
   rm -f $GPI_PATH/$2.gpi
   filesize=$( wc -c "$POIGPX_PATH/$1.gpx" | awk '{print $1}' )
   if [ $filesize -ge 760 ]
@@ -41,6 +46,7 @@ function togpi {
     echo "File $POIGPX_PATH/$1.gpx is empty. Skipping!"
   fi
 }
+export -f togpi
 
 function multigpi {
 # $1 Name der GPI Datei
@@ -62,27 +68,32 @@ function multigpi {
   /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
+export -f multigpi
 
 # multigpi 99-Attributes.gpi Favorites A-Favoriten Simple A-Simple HasParking A-HasParking Corrected A-Corrected Terrain5 A-Terrain5 Disabled A-Disabled
 
-$JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $CATEGORIES --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
+$JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` \
+      --categoryPath $CAT_PATH --categories $CATEGORIES \
+      --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS
 
-togpi HasParking 52-Attr-HasParking A-HasParking 52 &
-togpi Parking 35-Parking "Parking Place" 35 &
-togpi Simple 51-Attr-Simple A-Simple 51 &
-togpi Virtual 16-Virtual "Virtual Stage" 16 &
-sleep 2
-togpi Corrected 53-Attr-Corrected A-Corrected 53 &
-togpi Original 34-Original "Original Coordinats" 34 &
-togpi Reference 33-Reference "Reference Point" 33 &
-togpi Trailhead 32-Trailhead Trailhead 32 &
-togpi Physical 17-Physical "Physical Stage" 17 &
-togpi Favorites 50-Attr-Favorites A-Favoriten 50 &
-togpi Terrain5 54-Attr-Terrain5 A-Terrain5 54 &
-togpi Disabled 55-Attr-Disabled A-Disabled 55 &
-togpi Gemeinde0 49-Attr-Gemeinde0 A-Gemeinde0 49 &
-togpi Final 31-Final Final 31 &
-togpi Tour1 10-Tour1 "Tour 1" 10 &
-togpi Tour2 11-Tour2 "Tour 2" 11 &
-togpi Tour3 12-Tour3 "Tour 3" 12 &
-wait
+parallel --jobs 5 ::: \
+ 'togpi Gemeinde0 49-Attr-Gemeinde0 A-Gemeinde0 49' \
+ 'togpi Corrected 53-Attr-Corrected A-Corrected 53 &' \
+ 'togpi HasParkingCH 52-Attr-HasParkingCH A-HasParkingFC 52' \
+ 'togpi HasParkingFC 57-Attr-HasParkingFC A-HasParkingCH 57' \
+ 'togpi Virtual 16-Virtual "Virtual Stage" 16' \
+ 'togpi Parking 35-Parking "Parking Place" 35' \
+ 'togpi SimpleCH 51-Attr-SimpleCH A-SimpleCH 51' \
+ 'togpi SimpleFC 56-Attr-SimpleFC A-SimpleFC 51' \
+ 'togpi Original 34-Original "Original Coordinats" 34' \
+ 'togpi Reference 33-Reference "Reference Point" 33' \
+ 'togpi Trailhead 32-Trailhead Trailhead 32' \
+ 'togpi Physical 17-Physical "Physical Stage" 17' \
+ 'togpi Favorites 50-Attr-Favorites A-Favoriten 50' \
+ 'togpi Terrain5 54-Attr-Terrain5 A-Terrain5 54' \
+ 'togpi Disabled 55-Attr-Disabled A-Disabled 55' \
+ 'togpi Final 31-Final Final 31' \
+ 'togpi Tour1 10-Tour1 "Tour 1" 10' \
+ 'togpi Tour2 11-Tour2 "Tour 2" 11' \
+ 'togpi Tour3 12-Tour3 "Tour 3" 12' \
+ 'togpi Tour4 13-Tour4 "Tour 4" 13'

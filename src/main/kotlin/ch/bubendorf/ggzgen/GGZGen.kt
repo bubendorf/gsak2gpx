@@ -173,7 +173,7 @@ class GGZGen {
         val bufferedStream = BufferedOutputStream(fileOutputStream, 65536)
         zipCountingStream = CountingOutputStream(bufferedStream)
         zipStream = ZipOutputStream(zipCountingStream!!)
-        zipStream!!.setLevel(9)
+        zipStream!!.setLevel(cmdArgs.compress)
         zipStream!!.setComment("ggzgen V${BuildVersion.getBuildVersion()} by Markus Bubendorf")
     }
 

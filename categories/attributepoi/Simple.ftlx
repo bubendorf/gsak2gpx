@@ -1,2 +1,0 @@
-<#assign where="(ca.Difficulty + ca.Terrain) <= 3" >
-<#include "CacheToPOI.ftlx">

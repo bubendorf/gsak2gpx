@@ -11,104 +11,101 @@ export OPTS="-XX:+UseParallelGC -Xmx1500M -Dorg.slf4j.simpleLogger.defaultLogLev
 export ENCODING=utf-8
 export CAT_PATH="categories/rupi categories/include"
 
-function createCSV() {
-# $1 CSV nit Namen der Kategorien
-# $2 Land, muss dem GSAK Country entsprechen ((Switzerland, Germany, etc.)
-# $3 Cache ist 0=Enabled, 1=Disabled, Leer=Egal
-# $4 0=Ohne Corrected Coordinates, 1=Mit Corrected Coordinates, Leer=Egal
-# $5 0=Nur falls Gemeinde = 0, 1=Nur falls Gemeinde > 0, Leer=Egal
-# $6 Suffix der erzeugten Datei
-# $7 Extension der erzeugten Datei
-  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $1 \
-        --outputPath $CSV_PATH --outputFormat plainText --suffix $6 --extension $7 \
-        --param country="$2" disabled=$3 corrected=$4 gemeinde0=$5 --encoding $ENCODING
-}
-export -f createCSV
-
 function createCountry() {
-# $1 Land (Switzerland, Germany, etc. Muss dem GSAK Country entsprechen)
-# $2 Kuerzel des Landes (CH, DE, etc. Kann eigentlich beliebig sein)
-  createCSV Parking "$1" "" "" 0 $2_ _G0.csv
-  createCSV Parking "$1" "" "" 1 $2_ .csv
-  createCSV Event,Virtual,Physical "$1" 0 "" "" $2_ .csv
-  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  0  0 $2_ _G0.csv
-  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  1  0 $2_ _Corr_G0.csv
-  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  0  1 $2_ .csv
-  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 0  1  1 $2_ _Corr.csv
-  createCSV Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox "$1" 1 "" "" $2_ _Disa.csv
+# $1 Sygic Region/Gebiet
+  mkdir -p $CSV_PATH/$1
+
+# Found Active
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories Active \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension _Found.csv \
+        --param sygic="$1" found=1 --encoding $ENCODING
+
+#Found Archived
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories Archived \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension _Found.csv \
+        --param sygic="$1" found=1 --encoding $ENCODING
+
+# Parking in 0er Gemeinden
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories Parking \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension _G0.csv \
+        --param sygic="$1" gemeinde0=0 --encoding $ENCODING
+
+# Parking in bereits gefundenen Gemeinden
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories Parking \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension .csv \
+        --param sygic="$1" gemeinde0=1 --encoding $ENCODING
+
+# Alle Event,Virtual,Physical
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories Event,Virtual,Physical \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension .csv \
+        --param sygic="$1" disabled=0 --encoding $ENCODING
+
+# Active, Not corrected, 0er Gemeinden
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension _G0.csv \
+        --param sygic="$1" disabled=0 corrected=0 gemeinde0=0 --encoding $ENCODING
+
+# Active, Corrected, 0er Gemeinden
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension _Corr_G0.csv \
+        --param sygic="$1" disabled=0 corrected=1 gemeinde0=0 --encoding $ENCODING
+
+# Active, Not corrected, Gefundene Gemeinden
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension .csv \
+        --param sygic="$1" disabled=0 corrected=0 gemeinde0=1 --encoding $ENCODING
+
+# Active, Corrected, Gefundene Gemeinden
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension _Corr.csv \
+        --param sygic="$1" disabled=0 corrected=1 gemeinde0=1 --encoding $ENCODING
+
+# Disabled
+  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories Traditional,Multi,Unknown,Wherigo,VirtualCache,Earth,Letterbox \
+        --outputPath $CSV_PATH/$1 --outputFormat plainText --extension _Disa.csv \
+        --param sygic="$1" disabled=1 --encoding $ENCODING
+
+  # Kleine (<15 Bytes) Dateien loeschen. Die enthalten keine Waypoints
+  find $CSV_PATH/$1 -name "*.csv" -size -15c -delete
+
+  mkdir -p $RUPI_PATH/$1
+  $JAVA -jar $RUPI_JAR --tasks 3 --encoding $ENCODING --outputPath $RUPI_PATH/$1 $CSV_PATH/$1/*.csv
 }
 export -f createCountry
 
-function createFoundCSV() {
-# $1 Land (Switzerland, Germany, etc. Muss dem GSAK Country entsprechen)
-# $2 Kuerzel des Landes (CH, DE, etc. Kann eigentlich beliebig sein)
-# $3 Category
-  $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH --categories $3 \
-        --outputPath $CSV_PATH --outputFormat plainText --suffix $2_ --extension _Found.csv \
-        --param country="$1" found=1 --encoding $ENCODING
-}
-export -f createFoundCSV
 
 function copyIcon() {
 # $1 Name der Kategorie bzw. des Teilnames der Dateien
-# $2 Kuerzel des Landes (CH, DE, etc.)
-#echo "copyIcon mit $1 und $2"
-#echo "ln $ICON_PATH/$1.bmp $RUPI_PATH/$2_$1.bmp"
-  if [ -f $RUPI_PATH/$2_$1.rupi ]
+# $2 Sygic Region
+  if [ -f $RUPI_PATH/$2/$1.rupi ]
   then
-#echo "copyIcon mit $1 und $2"
-#echo "ln $ICON_PATH/$1.bmp $RUPI_PATH/$2_$1.bmp"
-    ln $ICON_PATH/$1.bmp $RUPI_PATH/$2_$1.bmp
+    ln $ICON_PATH/$1.bmp $RUPI_PATH/$2/$1.bmp
   fi
 }
 export -f copyIcon
 
-rm -f $CSV_PATH/*.csv
-rm -f $RUPI_PATH/*.csv $RUPI_PATH/*.png $RUPI_PATH/*.bmp $RUPI_PATH/*.rupi
-
-#createCSV Multi Germany 0 0 "" DE_ .csv
-#$JAVA -jar $RUPI_JAR --outputPath $RUPI_PATH $CSV_PATH/TestTraditional.csv
-#exit 0
+rm -f $CSV_PATH/**/*.csv
+rmdir $CSV_PATH/*
+rm -f $RUPI_PATH/**/*.rupi
+rmdir $RUPI_PATH/*
 
 function printArgs() {
   echo $*
 }
 export -f printArgs
 
-# Export von GSAK nach CSV
 if true
 then
-echo "Export von GSAK nach CSV"
-parallel --delay 0.0 -j $TASKS -u createFoundCSV ::: \
-         Switzerland Germany France Austria Italy Liechtenstein :::+ \
-         CH DE FR AT IT LI ::: \
-         Active Archived
-#exit 0
+parallel --delay 0.2 -j $TASKS -u createCountry ::: \
+         che deu03 fra08 fra07 ita02 aut fra06 lie deu02 deu07 deu04
 fi
 
-parallel --delay 0.1 -j $TASKS -u createCountry ::: \
-         Switzerland Germany France :::+ \
-         CH DE FR
-#         Switzerland Germany France Liechtenstein Austria Italy  :::+ \
-#         CH DE FR LI AT IT
-#         Switzerland Germany France Netherlands Liechtenstein Austria Italy Belarus Czechia Latvia Poland Finland Norway Sweden Estonia Ukraine Lithuania Russia Slovakia "Aland Islands" :::+ \
-#         CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
-##exit 0
+# Dem Syncthing ein "Scan" und "Override" schicken damit es Aenderungen von Clients ueberschreibt
+echo "Start Trigger Syncthing"
+curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=eviw2-zxkts'
+curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/override?folder=eviw2-zxkts' &
 
-# Kleine (<15 Bytes) Dateien loeschen. Die enthalten keine Waypoints
-find $CSV_PATH -name "*.csv" -size -15c -delete
-
-# Die machen aus irgend einem Grunde Probleme!
-rm -f $CSV_PATH/RU_Parking.csv
-rm -f $CSV_PATH/RU_Unknown_Corr.csv
-rm -f $CSV_PATH/IT_Wherigo_Corr.csv
-
-# Convert CSV to RUPI
-echo "Convert CSV to RUPI"
-$JAVA -jar $RUPI_JAR --tasks 3 --encoding $ENCODING --outputPath $RUPI_PATH $CSV_PATH/*.csv
-#$JAVA -jar $RUPI_JAR --tasks 1 --encoding $ENCODING --outputPath $RUPI_PATH $(ls --sort=size $CSV_PATH/*.csv)
-
-#exit 0
+exit 0
 
 echo "Verlinken der Icons"
 parallel -j $TASKS -u copyIcon ::: \
@@ -121,36 +118,5 @@ parallel -j $TASKS -u copyIcon ::: \
          Earth Earth_Corr Earth_G0 Earth_Corr_G0 Earth_Disa \
          Letterbox Letterbox_Corr Letterbox_G0 Letterbox_Corr_G0 Letterbox_Disa \
          Event Virtual Physical ::: \
-         CH DE FR NL LI AT IT BY CZ LV PL FI NO SE EE UA LT RU SK AX
+         che deu03 fra08 lie aut ita
 
-# exit 0
-
-# Link copies to the various import folders
-rm -f $SYGIC_PATH/*.csv $SYGIC_PATH/*.png $SYGIC_PATH/*.bmp $SYGIC_PATH/*.rupi
-ln  $RUPI_PATH/* $SYGIC_PATH
-
-rm -f $SYGIC_R8D8_PATH/*.csv $SYGIC_R8D8_PATH/*.png $SYGIC_R8D8_PATH/*.bmp $SYGIC_R8D8_PATH/*.rupi
-ln $RUPI_PATH/* $SYGIC_R8D8_PATH
-
-rm -f $SYGIC_R7D7_PATH/*.csv $SYGIC_R7D7_PATH/*.png $SYGIC_R7D7_PATH/*.bmp $SYGIC_R7D7_PATH/*.rupi
-ln $RUPI_PATH/* $SYGIC_R7D7_PATH
-
-# Dem Syncthing ein "Scan" und "Override" schicken damit es Aenderungen von Clients ueberschreibt
-echo "Start Trigger Syncthing"
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=default'
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/override?folder=default' &
-# SygicImportR8D8
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=yguh9-xjrqe'
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/override?folder=yguh9-xjrqe' &
-# SygicImportR7D7
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/scan?folder=tyhfd-qkcbz'
-curl -s -X POST -H "X-API-Key: $SYNCTHING_KEY" 'http://127.0.0.1:8384/rest/db/override?folder=tyhfd-qkcbz' &
-
-wait
-echo "Ende Trigger Syncthing"
-
-#createCountry Switzerland CH
-#convertToRupi Parking
-#convertToRupi Traditional
-#convertToRupi Traditional_Corr
-#convertToRupi Traditional_Disa

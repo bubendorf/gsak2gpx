@@ -1,6 +1,9 @@
 <#if (country?has_content)>
     <#assign whereCountry = "and ca.Country='${country}'" >
 </#if>
+<#if (sygic?has_content)>
+    <#assign whereSygic = "and cu.Sygic='${sygic}'" >
+</#if>
 <#if (disabled?has_content)>
     <#assign whereDisabled = "and ca.TempDisabled=${disabled}" >
 </#if>
@@ -30,6 +33,7 @@ join Custom cu on ca.code = cu.cCode
 join CacheMemo cm on ca.code=cm.Code
 where (${where})
 ${whereCountry!}
+${whereSygic!}
 ${whereCorrected!}
 ${whereDisabled!}
 ${whereFound!}

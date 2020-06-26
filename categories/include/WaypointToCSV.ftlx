@@ -1,6 +1,9 @@
 <#if (country?has_content)>
     <#assign whereCountry = "and ca.Country='${country}'" >
 </#if>
+<#if (sygic?has_content)>
+    <#assign whereSygic = "and cu.Sygic='${sygic}'" >
+</#if>
 <#if (gemeinde0?has_content)>
     <#if (gemeinde0 == "0")>
         <#assign whereGemeinde0 = "and cu.Gemeinde=0" >
@@ -17,6 +20,7 @@ join Caches ca on wp.cParent = ca.Code
 join Custom cu on ca.code = cu.cCode
 where (${where})
 ${whereCountry!}
+${whereSygic!}
 ${whereGemeinde0!}
 and ca.Found = 0
 and wp.cLon+0.0 <> 0 and wp.cLat+0.0 <> 0 and wp.cLat+0.0 > 39.0

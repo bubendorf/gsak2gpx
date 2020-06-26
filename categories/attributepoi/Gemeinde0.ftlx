@@ -1,2 +1,2 @@
-<#assign where="(cu.Gemeinde = 0)" >
+<#assign where="(cu.Gemeinde = 0) and Country = 'Switzerland'" >
 <#include "CacheToPOI.ftlx">

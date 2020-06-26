@@ -6,13 +6,13 @@ OPTS="-Xmx2G -Dorg.slf4j.simpleLogger.defaultLogLevel=info"
 . ./env.sh
 export IMG_PATH=images/cachepoi
 
-CATEGORIES=Traditional,Mystery,Multi,OtherCaches
+CATEGORIES=TraditionalCH,TraditionalFC,Mystery,Multi,OtherCaches
 #CATEGORIES=OtherCaches
 # gpsbabel kommt NICHT mit utf-8 zurecht! Also nehmen wir halt das Windows-Zeugs!
 # Valid values are windows-1250 to windows-1257.
 #ENCODING=windows-1252
-GPX_ENCODING=utf-8
-GPI_ENCODING=windows-1252
+export GPX_ENCODING=utf-8
+export GPI_ENCODING=windows-1252
 
 # param 1: file
 # param 2: offset
@@ -20,12 +20,14 @@ GPI_ENCODING=windows-1252
 function replaceByte() {
     printf "$(printf '\\x%02X' $3)" | dd of="$1" bs=1 seek=$2 count=1 conv=notrunc &> /dev/null
 }
+export -f replaceByte
 
 function togpi {
 # $1 Name der GPX und der BMP Dateien
 # $2 Name der GPI Datei
 # $3 Name der Kategorie
 # $4 Time Offset, used to create unique GPI identifiers
+  . ./env.sh
   rm -f $GPI_PATH/$2.gpi
   filesize=$( wc -c "$POIGPX_PATH/$1.gpx" | awk '{print $1}' )
   if [ $filesize -ge 550 ]
@@ -43,6 +45,7 @@ function togpi {
     echo "File $POIGPX_PATH/$1.gpx is empty. Skipping!"
   fi
 }
+export -f togpi
 
 function multigpi {
 # $1 Name der GPI Datei
@@ -64,6 +67,7 @@ function multigpi {
   /bin/echo -n `$DATE "+%Y-%m-%d %H:%M:%S:%3N"` "Finished $1.gpi after "
   /bin/echo "($STOP_TIME-$START_TIME)/1000000" | bc
 }
+export -f multigpi
 
 $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH \
       --categories $CATEGORIES --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS &
@@ -72,19 +76,16 @@ $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH \
       --categories FTF,Found,FoundArchive --outputPath $POIGPX_PATH --encoding $GPX_ENCODING --tasks $TASKS &
 wait
 
-togpi Traditional 20-Traditional "Traditional Cache" 20 &
-sleep 8
-togpi Mystery 22-Mystery "Mystery Cache" 22 &
-sleep 1
-togpi FTF 40-FTF "FTF" 40 &
-sleep 1
-togpi Found 41-Found "Found Caches" 41 &
-sleep 1
-togpi FoundArchive 42-FoundArchive "Found Archive" 42 &
-sleep 1
-togpi Multi 21-Multi "Multi Cache" 21 &
-sleep 1
-togpi OtherCaches 29-OtherCaches "Other Caches" 29 &
+parallel --jobs 5 ::: \
+ 'togpi TraditionalFC 23-TraditionalFC "TraditionalFC Cache" 23' \
+ 'togpi TraditionalCH 20-TraditionalCH "TraditionalCH Cache" 20' \
+ 'togpi Mystery 22-Mystery "Mystery Cache" 22' \
+ 'togpi Found 41-Found "Found Caches" 41' \
+ 'togpi FoundArchive 42-FoundArchive "Found Archive" 42' \
+ 'togpi Multi 21-Multi "Multi Cache" 21' \
+ 'togpi OtherCaches 29-OtherCaches "Other Caches" 29' \
+ 'togpi FTF 40-FTF "FTF" 40' 
+
 
 #togpi VirtualCache 23-VirtualCache VirtualCache 23 &
 #togpi Letterbox 24-Letterbox Letterbox 24 &

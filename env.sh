@@ -86,7 +86,7 @@ export RUPI_PATH=$OUT_PATH/rupi
 export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
 export SYGIC_R8D8_PATH=$OUT_PATH/SygicR8D8
 export CSV_PATH=$OUT_PATH/csv
-export JAR=build/libs/gsak2gpx-1.4.3-all.jar
+export JAR=build/libs/gsak2gpx-1.4.4-all.jar
 export RUPI_JAR=../rupi/build/libs/rupi-1.2.3-all.jar
 
 mkdir -p $OUT_PATH

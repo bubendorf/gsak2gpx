@@ -36,7 +36,7 @@ function doit() {
   $JAVA $OPTS -jar $JAR --database `$CYG2DOS $DB $DB2` --categoryPath $CAT_PATH --categories $1 \
        --param minlat=$3 maxlat=$4 minlon=$5 maxlon=$6 --outputPath - --encoding $ENCODING | \
   tee $GGZGPX_PATH/$GGZNAME.gpx | \
-  $JAVA $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $GGZ_PATH/$GGZNAME.ggz --name $GGZNAME.gpx \
+  $JAVA $OPTS -cp $JAR ch.bubendorf.ggzgen.GGZGenKt --input - --output $GGZ_PATH/$GGZNAME.ggz --compress 4 --name $GGZNAME.gpx \
        --encoding $ENCODING --count $CACHES_PER_GPX --size $MAX_SIZE
 }
 export -f doit

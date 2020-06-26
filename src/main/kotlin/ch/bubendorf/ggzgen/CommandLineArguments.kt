@@ -33,6 +33,9 @@ class CommandLineArguments {
     @Parameter(names = ["-e", "--encoding"], description = "Encoding to use", required = false)
     var encoding = "utf-8"
 
+    @Parameter(names = ["-z", "--compress"], description = "Compression level [0-9]", required = false)
+    var compress = 9
+
     val isValid: Boolean
         get() {
             if ("-" != input && !File(input).exists()) {

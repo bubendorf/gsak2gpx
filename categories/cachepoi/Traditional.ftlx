@@ -1,2 +1,0 @@
-<#assign where="ca.UserFlag = 0 and ca.CacheType = 'T'" >
-<#include "CacheToPOI.ftlx">
