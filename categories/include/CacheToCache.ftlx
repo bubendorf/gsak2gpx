@@ -13,7 +13,7 @@ join Custom cu on ca.code = cu.cCode
 join CacheMemo cm on ca.code=cm.Code
 ${join!}
 left join Attributes at on ca.Code = at.aCode and at.aId not in (1,2,6,17,18,19,20,21,22,23,26,27,28,29,30,31,37,38,43,46,58,59,63)
-where ${where}
+where ca.Found=0 and ${where}
 group by ca.Code
 order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
 limit ${limit!\"50000\"};

@@ -11,3 +11,5 @@ build
 gradle
 log
 *.swp
+/createRUPI.old.sh
+/createRUPI.oldest.sh

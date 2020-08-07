@@ -17,7 +17,8 @@ then
   TASKS=8
   export GSAK8_INST=/cygdrive/c/Geo/GSAK8
   export GPSBABEL=/usr/bin/gpsbabel
-#  export PATH=/cygdrive/c/Users/Markus/Programme/graalvm-ee-java11-19.3.0/bin:$PATH
+  export GPIGEN=/mnt/c/Users/Markus/AppData/Roaming/GSAK8/GPIGen1.2.0/gpigen.exe
+  #  export PATH=/cygdrive/c/Users/Markus/Programme/graalvm-ee-java11-19.3.0/bin:$PATH
 #  export PATH=/mnt/c/Program\ Files/Java/jdk-13.0.1/bin:$PATH
   export PATH=/opt/graalvm/bin:$PATH
 #  export JAVA="java.exe"

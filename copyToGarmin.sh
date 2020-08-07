@@ -32,19 +32,19 @@ $RSYNC --delete --recursive --verbose $RSYNC_OPTS output/ggz/ $MNT/g/Garmin/GGZ/
 #cp -v -u output/ggz/*.ggz /mnt/g/Garmin/GGZ/ &
 
 echo "POI Dateien"
-#$RSYNC -verbose --delete --recursive $RSYNC_OPTS output/gpi/ $MNT/g/Garmin/POI/
-#rm -f /mnt/g/Garmin/POI/*.gpi
+$RSYNC -verbose --delete --recursive $RSYNC_OPTS output/gpi/ $MNT/g/Garmin/POI/
 rm -f /mnt/g/Garmin/POI_Stash/*.gpi
-cp -v -u output/gpi/*.gpi /mnt/g/Garmin/POI/
+#rm -f /mnt/g/Garmin/POI/*.gpi
+#cp -g -v -u output/gpi/*.gpi /mnt/g/Garmin/POI/
 
 #echo "VeloSwitzerland"
 #$RSYNC --verbose $RSYNC_OPTS \
 #      $MNT/c/Garmin/velomap/switzerland/veloSwitzerland.img \
 #      $MNT/h/Garmin/veloSwitzerland.img
-echo "BubMap"
-$RSYNC --verbose $RSYNC_OPTS \
-      $MNT/c/Garmin/data/BubMap.img \
-      $MNT/h/Garmin/BubMap.img
+echo "Map Bubendorf.img"
+$RSYNC --verbose --size-only $RSYNC_OPTS --progress \
+      $MNT/c/Garmin/data/Bubendorf.img \
+      $MNT/h/Garmin/Bubendorf.img
 
 
 echo "Sync GPX Ordner"

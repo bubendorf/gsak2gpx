@@ -77,8 +77,8 @@ $JAVA $OPTS -jar $JAR --database `$CYG2DOS $FOUND_DB` --categoryPath $CAT_PATH \
 wait
 
 parallel --jobs 5 ::: \
- 'togpi TraditionalFC 23-TraditionalFC "TraditionalFC Cache" 23' \
- 'togpi TraditionalCH 20-TraditionalCH "TraditionalCH Cache" 20' \
+ 'togpi TraditionalFC 23-TraditionalFC "Traditional Cache" 23' \
+ 'togpi TraditionalCH 20-TraditionalCH "Traditional Cache CH" 20' \
  'togpi Mystery 22-Mystery "Mystery Cache" 22' \
  'togpi Found 41-Found "Found Caches" 41' \
  'togpi FoundArchive 42-FoundArchive "Found Archive" 42' \

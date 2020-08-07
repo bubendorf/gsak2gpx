@@ -1,0 +1,4 @@
+<#assign where="wp.cType = 'Parking Area'" >
+<#assign join="join Waypoints wp on ca.Code = wp.cParent and wp.cCode = 
+(select cCode from Waypoints where cType = 'Parking Area' and cParent = ca.Code limit 1) " >
+<#include "CacheToPOI.ftlx">

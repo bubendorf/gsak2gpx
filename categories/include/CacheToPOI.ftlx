@@ -9,7 +9,7 @@ from Caches ca
 join Custom cu on ca.code = cu.cCode
 join CacheMemo cm on ca.code=cm.Code
 ${join!}
-where ${where}
+where ca.Found=0 and ${where}
 order by ${orderBy!\"round(sqrt(ca.Distance)), ca.Degrees\"}
 limit ${limit!\"200000\"};">
 <#assign bboxQuery = "

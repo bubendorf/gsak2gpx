@@ -1,2 +1,2 @@
-<#assign where="cu.Tour4 = 1 and wp.cType <> 'Parking Area'" >
-<#include "WaypointToPOI.ftlx">
+<#assign where="(cu.Tour4 = 1) and Country = 'Switzerland'" >
+<#include "CacheToPOI.ftlx">
