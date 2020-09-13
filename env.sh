@@ -1,9 +1,10 @@
 #!/bin/bash
 if [ -f /mnt/c/Users/Markus/AppData/Roaming/GSAK8/data/Default/sqlite.db3 ]
 then
-# Seems we are on Gala using WSL
+# Seems we are on Gala using WSL1
   export BASE=/mnt/c/src/Kotlin/gsak2gpx
   export DB=/mnt/c/Users/Markus/AppData/Roaming/GSAK8/data/Default/sqlite.db3
+#  export DB=/tmp/sqlite.db3
 #  export DB2=/mnt/c/Users/Markus/AppData/Roaming/GSAK8/data/RoadTrip/sqlite.db3
 #  export DB=/mnt/c/Users/Markus/AppData/Roaming/GSAK8/data/Test/sqlite.db3
   export FOUND_DB=/mnt/c/Users/Markus/AppData/Roaming/GSAK8/data.old/Found/sqlite.db3
@@ -88,7 +89,7 @@ export SYGIC_R7D7_PATH=$OUT_PATH/SygicR7D7
 export SYGIC_R8D8_PATH=$OUT_PATH/SygicR8D8
 export CSV_PATH=$OUT_PATH/csv
 export JAR=build/libs/gsak2gpx-1.4.4-all.jar
-export RUPI_JAR=../rupi/build/libs/rupi-1.2.3-all.jar
+export RUPI_JAR=../rupi/build/libs/rupi-1.2.4-all.jar
 
 mkdir -p $OUT_PATH
 mkdir -p $GGZ_PATH

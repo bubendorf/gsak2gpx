@@ -82,7 +82,7 @@
   <#case "28">Public restrooms nearby<#break>
   <#case "29">Telephone nearby<#break>
   <#case "30">Picnic tables nearby<#break>
-  <#case "31">Camping available<#break>
+  <#case "31">Camping nearby<#break>
   <#case "32">Bicycles<#break>
   <#case "33">Motorcycles<#break>
   <#case "34">Quads<#break>
@@ -94,7 +94,7 @@
   <#case "40">Stealth required<#break>
   <#case "41">Stroller accessible<#break>
   <#case "42">Needs Maintenance<#break>
-  <#case "43">Watch for livestock<#break>
+  <#case "43">Livestock nearby<#break>
   <#case "44">Flashlight required<#break>
   <#case "45">Lost And Found Tour<#break>
   <#case "46">Truck Driver/RV<#break>
@@ -111,13 +111,18 @@
   <#case "57">Long Hike (+10km)<#break>
   <#case "58">Fuel Nearby<#break>
   <#case "59">Food Nearby<#break>
-  <#case "60">Wireless Beacon<#break>
+  <#case "60">Wireless Receiver<#break>
   <#case "61">Partnership Cache<#break>
   <#case "62">Seasonal Access<#break>
   <#case "63">Tourist Friendly<#break>
   <#case "64">Tree Climbing<#break>
-  <#case "65">Front Yard (Private Residence)<#break>
-  <#case "66">Teamwork Required<#break>
+  <#case "65">Yard (Private Residence)<#break>
+  <#case "66">Teamwork Cache<#break>
+  <#case "67">Part of a GeoTour<#break>
+  <#case "69">Bonus cache<#break>
+  <#case "70">Power trail<#break>
+  <#case "71">Challenge cache<#break>
+  <#case "72">Solution checker<#break>
 </#switch>
 </#macro>
 
