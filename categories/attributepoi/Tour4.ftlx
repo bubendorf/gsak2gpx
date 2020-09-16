@@ -1,2 +1,2 @@
-<#assign where="(cu.Tour4 = 1) and Country = 'Switzerland'" >
+<#assign where="cu.Tour4 = 1 and Country = 'Switzerland'" >
 <#include "CacheToPOI.ftlx">
